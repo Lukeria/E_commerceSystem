@@ -28,10 +28,11 @@
     </dependency>
 
     <!-- Spring MVC Dependency -->
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>4.3.7.RELEASE</version>
+      <version>5.1.8.RELEASE</version>
     </dependency>
 
     <!-- JSTL Dependency-->
@@ -64,7 +65,7 @@
   </dependencies>
 
   <build>
-    <finalName>E_comerceSystem</finalName>
+    <finalName>E_commerceSystem</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
