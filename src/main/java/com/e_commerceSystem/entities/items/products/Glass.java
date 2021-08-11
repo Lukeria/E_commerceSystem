@@ -19,6 +19,9 @@ public class Glass extends Product {
     @ManyToMany(mappedBy = "glass")
     private Set<ShowerCabin> showerCabins = new HashSet<>();
 
+    @ManyToMany(mappedBy = "glass")
+    private Set<GlassWall> glassWalls = new HashSet<>();
+
     public Glass() {
     }
 
@@ -52,6 +55,22 @@ public class Glass extends Product {
 
     public void setGlassTreatment(boolean glassTreatment) {
         this.glassTreatment = glassTreatment;
+    }
+
+    public Set<ShowerCabin> getShowerCabins() {
+        return showerCabins;
+    }
+
+    public void setShowerCabins(Set<ShowerCabin> showerCabins) {
+        this.showerCabins = showerCabins;
+    }
+
+    public Set<GlassWall> getGlassWalls() {
+        return glassWalls;
+    }
+
+    public void setGlassWalls(Set<GlassWall> glassWalls) {
+        this.glassWalls = glassWalls;
     }
 
     public boolean equals(Object o) {
