@@ -1,12 +1,10 @@
 package com.e_commerceSystem.entities;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.Objects;
 
-@Entity
-@DiscriminatorValue("glass")
+@Entity(name = "glass")
 public class Glass extends Product{
 
     @Column(nullable = false)
@@ -50,7 +48,6 @@ public class Glass extends Product{
         this.glassTreatment = glassTreatment;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -59,7 +56,6 @@ public class Glass extends Product{
         return thickness == glass.thickness && glassTreatment == glass.glassTreatment && glassType.equals(glass.glassType) && Objects.equals(size, glass.size);
     }
 
-    @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), glassType, size, thickness, glassTreatment);
     }

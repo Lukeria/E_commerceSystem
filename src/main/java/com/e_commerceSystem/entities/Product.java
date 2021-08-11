@@ -3,17 +3,15 @@ package com.e_commerceSystem.entities;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity(name = "products")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="product_type", discriminatorType = DiscriminatorType.STRING)
-public abstract class Product {
+@MappedSuperclass
+public abstract class Product{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    protected int id;
 
-    public Product() {
-    }
+    @Column(nullable = false)
+    private String productType;
 
     public int getId() {
         return id;
@@ -23,16 +21,24 @@ public abstract class Product {
         this.id = id;
     }
 
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id == product.id;
+        return id == product.id && productType.equals(product.productType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, productType);
     }
 }
