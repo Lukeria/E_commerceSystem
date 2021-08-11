@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Entity(name = "mirrors")
+@Entity(name = "Mirrors")
 public class Mirror extends Product {
 
     @OneToOne

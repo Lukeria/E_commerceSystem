@@ -2,9 +2,12 @@ package com.e_commerceSystem.entities.items.products;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@Entity(name = "glass")
+@Entity
 public class Glass extends Product {
 
     @Column(nullable = false)
@@ -12,6 +15,9 @@ public class Glass extends Product {
     private String size;
     private int thickness;
     private boolean glassTreatment;
+
+    @ManyToMany(mappedBy = "glass")
+    private Set<ShowerCabin> showerCabins = new HashSet<>();
 
     public Glass() {
     }

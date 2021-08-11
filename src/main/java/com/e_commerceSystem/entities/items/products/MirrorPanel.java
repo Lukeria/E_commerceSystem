@@ -3,7 +3,7 @@ package com.e_commerceSystem.entities.items.products;
 import javax.persistence.*;
 import java.util.*;
 
-@Entity(name = "mirror_panels")
+@Entity(name = "Mirror_panels")
 public class MirrorPanel extends Product{
 
     @ManyToMany(cascade = { CascadeType.ALL })
