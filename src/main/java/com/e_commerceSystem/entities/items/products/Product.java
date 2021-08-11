@@ -1,14 +1,13 @@
 package com.e_commerceSystem.entities.items.products;
 
 import com.e_commerceSystem.entities.Order;
-import com.e_commerceSystem.entities.items.Item;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Product implements Item {
+public abstract class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

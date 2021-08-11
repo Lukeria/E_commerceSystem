@@ -1,7 +1,9 @@
 package com.e_commerceSystem.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "customers")
@@ -20,6 +22,9 @@ public class Customer {
 
     @OneToOne
     private User user;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    private Set<Order> orders = new HashSet<>();
 
     public Customer() {
     }
@@ -62,6 +67,14 @@ public class Customer {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
