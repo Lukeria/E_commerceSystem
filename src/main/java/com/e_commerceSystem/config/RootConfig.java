@@ -45,7 +45,7 @@ public class RootConfig {
         properties.put(org.hibernate.cfg.Environment.C3P0_MAX_STATEMENTS, environment.getProperty("hibernate.c3p0.max_statements"));
 
         sessionFactoryBean.setHibernateProperties(properties);
-        sessionFactoryBean.setAnnotatedClasses(User.class, Authority.class);
+        sessionFactoryBean.setPackagesToScan("com.e_commerceSystem.entities");
 
         return sessionFactoryBean;
     }

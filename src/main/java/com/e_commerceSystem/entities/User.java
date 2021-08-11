@@ -10,13 +10,12 @@ import java.util.Set;
 public class User {
 
     @Id
-    @Column(name = "username")
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
 
-    @Column(name = "enabled", nullable = false)
+    @Column(nullable = false)
     private boolean enabled;
 
     @ManyToOne
@@ -77,6 +76,7 @@ public class User {
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", enabled=" + enabled +
+                ", authority=" + authority +
                 '}';
     }
 }

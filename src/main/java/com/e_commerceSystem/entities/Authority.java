@@ -10,7 +10,6 @@ import java.util.Set;
 public class Authority {
 
     @Id
-    @Column(name = "authority")
     private String authority;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "authority")
