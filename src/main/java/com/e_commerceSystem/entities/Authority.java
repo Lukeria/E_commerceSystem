@@ -1,7 +1,9 @@
 package com.e_commerceSystem.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "authorities")
@@ -11,9 +13,8 @@ public class Authority {
     @Column(name = "authority")
     private String authority;
 
-    @ManyToOne
-    @JoinColumn(name = "username")
-    private User user;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "authority")
+    private Set<User> users = new HashSet<>();
 
     public Authority() {
     }
@@ -26,12 +27,12 @@ public class Authority {
         this.authority = authority;
     }
 
-    public User getUser() {
-        return user;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override
@@ -39,19 +40,18 @@ public class Authority {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Authority authority1 = (Authority) o;
-        return Objects.equals(authority, authority1.authority) && Objects.equals(user, authority1.user);
+        return authority.equals(authority1.authority);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authority, user);
+        return Objects.hash(authority);
     }
 
     @Override
     public String toString() {
         return "Authority{" +
                 "authority='" + authority + '\'' +
-                ", user=" + user +
                 '}';
     }
 }
