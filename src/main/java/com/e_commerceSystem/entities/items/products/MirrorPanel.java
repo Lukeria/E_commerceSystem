@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity(name = "Mirror_panels")
-@PrimaryKeyJoinColumn(name = "mirror_panel_id")
 public class MirrorPanel extends Product{
 
     @ManyToMany(cascade = { CascadeType.ALL })

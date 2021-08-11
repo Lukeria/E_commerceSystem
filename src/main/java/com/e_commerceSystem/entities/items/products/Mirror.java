@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "Mirrors")
-@PrimaryKeyJoinColumn(name = "mirror_id")
 public class Mirror extends Product {
 
     @OneToOne

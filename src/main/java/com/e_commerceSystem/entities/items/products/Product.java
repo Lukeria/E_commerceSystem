@@ -8,7 +8,6 @@ import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@PrimaryKeyJoinColumn(name = "product_id")
 public abstract class Product extends Item {
 
     @Column(nullable = false)

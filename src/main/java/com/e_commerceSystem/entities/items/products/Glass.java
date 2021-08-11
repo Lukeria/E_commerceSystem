@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@PrimaryKeyJoinColumn(name = "glass_id")
 public class Glass extends Product {
 
     @Column(nullable = false)

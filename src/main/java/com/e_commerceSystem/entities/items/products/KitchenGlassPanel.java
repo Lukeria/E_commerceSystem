@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "Kitchen_glass_panels")
-@PrimaryKeyJoinColumn(name = "kitchen_glass_panel_id")
 public class KitchenGlassPanel extends Product{
 
     @ManyToMany(cascade = { CascadeType.ALL })
