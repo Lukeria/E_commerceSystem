@@ -1,17 +1,15 @@
 package com.e_commerceSystem.entities.items.products;
 
 import com.e_commerceSystem.entities.Order;
+import com.e_commerceSystem.entities.items.Item;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
+@PrimaryKeyJoinColumn(name = "product_id")
+public abstract class Product extends Item {
 
     @Column(nullable = false)
     private String productType;
