@@ -1,8 +1,12 @@
-package com.e_commerceSystem.entities.products;
+package com.e_commerceSystem.entities.items.products;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity(name = "mirrors")
 public class Mirror extends Product {
@@ -11,6 +15,9 @@ public class Mirror extends Product {
     private Glass glass;
     private boolean lightning;
     private String facet;
+
+    @ManyToMany(mappedBy = "mirrors")
+    private Set<MirrorPanel> mirrorPanels = new HashSet<>();
 
     public Mirror() {
     }
@@ -37,6 +44,14 @@ public class Mirror extends Product {
 
     public void setFacet(String facet) {
         this.facet = facet;
+    }
+
+    public Set<MirrorPanel> getMirrorPanels() {
+        return mirrorPanels;
+    }
+
+    public void setMirrorPanels(Set<MirrorPanel> mirrorPanels) {
+        this.mirrorPanels = mirrorPanels;
     }
 
     @Override

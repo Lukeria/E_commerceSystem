@@ -1,10 +1,12 @@
-package com.e_commerceSystem.entities.products;
+package com.e_commerceSystem.entities.items.products;
+
+import com.e_commerceSystem.entities.items.Item;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @MappedSuperclass
-public abstract class Product{
+public abstract class Product implements Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
