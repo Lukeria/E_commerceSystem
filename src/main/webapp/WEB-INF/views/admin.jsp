@@ -17,8 +17,6 @@
     <!-- CSS Files -->
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/resources/css/black-dashboard.css?v=1.0.0"/>
-<%--    <!-- CSS Just for demo purpose, don't include it in your project -->--%>
-<%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/demo/demo.css"/>--%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/custom/custom.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/custom/black.css"/>
 </head>

@@ -21,6 +21,9 @@ public class Customer {
     @OneToOne
     private User user;
 
+    public Customer() {
+    }
+
     public int getId() {
         return id;
     }
