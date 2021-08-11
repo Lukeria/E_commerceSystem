@@ -1,14 +1,12 @@
 package com.e_commerceSystem.entities.items.products;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "Mirrors")
+@PrimaryKeyJoinColumn(name = "mirror_id")
 public class Mirror extends Product {
 
     @OneToOne

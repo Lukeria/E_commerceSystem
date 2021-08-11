@@ -3,11 +3,13 @@ package com.e_commerceSystem.entities.items.products;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@PrimaryKeyJoinColumn(name = "glass_id")
 public class Glass extends Product {
 
     @Column(nullable = false)

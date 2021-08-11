@@ -1,11 +1,13 @@
 package com.e_commerceSystem.entities.items.products;
 
+import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.items.Item;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Product implements Item {
 
     @Id
@@ -14,6 +16,10 @@ public abstract class Product implements Item {
 
     @Column(nullable = false)
     private String productType;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     public int getId() {
         return id;
