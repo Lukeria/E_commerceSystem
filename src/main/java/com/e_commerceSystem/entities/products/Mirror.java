@@ -1,11 +1,11 @@
-package com.e_commerceSystem.entities;
+package com.e_commerceSystem.entities.products;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import java.util.Objects;
 
 @Entity(name = "mirrors")
-public class Mirror extends Product{
+public class Mirror extends Product {
 
     @OneToOne
     private Glass glass;

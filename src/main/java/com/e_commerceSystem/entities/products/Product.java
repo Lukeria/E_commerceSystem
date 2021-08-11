@@ -1,4 +1,4 @@
-package com.e_commerceSystem.entities;
+package com.e_commerceSystem.entities.products;
 
 import javax.persistence.*;
 import java.util.Objects;

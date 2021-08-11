@@ -1,11 +1,11 @@
-package com.e_commerceSystem.entities;
+package com.e_commerceSystem.entities.products;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Objects;
 
 @Entity(name = "glass")
-public class Glass extends Product{
+public class Glass extends Product {
 
     @Column(nullable = false)
     private String glassType;
