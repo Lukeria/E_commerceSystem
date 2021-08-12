@@ -1,28 +1,37 @@
 package com.e_commerceSystem.entities;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name = "users")
 public class User {
 
     @Id
+    private long id;
     private String username;
-
-    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private boolean enabled;
-
     @ManyToOne
-    @JoinColumn(name = "authority")
-    private Authority authority;
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public User() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getUsername() {
@@ -41,42 +50,16 @@ public class User {
         this.password = password;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Authority getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(Authority authority) {
-        this.authority = authority;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return enabled == user.enabled && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return id == user.id && username.equals(user.username) && password.equals(user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, enabled);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", enabled=" + enabled +
-                ", authority=" + authority +
-                '}';
+        return Objects.hash(id, username, password);
     }
 }

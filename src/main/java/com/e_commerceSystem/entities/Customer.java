@@ -6,21 +6,17 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "customers")
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
-    @Column(nullable = false)
     private String name;
-
     private String email;
-
     private String phone;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
@@ -29,11 +25,11 @@ public class Customer {
     public Customer() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -90,14 +86,4 @@ public class Customer {
         return Objects.hash(id, name, email, phone);
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", user=" + user +
-                '}';
-    }
 }

@@ -1,55 +1,63 @@
 package com.e_commerceSystem.entities;
 
-import com.e_commerceSystem.entities.items.products.Product;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
-@Entity(name = "Orders")
+@Entity
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-    private Set<Product> products = new HashSet<>();
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    private int quantity;
+    private int amount;
+    private float price;
     private float cost;
 
     @Column(nullable = false)
-    private String orderStatus;
+    private String status;
 
-    @Column(nullable = false)
+    @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
     private LocalDateTime deadline;
 
     public Order() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Customer getCustomer() {
@@ -60,28 +68,12 @@ public class Order {
         this.customer = customer;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public float getCost() {
         return cost;
     }
 
     public void setCost(float cost) {
         this.cost = cost;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
     }
 
     public LocalDateTime getCreationDate() {
@@ -105,11 +97,11 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && quantity == order.quantity && Float.compare(order.cost, cost) == 0 && orderStatus.equals(order.orderStatus) && creationDate.equals(order.creationDate) && Objects.equals(deadline, order.deadline);
+        return id == order.id && amount == order.amount && Float.compare(order.price, price) == 0 && Float.compare(order.cost, cost) == 0 && status.equals(order.status) && creationDate.equals(order.creationDate) && Objects.equals(deadline, order.deadline);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, quantity, cost, orderStatus, creationDate, deadline);
+        return Objects.hash(id, amount, price, cost, status, creationDate, deadline);
     }
 }

@@ -1,7 +1,5 @@
 package com.e_commerceSystem.config;
 
-import com.e_commerceSystem.entities.Authority;
-import com.e_commerceSystem.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
