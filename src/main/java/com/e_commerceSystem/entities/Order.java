@@ -2,7 +2,9 @@ package com.e_commerceSystem.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Order {
@@ -24,6 +26,9 @@ public class Order {
     @Column(name = "creation_date", nullable = false)
     private LocalDateTime creationDate;
     private LocalDateTime deadline;
+
+    @OneToMany(mappedBy = "order")
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     public Order() {
     }
@@ -90,6 +95,14 @@ public class Order {
 
     public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     @Override

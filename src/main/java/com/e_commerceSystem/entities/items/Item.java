@@ -1,6 +1,7 @@
 package com.e_commerceSystem.entities.items;
 
 import com.e_commerceSystem.entities.CartItem;
+import com.e_commerceSystem.entities.OrderItem;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,6 +18,9 @@ public abstract class Item {
 
     @OneToMany(mappedBy = "item")
     private Set<CartItem> cartItems = new HashSet<>();
+
+    @OneToMany(mappedBy = "item")
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     public long getId() {
         return id;
@@ -40,6 +44,14 @@ public abstract class Item {
 
     public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     @Override
