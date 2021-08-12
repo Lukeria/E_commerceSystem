@@ -2,7 +2,9 @@ package com.e_commerceSystem.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Cart {
@@ -21,6 +23,9 @@ public class Cart {
 
     @Column(name = "expiration_date", nullable = false)
     private LocalDateTime expirationDate;
+
+    @OneToMany(mappedBy = "cart")
+    private Set<CartItem> cartItems = new HashSet<>();
 
     public Cart() {
     }
@@ -79,6 +84,14 @@ public class Cart {
 
     public void setExpirationDate(LocalDateTime expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public Set<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(Set<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
     @Override
