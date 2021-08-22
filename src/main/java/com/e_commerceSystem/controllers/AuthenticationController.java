@@ -35,8 +35,8 @@ public class AuthenticationController {
     }
 //    создатся с помощью Spring security
 
-    @GetMapping("/mainPage")
+    @GetMapping("/main")
     public ModelAndView mainPage(){
-        return new ModelAndView("mainPage");
+        return new ModelAndView("main");
     }
 }
