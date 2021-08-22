@@ -4,6 +4,6 @@
     <title>Start</title>
 </head>
 <body>
-    <jsp:forward page="user/mainPage.jsp"></jsp:forward>
+    <jsp:forward page="user/main.jsp"></jsp:forward>
 </body>
 </html>

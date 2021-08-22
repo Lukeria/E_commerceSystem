@@ -15,7 +15,7 @@ public class AuthenticationController {
 
     @GetMapping("/registrationPage")
     public ModelAndView registrationPage(){
-        return new ModelAndView("registartion");
+        return new ModelAndView("registration");
     }
 
     @PostMapping("/login")
@@ -37,6 +37,6 @@ public class AuthenticationController {
 
     @GetMapping("/main")
     public ModelAndView mainPage(){
-        return new ModelAndView("main");
+        return new ModelAndView("user/main");
     }
 }

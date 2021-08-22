@@ -11,11 +11,11 @@ public class CatalogController {
 
     @GetMapping("/")
     public ModelAndView catalog(){
-        return new ModelAndView("catalog");
+        return new ModelAndView("user/catalog");
     }
 
     @GetMapping("/settings")
     public ModelAndView eCommerceManagement(){
-        return new ModelAndView("catalogSettings");
+        return new ModelAndView("admin/catalogSettings");
     }
 }
