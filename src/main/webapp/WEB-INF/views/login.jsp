@@ -1,24 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: PC
-  Date: 13-Aug-21
-  Time: 3:05 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Login</title>
 </head>
 <body>
-<form action="/login" method="post">
-    First name:<br>
-    <input type="text" name="firstname" value="Mickey">
-    <br>
-    Last name:<br>
-    <input type="text" name="lastname" value="Mouse">
-    <br><br>
-    <input type="submit" value="Submit">
+<form method="post" action="/login">
+    <label for="login">Login: </label>
+    <input type="text" id="login" name="login">
+    <label for="password">Password: </label>
+    <input type="password" id="password" name="password">
+    <button type="submit">Submit</button>
 </form>
 </body>
 </html>
