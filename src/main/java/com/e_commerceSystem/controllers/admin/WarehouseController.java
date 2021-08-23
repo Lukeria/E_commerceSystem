@@ -12,17 +12,17 @@ public class WarehouseController {
 
     @GetMapping("/")
     public ModelAndView warehouse(){
-        return new ModelAndView("warehouse");
+        return new ModelAndView("admin/warehouse");
     }
 
     @PostMapping("/increaseAmount")
     public ModelAndView warehouseIncreaseAmount(){
-        return new ModelAndView("warehouse");
+        return new ModelAndView("admin/warehouse");
     }
 
     @GetMapping("/decreaseAmount")
     public ModelAndView warehouseDecreaseAmount(){
-        return new ModelAndView("warehouse");
+        return new ModelAndView("admin/warehouse");
     }
 
 }

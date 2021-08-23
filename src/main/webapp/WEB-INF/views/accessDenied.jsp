@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: PC
-  Date: 23-Aug-21
-  Time: 11:15 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <html>
 <head>
     <title>403</title>
@@ -66,9 +59,8 @@
 </div>
 
 <p id="text">403 FORBIDDEN</p>
-<p id="credit">Created with the help of <a href="http://dynamicsjs.com/">Dynamics.js</a></p>
 
-<script>
+<script type="text/javascript">
     var lock = document.querySelector('#lock');
     var key = document.querySelector('#key');
 
