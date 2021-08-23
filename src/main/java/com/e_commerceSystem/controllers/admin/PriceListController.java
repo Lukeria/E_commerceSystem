@@ -18,7 +18,7 @@ public class PriceListController {
 
     @GetMapping("/all")
     public ModelAndView priceListAll(){
-        return new ModelAndView("priceLists");
+        return new ModelAndView("admin/priceLists");
     }
 
     @PostMapping("/addItem")
