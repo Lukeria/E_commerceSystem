@@ -1,9 +1,7 @@
 package com.e_commerceSystem.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -14,13 +12,15 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
+@ComponentScans(value = {@ComponentScan("com.e_commerceSystem.repositories"),
+        @ComponentScan("com.e_commerceSystem.services")})
 public class RootConfig {
 
     @Autowired
     private Environment environment;
 
     @Bean
-    public LocalSessionFactoryBean getSessionFactory(){
+    public LocalSessionFactoryBean getSessionFactory() {
 
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 

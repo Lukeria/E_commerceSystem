@@ -1,10 +1,11 @@
 package com.e_commerceSystem.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class User {
+public class User implements Serializable {
 
     @Id
     private long id;

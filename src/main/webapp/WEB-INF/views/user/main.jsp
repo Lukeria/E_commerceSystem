@@ -8,7 +8,7 @@
 <body>
 <security:authorize access="!isAuthenticated()">
     <a href="/registrationPage">Registration</a>
-    <a href="/loginPage">Login</a>
+    <a href="/login">Login</a>
 </security:authorize>
 <security:authorize access="isAuthenticated()">
     <a href="/profile/">Profile</a>

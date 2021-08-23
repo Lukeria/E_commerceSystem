@@ -1,12 +1,14 @@
 package com.e_commerceSystem.entities;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
     private long id;
@@ -53,5 +55,10 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hash(id, role);
+    }
+
+    @Override
+    public String getAuthority() {
+        return getRole();
     }
 }

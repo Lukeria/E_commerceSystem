@@ -35,27 +35,27 @@
             </div>
             <ul class="nav">
                 <li class="active">
-                    <a href="">
+                    <a href="/order/all">
                         <i class="tim-icons icon-chart-bar-32"></i>
                         <p>Orders</p>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/priceList/all">
                         <i class="tim-icons icon-paper"></i>
                         <p>Price lists</p>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/warehouse/">
                         <i class="tim-icons icon-delivery-fast"></i>
                         <p>Warehouse</p>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/catalog/settings">
                         <i class="tim-icons icon-bag-16"></i>
-                        <p>Catalog managment</p>
+                        <p>Catalog settings</p>
                     </a>
                 </li>
             </ul>
@@ -122,7 +122,7 @@
                                 </p>
                             </a>
                             <ul class="dropdown-menu dropdown-navbar">
-                                <li class="nav-link"><a href="javascript:void(0)"
+                                <li class="nav-link"><a href="/profile/"
                                                         class="nav-item dropdown-item">Profile</a></li>
                                 <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Settings</a>
                                 </li>

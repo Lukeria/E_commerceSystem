@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class AuthenticationController {
 
-    @GetMapping("/loginPage")
+    @GetMapping("/login")
     public ModelAndView loginPage(){
         return new ModelAndView("login");
     }
@@ -18,8 +18,8 @@ public class AuthenticationController {
         return new ModelAndView("registration");
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(){
+    @PostMapping("/loginAction")
+    public ModelAndView perform_login(){
         return new ModelAndView("/admin/orders");
     }
 //    создается с помощью Spring security
@@ -29,10 +29,10 @@ public class AuthenticationController {
         return new ModelAndView("login");
     }
 
-    @PostMapping("/logout")
-    public ModelAndView logout(){
-        return new ModelAndView("login");
-    }
+//    @PostMapping("/logout")
+//    public ModelAndView logout(){
+//        return new ModelAndView("login");
+//    }
 //    создатся с помощью Spring security
 
     @GetMapping("/main")

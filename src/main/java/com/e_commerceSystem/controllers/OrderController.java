@@ -17,7 +17,7 @@ public class OrderController {
 
     @GetMapping("/all")
     public ModelAndView orders(){
-        return new ModelAndView("orders");
+        return new ModelAndView("/admin/orders");
     }
 
     @PostMapping("/add")
