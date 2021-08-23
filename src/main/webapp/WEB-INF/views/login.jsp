@@ -6,9 +6,9 @@
     <title>Login</title>
 </head>
 <body>
-<form method="post" action="<spring:url value='/loginAction'/>">
-    <label for="login">Login: </label>
-    <input type="text" id="login" name="login">
+<form method="post" action="/login">
+    <label for="username">Login: </label>
+    <input type="text" id="username" name="username">
     <label for="password">Password: </label>
     <input type="password" id="password" name="password">
     <button type="submit">Submit</button>

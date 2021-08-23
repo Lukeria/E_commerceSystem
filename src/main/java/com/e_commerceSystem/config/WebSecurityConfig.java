@@ -4,6 +4,7 @@ import com.e_commerceSystem.entities.Role;
 import com.e_commerceSystem.security.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -36,15 +38,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests().antMatchers("/").permitAll()
-                .and()
-                .authorizeRequests().antMatchers("/login**").permitAll()
-                .and()
-                .formLogin().successHandler(loginSuccessHandler)
+                .authorizeRequests()
+                    .antMatchers("/login**").not().authenticated()
+                    .antMatchers("/order/**").authenticated()
+                    .anyRequest().permitAll()
+                    .and()
+                .formLogin().loginPage("/login").successHandler(loginSuccessHandler)
                 .and()
                 .logout().logoutSuccessUrl("/main").permitAll()
                 .and()
-                .csrf().disable();
+                .exceptionHandling().accessDeniedPage("/accessDenied")
+                .and()
+                .csrf().disable()
+        ;
     }
 
     @Override
