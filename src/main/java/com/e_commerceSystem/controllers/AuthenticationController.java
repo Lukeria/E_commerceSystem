@@ -18,10 +18,10 @@ public class AuthenticationController {
         return new ModelAndView("registration");
     }
 
-    @PostMapping("/loginAction")
-    public ModelAndView perform_login(){
-        return new ModelAndView("/admin/orders");
-    }
+//    @PostMapping("/loginAction")
+//    public ModelAndView perform_login(){
+//        return new ModelAndView("/admin/orders");
+//    }
 //    создается с помощью Spring security
 
     @PostMapping("/register")

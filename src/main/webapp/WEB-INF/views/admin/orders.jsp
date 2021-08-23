@@ -127,7 +127,7 @@
                                 <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Settings</a>
                                 </li>
                                 <li class="dropdown-divider"></li>
-                                <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Log
+                                <li class="nav-link"><a href="/logout" class="nav-item dropdown-item">Log
                                     out</a></li>
                             </ul>
                         </li>

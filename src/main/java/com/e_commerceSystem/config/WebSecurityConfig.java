@@ -1,6 +1,7 @@
 package com.e_commerceSystem.config;
 
 import com.e_commerceSystem.entities.Role;
+import com.e_commerceSystem.security.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,6 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,23 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers("/login**").permitAll()
                 .and()
-                .formLogin().successHandler(new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-
-                boolean isAdminRole = authentication.getAuthorities().stream()
-                        .anyMatch(role -> role.getAuthority().equalsIgnoreCase("ROLE_ADMIN"));
-
-                if (isAdminRole) {
-                    httpServletResponse.sendRedirect("/order/all");
-                } else {
-                    httpServletResponse.sendRedirect("/main");
-                }
-
-            }
-        })
+                .formLogin().successHandler(loginSuccessHandler)
                 .and()
-                .logout().logoutSuccessUrl("/login").permitAll()
+                .logout().logoutSuccessUrl("/main").permitAll()
                 .and()
                 .csrf().disable();
     }

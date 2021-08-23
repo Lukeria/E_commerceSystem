@@ -12,8 +12,11 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
-@ComponentScans(value = {@ComponentScan("com.e_commerceSystem.repositories"),
-        @ComponentScan("com.e_commerceSystem.services")})
+@ComponentScans(value = {
+        @ComponentScan("com.e_commerceSystem.repositories"),
+        @ComponentScan("com.e_commerceSystem.services"),
+        @ComponentScan("com.e_commerceSystem.security")
+})
 public class RootConfig {
 
     @Autowired
