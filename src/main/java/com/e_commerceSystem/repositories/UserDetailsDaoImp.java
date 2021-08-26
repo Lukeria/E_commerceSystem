@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class UserDetailsDaoImplementation implements UserDetailsDao {
+public class UserDetailsDaoImp implements UserDetailsDao {
 
     @Autowired
     private SessionFactory sessionFactory;

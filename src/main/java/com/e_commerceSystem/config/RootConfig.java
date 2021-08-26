@@ -15,6 +15,7 @@ import java.util.Properties;
 @ComponentScans(value = {
         @ComponentScan("com.e_commerceSystem.repositories"),
         @ComponentScan("com.e_commerceSystem.services"),
+        @ComponentScan("com.e_commerceSystem.service_interface"),
         @ComponentScan("com.e_commerceSystem.security")
 })
 public class RootConfig {

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("userDetailsService")
-public class UserDetailsServiceImplementation implements UserDetailsService {
+public class UserDetailsServiceImp implements UserDetailsService {
 
     @Autowired
     private UserDetailsDao userDetailsDao;
