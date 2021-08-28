@@ -22,13 +22,15 @@ public class UserDetailsDaoImp implements UserDetailsDao {
     @Override
     public User findUserByUsername(String username) {
 
-        Session session = sessionFactory.getCurrentSession();
-        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-        Root<User> root = criteriaQuery.from(User.class);
-        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("username"), username));
+        Query<User> query;
+        try (Session session = sessionFactory.getCurrentSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+            Root<User> root = criteriaQuery.from(User.class);
+            criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("username"), username));
 
-        Query<User> query = session.createQuery(criteriaQuery);
+            query = session.createQuery(criteriaQuery);
+        }
         List<User> results = query.getResultList();
 
         User user = null;

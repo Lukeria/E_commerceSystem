@@ -1,19 +1,34 @@
 package com.e_commerceSystem.entities.items;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 import java.util.Objects;
 
+
+@NamedQuery(name = "get_glass_all", query ="from Glass")
+
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Glass extends Item {
 
+    @JsonProperty("type")
     @Column(name = "glass_type")
     private String glassType;
-    private float size;
-    private int thickness;
+    private Float size;
+    private Integer thickness;
 
+    @JsonProperty("processing")
     @Column(name = "glass_processing")
-    private boolean glassProcessing;
+    private Boolean glassProcessing;
+    @Transient
+    private int width;
+    @Transient
+    private int height;
 
     public Glass() {
     }
@@ -48,6 +63,22 @@ public class Glass extends Item {
 
     public void setGlassProcessing(boolean glassProcessing) {
         this.glassProcessing = glassProcessing;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     @Override

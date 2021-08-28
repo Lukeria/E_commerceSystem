@@ -13,7 +13,7 @@ import java.util.Set;
 public abstract class Item {
 
     @Id
-    protected long id;
+    protected Long id;
     protected String name;
 
     @OneToMany(mappedBy = "item")
