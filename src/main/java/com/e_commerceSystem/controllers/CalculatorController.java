@@ -38,6 +38,12 @@ public class CalculatorController {
 
         ModelAndView modelAndView = new ModelAndView("calculator");
 
+        GlassType glassType = new GlassType();
+        glassType.setName("Лакомат");
+        glassType.setThickness(4);
+
+        componentService.addGlassType(glassType);
+
         float result = calculatingService.calculatePrice(allParams);
 
         modelAndView.addAllObjects(allParams);

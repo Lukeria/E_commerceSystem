@@ -2,6 +2,7 @@ package com.e_commerceSystem.entities.components;
 
 import com.e_commerceSystem.entities.Glass;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@DiscriminatorValue("processing")
 public class Processing extends Component {
 
     private String symbol;

@@ -9,10 +9,13 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "component_type")
 public abstract class Component {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "IdGenerator")
+    @TableGenerator(table = "sequence", name = "IdGenerator")
     protected Long id;
     protected String name;
 

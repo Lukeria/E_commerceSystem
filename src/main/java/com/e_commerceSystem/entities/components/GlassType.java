@@ -2,10 +2,7 @@ package com.e_commerceSystem.entities.components;
 
 import com.e_commerceSystem.entities.Glass;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,7 +10,7 @@ import java.util.Set;
 @NamedQuery(name = "get_glass_type_all", query = "from GlassType")
 
 @Entity
-@Table(name = "glass_type")
+@DiscriminatorValue("glass_type")
 public class GlassType extends Component{
 
     private Integer thickness;
