@@ -1,8 +1,7 @@
 package com.e_commerceSystem.entities;
 
-import com.e_commerceSystem.entities.embedded_keys.CartItemKey;
 import com.e_commerceSystem.entities.embedded_keys.OrderItemKey;
-import com.e_commerceSystem.entities.items.Item;
+import com.e_commerceSystem.entities.components.Component;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -25,9 +24,9 @@ public class OrderItem {
     private Order order;
 
     @ManyToOne
-    @MapsId("itemId")
-    @JoinColumn(name = "item_id")
-    private Item item;
+    @MapsId("componentId")
+    @JoinColumn(name = "component_id")
+    private Component component;
 
     public OrderItem() {
     }
@@ -72,12 +71,12 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Item getItem() {
-        return item;
+    public Component getComponent() {
+        return component;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setComponent(Component item) {
+        this.component = item;
     }
 
     @Override

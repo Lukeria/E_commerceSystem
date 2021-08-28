@@ -1,6 +1,6 @@
 package com.e_commerceSystem.repositories;
 
-import com.e_commerceSystem.dao_interface.UserDetailsDao;
+import com.e_commerceSystem.repositories.interfaces.UserDetailsDao;
 import com.e_commerceSystem.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,16 +22,16 @@ public class UserDetailsDaoImp implements UserDetailsDao {
     @Override
     public User findUserByUsername(String username) {
 
-        Query<User> query;
-        try (Session session = sessionFactory.getCurrentSession()) {
+        List<User> results;
+            Session session = sessionFactory.getCurrentSession();
+            Query<User> query;
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
             Root<User> root = criteriaQuery.from(User.class);
             criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("username"), username));
 
             query = session.createQuery(criteriaQuery);
-        }
-        List<User> results = query.getResultList();
+            results = query.getResultList();
 
         User user = null;
         if(! results.isEmpty()){

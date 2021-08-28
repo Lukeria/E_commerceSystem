@@ -41,11 +41,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/login**", "/registrationPage**", "/register").not().authenticated()
                     .antMatchers("/order/", "/profile/**").authenticated()
-                    .antMatchers("/priceList/**", "/warehouse/**", "/order/**", "/catalog/settings").hasRole("ADMIN")
+                    .antMatchers("/priceList/**", "/order/**", "/catalog/settings").hasRole("ADMIN")
                     .antMatchers("/cart/**").hasRole("USER")
                     .anyRequest().permitAll()
                     .and()
-                .formLogin().loginPage("/login").successHandler(loginSuccessHandler)
+                .formLogin().successHandler(loginSuccessHandler) //return loginForm
                 .and()
                 .logout().logoutSuccessUrl("/main").permitAll()
                 .and()

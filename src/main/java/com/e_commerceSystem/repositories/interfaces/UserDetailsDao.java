@@ -1,4 +1,4 @@
-package com.e_commerceSystem.dao_interface;
+package com.e_commerceSystem.repositories.interfaces;
 
 import com.e_commerceSystem.entities.User;
 

@@ -1,10 +1,9 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.entities.items.Glass;
-import com.e_commerceSystem.service_interface.ItemService;
-import com.e_commerceSystem.service_interface.PriceCalculatingService;
+import com.e_commerceSystem.entities.components.GlassType;
+import com.e_commerceSystem.services.interfaces.ComponentService;
+import com.e_commerceSystem.services.interfaces.CalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,16 +19,16 @@ import java.util.Map;
 public class CalculatorController {
 
     @Autowired
-    PriceCalculatingService calculatingService;
+    CalculatorService calculatingService;
     @Autowired
-    ItemService itemService;
+    ComponentService componentService;
 
     @GetMapping("/")
     public ModelAndView calculator(){
 
         ModelAndView modelAndView = new ModelAndView("calculator");
-        List<Glass> glassList = itemService.getGlassList();
-        modelAndView.addObject("glassList", glassList);
+        List<GlassType> glassTypeList = componentService.getGlassTypeList();
+        modelAndView.addObject("glassTypeList", glassTypeList);
 
         return modelAndView;
     }

@@ -1,6 +1,6 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.dao_interface.UserDetailsDao;
+import com.e_commerceSystem.repositories.interfaces.UserDetailsDao;
 import com.e_commerceSystem.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;

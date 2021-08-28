@@ -1,4 +1,4 @@
-package com.e_commerceSystem.entities.items;
+package com.e_commerceSystem.entities.components;
 
 import com.e_commerceSystem.entities.CartItem;
 import com.e_commerceSystem.entities.OrderItem;
@@ -10,16 +10,16 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Item {
+public abstract class Component {
 
     @Id
     protected Long id;
     protected String name;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "component")
     private Set<CartItem> cartItems = new HashSet<>();
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "component")
     private Set<OrderItem> orderItems = new HashSet<>();
 
     public long getId() {
@@ -58,7 +58,7 @@ public abstract class Item {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
+        Component item = (Component) o;
         return id == item.id && name.equals(item.name);
     }
 

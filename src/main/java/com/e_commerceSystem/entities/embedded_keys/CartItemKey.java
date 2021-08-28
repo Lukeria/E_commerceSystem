@@ -9,28 +9,28 @@ import java.util.Objects;
 public class CartItemKey implements Serializable {
 
     @Column(name = "cart_id")
-    private long cartId;
+    private Long cartId;
 
-    @Column(name = "item_id")
-    private long itemId;
+    @Column(name = "component_id")
+    private Long componentId;
 
     public CartItemKey() {
     }
 
-    public long getCartId() {
+    public Long getCartId() {
         return cartId;
     }
 
-    public void setCartId(long cartId) {
+    public void setCartId(Long cartId) {
         this.cartId = cartId;
     }
 
-    public long getItemId() {
-        return itemId;
+    public Long getComponentId() {
+        return componentId;
     }
 
-    public void setItemId(long itemId) {
-        this.itemId = itemId;
+    public void setComponentId(Long itemId) {
+        this.componentId = itemId;
     }
 
     @Override
@@ -38,11 +38,11 @@ public class CartItemKey implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartItemKey that = (CartItemKey) o;
-        return cartId == that.cartId && itemId == that.itemId;
+        return cartId == that.cartId && componentId == that.componentId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cartId, itemId);
+        return Objects.hash(cartId, componentId);
     }
 }

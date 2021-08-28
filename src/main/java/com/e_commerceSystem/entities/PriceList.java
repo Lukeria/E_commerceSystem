@@ -1,6 +1,6 @@
 package com.e_commerceSystem.entities;
 
-import com.e_commerceSystem.entities.items.Item;
+import com.e_commerceSystem.entities.components.Component;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -9,14 +9,14 @@ import java.util.Objects;
 public class PriceList {
 
     @Id
-    private long id;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "item_id")
-    private Item item;
+    @JoinColumn(name = "component_id")
+    private Component component;
 
     @Column(name = "price_USD")
-    private float priceUSD;
+    private Float priceUSD;
 
     @Column(name = "price_BYN")
     private float priceBYN;
@@ -24,27 +24,27 @@ public class PriceList {
     public PriceList() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Item getItem() {
-        return item;
+    public Component getComponent() {
+        return component;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setComponent(Component item) {
+        this.component = item;
     }
 
-    public float getPriceUSD() {
+    public Float getPriceUSD() {
         return priceUSD;
     }
 
-    public void setPriceUSD(float priceUSD) {
+    public void setPriceUSD(Float priceUSD) {
         this.priceUSD = priceUSD;
     }
 

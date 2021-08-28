@@ -11,7 +11,7 @@ import java.util.Set;
 public class Role implements GrantedAuthority {
 
     @Id
-    private long id;
+    private Long id;
     private String role;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
@@ -20,11 +20,11 @@ public class Role implements GrantedAuthority {
     public Role() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
