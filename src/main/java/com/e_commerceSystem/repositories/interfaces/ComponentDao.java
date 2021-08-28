@@ -1,8 +1,8 @@
 package com.e_commerceSystem.repositories.interfaces;
 
 import com.e_commerceSystem.entities.components.Accessory;
-import com.e_commerceSystem.entities.components.GlassType;
-import com.e_commerceSystem.entities.components.Processing;
+import com.e_commerceSystem.entities.glass.GlassType;
+import com.e_commerceSystem.entities.glass.Processing;
 
 import java.util.List;
 

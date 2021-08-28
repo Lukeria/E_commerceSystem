@@ -1,6 +1,4 @@
-package com.e_commerceSystem.entities.components;
-
-import com.e_commerceSystem.entities.Glass;
+package com.e_commerceSystem.entities.glass;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,15 +8,36 @@ import java.util.Set;
 @NamedQuery(name = "get_glass_type_all", query = "from GlassType")
 
 @Entity
-@DiscriminatorValue("glass_type")
-public class GlassType extends Component{
+@Table(name = "glass_type")
+public class GlassType{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "IdGenerator")
+    @TableGenerator(table = "sequence", name = "IdGenerator")
+    protected Long id;
+    protected String name;
     private Integer thickness;
 
     @OneToMany(mappedBy = "glassType")
     private Set<Glass> glass = new HashSet<>();
 
     public GlassType() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getThickness() {
@@ -41,13 +60,12 @@ public class GlassType extends Component{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         GlassType glassType = (GlassType) o;
-        return thickness == glassType.thickness;
+        return id.equals(glassType.id) && name.equals(glassType.name) && thickness.equals(glassType.thickness);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), thickness);
+        return Objects.hash(id, name, thickness);
     }
 }

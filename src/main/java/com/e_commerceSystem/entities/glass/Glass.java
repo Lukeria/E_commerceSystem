@@ -1,12 +1,13 @@
-package com.e_commerceSystem.entities;
+package com.e_commerceSystem.entities.glass;
 
-import com.e_commerceSystem.entities.components.GlassType;
-import com.e_commerceSystem.entities.components.Processing;
+import com.e_commerceSystem.entities.Order;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,9 +23,17 @@ public class Glass{
     @JsonProperty("type")
     private GlassType glassType;
 
+    @ManyToMany
+    @JoinTable(
+            name = "Glass_Processing",
+            joinColumns = { @JoinColumn(name = "glass_id") },
+            inverseJoinColumns = { @JoinColumn(name = "processing_id") }
+    )
+    private Set<Processing> processingList = new HashSet<>();
+
     @ManyToOne
-    @JoinColumn(name = "processing_id")
-    private Processing processing;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     public Glass() {
     }
@@ -61,12 +70,20 @@ public class Glass{
         this.glassType = glassType;
     }
 
-    public Processing getProcessing() {
-        return processing;
+    public Set<Processing> getProcessingList() {
+        return processingList;
     }
 
-    public void setProcessing(Processing processing) {
-        this.processing = processing;
+    public void setProcessingList(Set<Processing> processingList) {
+        this.processingList = processingList;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override

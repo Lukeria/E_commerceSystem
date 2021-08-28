@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/warehouse/">
+                    <a href="/component/">
                         <i class="tim-icons icon-delivery-fast"></i>
                         <p>Warehouse</p>
                     </a>

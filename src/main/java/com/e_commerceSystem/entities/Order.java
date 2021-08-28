@@ -1,5 +1,7 @@
 package com.e_commerceSystem.entities;
 
+import com.e_commerceSystem.entities.glass.Glass;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -29,6 +31,9 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>();
+
+    @OneToMany(mappedBy = "order")
+    private Set<Glass> glassList = new HashSet<>();
 
     public Order() {
     }

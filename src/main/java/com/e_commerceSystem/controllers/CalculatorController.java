@@ -1,6 +1,6 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.entities.components.GlassType;
+import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.services.interfaces.ComponentService;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +37,6 @@ public class CalculatorController {
     public ModelAndView calculate(@RequestParam Map<String,String> allParams){
 
         ModelAndView modelAndView = new ModelAndView("calculator");
-
-        GlassType glassType = new GlassType();
-        glassType.setName("Лакомат");
-        glassType.setThickness(4);
-
-        componentService.addGlassType(glassType);
-
         float result = calculatingService.calculatePrice(allParams);
 
         modelAndView.addAllObjects(allParams);

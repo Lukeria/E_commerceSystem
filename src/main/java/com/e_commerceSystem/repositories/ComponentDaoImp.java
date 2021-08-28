@@ -1,10 +1,9 @@
 package com.e_commerceSystem.repositories;
 
-import com.e_commerceSystem.entities.Glass;
 import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.components.Component;
-import com.e_commerceSystem.entities.components.GlassType;
-import com.e_commerceSystem.entities.components.Processing;
+import com.e_commerceSystem.entities.glass.GlassType;
+import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.repositories.interfaces.ComponentDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,13 +23,7 @@ public class ComponentDaoImp implements ComponentDao {
     public List<GlassType> getGlassTypeAll() {
 
         Session session = sessionFactory.getCurrentSession();
-        List<GlassType> glassTypeList = session.createQuery(
-                "from Component where component_type=:component_type", Component.class)
-                .setParameter("component_type", "glass_type")
-                .getResultList()
-                .stream()
-                .map(value->(GlassType)value)
-                .collect(Collectors.toList());
+        List<GlassType> glassTypeList = session.createQuery("from GlassType", GlassType.class).getResultList();
         return glassTypeList;
     }
 
@@ -61,7 +54,12 @@ public class ComponentDaoImp implements ComponentDao {
     public List<Accessory> getAccessoryAll() {
 
         Session session = sessionFactory.openSession();
-        List<Accessory> accessoryList = session.createQuery("from Accessory", Accessory.class).getResultList();
+        List<Accessory> accessoryList = session.createNamedQuery("get_component_by_component_type", Component.class)
+                .setParameter("component_type", "accessory")
+                .getResultList()
+                .stream()
+                .map(value -> (Accessory)value)
+                .collect(Collectors.toList());
         return accessoryList;
     }
 
@@ -72,7 +70,7 @@ public class ComponentDaoImp implements ComponentDao {
 
     @Override
     public void addAccessory(Accessory accessory) {
-
+        sessionFactory.getCurrentSession().save(accessory);
     }
 
     @Override
@@ -100,6 +98,7 @@ public class ComponentDaoImp implements ComponentDao {
 
     @Override
     public void addProcessing(Processing processing) {
+        sessionFactory.getCurrentSession().save(processing);
 
     }
 

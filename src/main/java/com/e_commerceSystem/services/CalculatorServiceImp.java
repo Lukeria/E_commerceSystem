@@ -1,7 +1,7 @@
 package com.e_commerceSystem.services;
 
 import com.e_commerceSystem.repositories.interfaces.ComponentDao;
-import com.e_commerceSystem.entities.Glass;
+import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

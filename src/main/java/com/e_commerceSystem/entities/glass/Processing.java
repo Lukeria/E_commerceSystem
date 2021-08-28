@@ -1,24 +1,41 @@
-package com.e_commerceSystem.entities.components;
+package com.e_commerceSystem.entities.glass;
 
-import com.e_commerceSystem.entities.Glass;
-
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @DiscriminatorValue("processing")
-public class Processing extends Component {
+public class Processing{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "IdGenerator")
+    @TableGenerator(table = "sequence", name = "IdGenerator")
+    protected Long id;
+    protected String name;
     private String symbol;
 
-    @OneToMany(mappedBy = "glassType")
+    @ManyToMany(mappedBy = "processingList")
     private Set<Glass> glass = new HashSet<>();
 
     public Processing() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSymbol() {
@@ -41,13 +58,12 @@ public class Processing extends Component {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Processing that = (Processing) o;
-        return Objects.equals(symbol, that.symbol);
+        return id.equals(that.id) && name.equals(that.name) && Objects.equals(symbol, that.symbol);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), symbol);
+        return Objects.hash(id, name, symbol);
     }
 }
