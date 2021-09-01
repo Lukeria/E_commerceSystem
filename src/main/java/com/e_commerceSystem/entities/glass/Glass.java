@@ -5,16 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Glass{
 
     @Id
-    protected Long id;
+    private Long id;
     private Integer width;
     private Integer height;
 
@@ -30,6 +28,9 @@ public class Glass{
             inverseJoinColumns = { @JoinColumn(name = "processing_id") }
     )
     private Set<Processing> processingList = new HashSet<>();
+
+    @Transient
+    private List<Processing> processingArrayList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -74,8 +75,14 @@ public class Glass{
         return processingList;
     }
 
-    public void setProcessingList(Set<Processing> processingList) {
-        this.processingList = processingList;
+    public void setProcessingList(List<Processing> processingList) {
+
+        this.processingList.clear();
+        for (Processing processing: processingList){
+            if(!this.processingList.contains(processing)) {
+                this.processingList.add(processing);
+            }
+        }
     }
 
     public Order getOrder() {
@@ -84,6 +91,14 @@ public class Glass{
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public List<Processing> getProcessingArrayList() {
+        return processingArrayList;
+    }
+
+    public void setProcessingArrayList(List<Processing> processingArrayList) {
+        this.processingArrayList = processingArrayList;
     }
 
     @Override

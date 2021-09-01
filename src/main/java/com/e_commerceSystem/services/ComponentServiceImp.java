@@ -32,6 +32,11 @@ public class ComponentServiceImp implements ComponentService {
         componentDao.addGlassType(glassType);
     }
 
+    @Override
+    public GlassType getGlassTypeById(Long id) {
+        return componentDao.getGlassTypeById(id);
+    }
+
 //    @Override
 //    public void updateGlassType() {
 //        componentDao.updateGlassType(glassType);
@@ -53,6 +58,11 @@ public class ComponentServiceImp implements ComponentService {
         Accessory accessory = new Accessory();
         accessory.setName(name);
         componentDao.addAccessory(accessory);
+    }
+
+    @Override
+    public Processing getProcessingById(Long id) {
+        return componentDao.getProcessingById(id);
     }
 
 //    @Override

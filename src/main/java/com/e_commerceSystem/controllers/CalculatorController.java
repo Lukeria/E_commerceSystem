@@ -1,14 +1,16 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.glass.GlassType;
+import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.services.interfaces.ComponentService;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -27,8 +29,22 @@ public class CalculatorController {
     public ModelAndView calculator(){
 
         ModelAndView modelAndView = new ModelAndView("calculator");
+
         List<GlassType> glassTypeList = componentService.getGlassTypeList();
-        modelAndView.addObject("glassTypeList", glassTypeList);
+        List<Processing> processingList = componentService.getProcessingList();
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonGlassTypeList = "";
+        String jsonProcessing = "";
+        try {
+            jsonGlassTypeList = mapper.writeValueAsString(glassTypeList);
+            jsonProcessing = mapper.writeValueAsString(processingList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        modelAndView.addObject("glassTypeList", jsonGlassTypeList);
+        modelAndView.addObject("processingList", jsonProcessing);
 
         return modelAndView;
     }
@@ -36,13 +52,26 @@ public class CalculatorController {
     @PostMapping("/calculate")
     public ModelAndView calculate(@RequestParam Map<String,String> allParams){
 
-        ModelAndView modelAndView = new ModelAndView("calculator");
+        ModelAndView modelAndView = new ModelAndView("");
         float result = calculatingService.calculatePrice(allParams);
 
         modelAndView.addAllObjects(allParams);
         modelAndView.addObject("result", result);
 
         return modelAndView;
+    }
+
+    @PostMapping("/calculateAjax")
+    @ResponseBody
+    public JsonResponse calculateAjax(@RequestParam Map<String,String> allParams){
+
+        float resultPrice = calculatingService.calculatePrice(allParams);
+
+        JsonResponse response = new JsonResponse();
+        response.setStatus("SUCCESS");
+        response.setResult(resultPrice);
+
+       return response;
     }
 
 

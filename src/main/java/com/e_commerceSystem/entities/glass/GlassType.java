@@ -1,11 +1,11 @@
 package com.e_commerceSystem.entities.glass;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-@NamedQuery(name = "get_glass_type_all", query = "from GlassType")
 
 @Entity
 @Table(name = "glass_type")
@@ -18,7 +18,11 @@ public class GlassType{
     protected String name;
     private Integer thickness;
 
+    @JsonIgnore
+    private Float price;
+
     @OneToMany(mappedBy = "glassType")
+    @JsonIgnore
     private Set<Glass> glass = new HashSet<>();
 
     public GlassType() {
@@ -56,16 +60,24 @@ public class GlassType{
         this.glass = glass;
     }
 
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GlassType glassType = (GlassType) o;
-        return id.equals(glassType.id) && name.equals(glassType.name) && thickness.equals(glassType.thickness);
+        return id.equals(glassType.id) && name.equals(glassType.name) && thickness.equals(glassType.thickness) && price == glassType.price;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, thickness);
+        return Objects.hash(id, name, thickness, price);
     }
 }

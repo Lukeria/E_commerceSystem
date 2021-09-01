@@ -10,11 +10,13 @@ public interface ComponentService {
 
     List<GlassType> getGlassTypeList();
     void addGlassType(String name, Integer thickness);
+    GlassType getGlassTypeById(Long id);
 //    void updateGlassType();
 //    void deleteGlassType();
 
     List<Accessory> getAccessoryList();
     void addAccessory(String name);
+    Processing getProcessingById(Long id);
 //    void updateAccessory();
 //    void deleteAccessory();
 

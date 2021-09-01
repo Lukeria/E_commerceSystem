@@ -93,7 +93,7 @@ public class ComponentDaoImp implements ComponentDao {
 
     @Override
     public Processing getProcessingById(Long id) {
-        return null;
+        return sessionFactory.getCurrentSession().get(Processing.class, id);
     }
 
     @Override
