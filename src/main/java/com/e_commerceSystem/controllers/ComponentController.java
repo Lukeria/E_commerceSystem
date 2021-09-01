@@ -25,7 +25,7 @@ public class ComponentController {
     @GetMapping("/")
     public ModelAndView componentMenu() {
 
-        ModelAndView modelAndView = new ModelAndView("/admin/warehouse");
+        ModelAndView modelAndView = new ModelAndView("admin/componentList");
 
         List<GlassType> glassTypeList = componentService.getGlassTypeList();
         List<Processing> processingList = componentService.getProcessingList();
@@ -83,11 +83,11 @@ public class ComponentController {
 
     @GetMapping("/delete")
     public ModelAndView componentDelete() {
-        return new ModelAndView("/admin/componentList.jsp");
+        return new ModelAndView("/admin/componentList");
     }
 
     @GetMapping("/update")
     public ModelAndView componentUpdate() {
-        return new ModelAndView("/admin/component.jsp");
+        return new ModelAndView("/admin/component");
     }
 }

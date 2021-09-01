@@ -1,10 +1,12 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.services.interfaces.ComponentService;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,7 +55,7 @@ public class CalculatorController {
     public ModelAndView calculate(@RequestParam Map<String,String> allParams){
 
         ModelAndView modelAndView = new ModelAndView("");
-        float result = calculatingService.calculatePrice(allParams);
+        float result = calculatingService.calculatePrice(allParams.get("tableJSON"));
 
         modelAndView.addAllObjects(allParams);
         modelAndView.addObject("result", result);
@@ -63,9 +65,10 @@ public class CalculatorController {
 
     @PostMapping("/calculateAjax")
     @ResponseBody
+    @JsonView(ComponentViews.Normal.class)
     public JsonResponse calculateAjax(@RequestParam Map<String,String> allParams){
 
-        float resultPrice = calculatingService.calculatePrice(allParams);
+        float resultPrice = calculatingService.calculatePrice(allParams.get("tableJSON"));
 
         JsonResponse response = new JsonResponse();
         response.setStatus("SUCCESS");

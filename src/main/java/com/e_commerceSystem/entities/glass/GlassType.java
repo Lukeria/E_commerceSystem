@@ -1,6 +1,10 @@
 package com.e_commerceSystem.entities.glass;
 
+import com.e_commerceSystem.additional.ComponentViews;
+import com.e_commerceSystem.entities.components.Component;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,12 +18,21 @@ public class GlassType{
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "IdGenerator")
     @TableGenerator(table = "sequence", name = "IdGenerator")
+
+    @JsonView(ComponentViews.Normal.class)
     protected Long id;
+
+    @JsonView(ComponentViews.Normal.class)
     protected String name;
+
+    @JsonView(ComponentViews.Normal.class)
     private Integer thickness;
 
-    @JsonIgnore
+    @JsonView(ComponentViews.PriceList.class)
     private Float price;
+
+    @JsonView(ComponentViews.PriceList.class)
+    private Float priceUSD;
 
     @OneToMany(mappedBy = "glassType")
     @JsonIgnore
@@ -66,6 +79,14 @@ public class GlassType{
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public Float getPriceUSD() {
+        return priceUSD;
+    }
+
+    public void setPriceUSD(Float priceUSD) {
+        this.priceUSD = priceUSD;
     }
 
     @Override

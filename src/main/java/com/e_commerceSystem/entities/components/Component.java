@@ -22,6 +22,7 @@ public abstract class Component {
     protected Long id;
     protected String name;
     protected Float price;
+    protected Float priceUSD;
 
     @OneToMany(mappedBy = "component")
     private Set<CartItem> cartItems = new HashSet<>();
@@ -67,6 +68,14 @@ public abstract class Component {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public Float getPriceUSD() {
+        return priceUSD;
+    }
+
+    public void setPriceUSD(Float priceUSD) {
+        this.priceUSD = priceUSD;
     }
 
     @Override

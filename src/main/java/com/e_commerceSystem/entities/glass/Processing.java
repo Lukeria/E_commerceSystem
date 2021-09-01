@@ -1,6 +1,8 @@
 package com.e_commerceSystem.entities.glass;
 
+import com.e_commerceSystem.additional.ComponentViews;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,13 +16,24 @@ public class Processing {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "IdGenerator")
     @TableGenerator(table = "sequence", name = "IdGenerator")
+    @JsonView(ComponentViews.Normal.class)
     private Long id;
+
+    @JsonView(ComponentViews.Normal.class)
     private String type;
+
+    @JsonView(ComponentViews.Normal.class)
     private String name;
+
     @JsonIgnore
     private String symbol;
-    @JsonIgnore
+
+    @JsonView(ComponentViews.PriceList.class)
     private Float price;
+
+    @JsonView(ComponentViews.PriceList.class)
+    private Float priceUSD;
+
     @Transient
     private Integer quantity;
 
@@ -85,6 +98,14 @@ public class Processing {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Float getPriceUSD() {
+        return priceUSD;
+    }
+
+    public void setPriceUSD(Float priceUSD) {
+        this.priceUSD = priceUSD;
     }
 
     @Override

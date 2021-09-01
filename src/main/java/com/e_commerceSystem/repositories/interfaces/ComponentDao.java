@@ -12,6 +12,7 @@ public interface ComponentDao {
     GlassType getGlassTypeById(Long id);
     void addGlassType(GlassType glassType);
     void updateGlassType(GlassType glassType);
+    void updateGlassTypePrices(GlassType glassType);
     void deleteGlassType(GlassType glassType);
 
     List<Accessory> getAccessoryAll();

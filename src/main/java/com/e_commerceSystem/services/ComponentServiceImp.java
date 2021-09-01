@@ -37,10 +37,15 @@ public class ComponentServiceImp implements ComponentService {
         return componentDao.getGlassTypeById(id);
     }
 
-//    @Override
-//    public void updateGlassType() {
-//        componentDao.updateGlassType(glassType);
-//    }
+    @Override
+    public void updateGlassType(GlassType glassType) {
+        componentDao.updateGlassType(glassType);
+    }
+
+    @Override
+    public void updateGlassTypePrices(GlassType glassType) {
+        componentDao.updateGlassTypePrices(glassType);
+    }
 //
 //    @Override
 //    public void deleteGlassType() {

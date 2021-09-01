@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface CalculatorService {
 
-    float calculatePrice(Map<String,String> allParams);
+    float calculatePrice(String tableJson);
 }

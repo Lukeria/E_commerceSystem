@@ -46,6 +46,14 @@ public class ComponentDaoImp implements ComponentDao {
     }
 
     @Override
+    public void updateGlassTypePrices(GlassType glassType) {
+        GlassType glassTypeToUpdate = getGlassTypeById(glassType.getId());
+        glassTypeToUpdate.setPriceUSD(glassType.getPriceUSD());
+        glassTypeToUpdate.setPrice(glassType.getPrice());
+        sessionFactory.getCurrentSession().update(glassTypeToUpdate);
+    }
+
+    @Override
     public void deleteGlassType(GlassType glassType) {
 
     }

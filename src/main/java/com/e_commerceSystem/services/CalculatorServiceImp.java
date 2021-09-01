@@ -23,13 +23,13 @@ public class CalculatorServiceImp implements CalculatorService {
     @Autowired
     private ComponentService componentService;
 
-    public float calculatePrice(Map<String, String> allParams) {
+    public float calculatePrice(String tableJson) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         List<Glass> table = null;
         try {
-            table = objectMapper.readValue(allParams.get("tableJSON"), new TypeReference<List<Glass>>() {
+            table = objectMapper.readValue(tableJson, new TypeReference<List<Glass>>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
