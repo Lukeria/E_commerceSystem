@@ -1,7 +1,9 @@
 package com.e_commerceSystem.services;
 
+import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.entities.glass.GlassType;
+import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.services.interfaces.ComponentService;
 import com.e_commerceSystem.services.interfaces.PriceListService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -39,10 +41,36 @@ public class PriceListServiceImp implements PriceListService {
     @Override
     public void updatePriceListProcessing(String tableJson) {
 
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<Processing> table = null;
+        try {
+            table = objectMapper.readValue(tableJson, new TypeReference<List<Processing>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (Processing item : table) {
+            componentService.updateProcessingPrices(item);
+        }
     }
 
     @Override
     public void updatePriceListAccessory(String tableJson) {
 
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<Accessory> table = null;
+        try {
+            table = objectMapper.readValue(tableJson, new TypeReference<List<Accessory>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (Accessory item : table) {
+            componentService.updateAccessoryPrices(item);
+        }
     }
 }

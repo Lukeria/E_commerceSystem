@@ -29,6 +29,8 @@ public class ComponentServiceImp implements ComponentService {
         GlassType glassType = new GlassType();
         glassType.setName(name);
         glassType.setThickness(thickness);
+        glassType.setPriceUSD(0f);
+        glassType.setPrice(0f);
         componentDao.addGlassType(glassType);
     }
 
@@ -62,19 +64,21 @@ public class ComponentServiceImp implements ComponentService {
 
         Accessory accessory = new Accessory();
         accessory.setName(name);
+        accessory.setPriceUSD(0f);
+        accessory.setPrice(0f);
         componentDao.addAccessory(accessory);
     }
 
     @Override
-    public Processing getProcessingById(Long id) {
-        return componentDao.getProcessingById(id);
+    public void updateAccessory(Accessory accessory) {
+        componentDao.updateAccessory(accessory);
     }
 
-//    @Override
-//    public void updateAccessory(Accessory accessory) {
-//        componentDao.updateAccessory(accessory);
-//    }
-//
+    @Override
+    public void updateAccessoryPrices(Accessory accessory) {
+        componentDao.updateAccessoryPrices(accessory);
+    }
+
 //    @Override
 //    public void deleteAccessory(Accessory accessory) {
 //        componentDao.deleteAccessory(accessory);
@@ -90,14 +94,26 @@ public class ComponentServiceImp implements ComponentService {
         Processing processing = new Processing();
         processing.setName(name);
         processing.setSymbol(symbol);
+        processing.setPriceUSD(0f);
+        processing.setPrice(0f);
         componentDao.addProcessing(processing);
     }
 
-//    @Override
-//    public void updateProcessing(Processing processing) {
-//        componentDao.updateProcessing(processing);
-//    }
-//
+    @Override
+    public Processing getProcessingById(Long id) {
+        return componentDao.getProcessingById(id);
+    }
+
+    @Override
+    public void updateProcessing(Processing processing) {
+        componentDao.updateProcessing(processing);
+    }
+
+    @Override
+    public void updateProcessingPrices(Processing processing) {
+        componentDao.updateProcessingPrices(processing);
+    }
+
 //    @Override
 //    public void deleteProcessing(Processing processing) {
 //        componentDao.deleteProcessing(processing);

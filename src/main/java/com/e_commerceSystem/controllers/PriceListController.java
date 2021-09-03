@@ -56,6 +56,8 @@ public class PriceListController {
     public JsonResponse priceListSave(@RequestParam Map<String,String> allParams) {
 
         priceListService.updatePriceListGlassType(allParams.get("tableJsonGlass"));
+        priceListService.updatePriceListProcessing(allParams.get("tableJsonProcessing"));
+        priceListService.updatePriceListAccessory(allParams.get("tableJsonAccessory"));
 
         JsonResponse response = new JsonResponse();
         response.setStatus("SUCCESS");
@@ -63,15 +65,4 @@ public class PriceListController {
 
         return response;
     }
-
-//    @PostMapping("/alterItem")
-//    public ModelAndView priceListAlterItem() {
-//        return new ModelAndView();
-//    }
-//
-//    @PostMapping("/deleteItem")
-//    public ModelAndView priceListDeleteItem() {
-//        return new ModelAndView();
-//    }
-
 }

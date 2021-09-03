@@ -73,7 +73,7 @@ public class ComponentDaoImp implements ComponentDao {
 
     @Override
     public Accessory getAccessoryById(Long id) {
-        return null;
+        return sessionFactory.getCurrentSession().get(Accessory.class, id);
     }
 
     @Override
@@ -83,7 +83,17 @@ public class ComponentDaoImp implements ComponentDao {
 
     @Override
     public void updateAccessory(Accessory accessory) {
+        Accessory accessoryTypeToUpdate = getAccessoryById(accessory.getId());
+        accessoryTypeToUpdate.setName(accessory.getName());
+        sessionFactory.getCurrentSession().update(accessoryTypeToUpdate);
+    }
 
+    @Override
+    public void updateAccessoryPrices(Accessory accessory) {
+        Accessory accessoryTypeToUpdate = getAccessoryById(accessory.getId());
+        accessoryTypeToUpdate.setPriceUSD(accessory.getPriceUSD());
+        accessoryTypeToUpdate.setPrice(accessory.getPrice());
+        sessionFactory.getCurrentSession().update(accessoryTypeToUpdate);
     }
 
     @Override
@@ -112,7 +122,19 @@ public class ComponentDaoImp implements ComponentDao {
 
     @Override
     public void updateProcessing(Processing processing) {
+        Processing processingToUpdate = getProcessingById(processing.getId());
+        processingToUpdate.setType(processing.getType());
+        processingToUpdate.setName(processing.getName());
+        processingToUpdate.setSymbol(processing.getSymbol());
+        sessionFactory.getCurrentSession().update(processingToUpdate);
+    }
 
+    @Override
+    public void updateProcessingPrices(Processing processing) {
+        Processing processingToUpdate = getProcessingById(processing.getId());
+        processingToUpdate.setPriceUSD(processing.getPriceUSD());
+        processingToUpdate.setPrice(processing.getPrice());
+        sessionFactory.getCurrentSession().update(processingToUpdate);
     }
 
     @Override

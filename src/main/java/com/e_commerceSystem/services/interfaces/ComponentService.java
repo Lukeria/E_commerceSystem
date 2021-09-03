@@ -17,13 +17,15 @@ public interface ComponentService {
 
     List<Accessory> getAccessoryList();
     void addAccessory(String name);
-    Processing getProcessingById(Long id);
-//    void updateAccessory();
+    void updateAccessory(Accessory accessory);
+    void updateAccessoryPrices(Accessory accessory);
 //    void deleteAccessory();
 
     List<Processing> getProcessingList();
     void addProcessing(String name, String symbol);
-//    void updateProcessing();
+    Processing getProcessingById(Long id);
+    void updateProcessing(Processing processing);
+    void updateProcessingPrices(Processing processing);
 //    void deleteProcessing();
 
 }
