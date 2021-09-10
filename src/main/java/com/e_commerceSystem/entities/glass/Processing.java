@@ -14,8 +14,8 @@ import java.util.Set;
 public class Processing {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "IdGenerator")
-    @TableGenerator(table = "sequence", name = "IdGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @TableGenerator(table = "sequence", name = "IdGenerator")
     @JsonView(ComponentViews.Normal.class)
     private Long id;
 

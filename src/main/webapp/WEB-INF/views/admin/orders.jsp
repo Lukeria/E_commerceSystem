@@ -158,7 +158,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row tablePanel">
-                                <a href="#" class="btn btn-success">Add order</a>
+                                <a href="/calculator/" class="btn btn-success">Add order</a>
                                 <form class="form-inline ml-auto" style="margin-top: 0; margin-bottom: 0">
 
                                     <button type="button" rel="tooltip"

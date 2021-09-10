@@ -26,6 +26,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ModelAndView register(){
+
         return new ModelAndView("login");
     }
 

@@ -7,6 +7,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.security.MessageDigest;
 import java.util.Properties;
 
 @Configuration
@@ -35,7 +36,7 @@ public class RootConfig {
         properties.put(org.hibernate.cfg.Environment.PASS, environment.getProperty("mysql.password"));
 
         // Setting Hibernate properties
-        properties.put(org.hibernate.cfg.Environment.SHOW_SQL, environment.getProperty("hibernate.show_sql"));
+        properties.put(org.hibernate.cfg.Environment.SHOW_SQL, true);
         properties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, environment.getProperty("hibernate.hbm2ddl.auto"));
 
         // Setting C3P0 properties

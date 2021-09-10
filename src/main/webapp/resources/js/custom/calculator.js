@@ -3,17 +3,21 @@ let rowProcessing;
 let glassTypes = JSON.parse($('#glassTypeList').val());
 let processing = JSON.parse($('#processingList').val())
 
-jQuery.fn.showIf = function (condition) {
-    return this[condition ? 'show' : 'hide']();
-}
 
 $(document).ready(function () {
     $("#addRaw").click(function () {
         addTableRowGlass();
     });
     $("#calculatorForm").submit(function (event) {
-        event.preventDefault();
-        doAjaxPost();
+        //event.preventDefault();
+        // doAjaxCalculatePost();
+
+    });
+    $("#addToCart").click(function (event) {
+        doAjaxAddToCartPost();
+    });
+    $("#calculate").click(function (event) {
+        doAjaxCalculatePost();
     });
     addTableRowGlass();
 });
@@ -200,10 +204,10 @@ function tableToJSON() {
 
 }
 
-function doAjaxPost() {
+function doAjaxCalculatePost() {
     // get the form values
     let JSON = tableToJSON();
-
+    $('#tableJSON').val(JSON);
     $.ajax({
         type: "POST",
         url: "/calculator/calculateAjax",
@@ -212,6 +216,30 @@ function doAjaxPost() {
             // we have the response
             if (response.status == "SUCCESS") {
                 $('#result').val(response.result);
+                $('#resultText').text(response.result);
+            }
+        },
+        error: function (e) {
+            alert('Error: ' + e);
+        }
+    });
+}
+
+function doAjaxAddToCartPost() {
+    // get the form values
+    let JSON = tableToJSON();
+    let price = Number.parseFloat($("#resultText").text()) || 0;
+
+    $.ajax({
+        type: "POST",
+        url: "/cart/add",
+        data: "tableJSON=" + JSON + "&price="+price,
+        success:
+            function (response) {
+            // we have the response
+            if (response.indexOf("loginForm") != -1) {
+                window.location = "/login";
+
             }
         },
         error: function (e) {

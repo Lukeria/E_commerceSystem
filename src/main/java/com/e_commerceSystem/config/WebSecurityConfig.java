@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/cart/**").hasRole("USER")
                     .anyRequest().permitAll()
                     .and()
-                .formLogin().successHandler(loginSuccessHandler) //return loginForm
+                .formLogin().loginPage("/login").successHandler(loginSuccessHandler) //return loginForm
                 .and()
                 .logout().logoutSuccessUrl("/main").permitAll()
                 .and()

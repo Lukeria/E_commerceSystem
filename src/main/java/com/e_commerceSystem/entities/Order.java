@@ -1,65 +1,53 @@
 package com.e_commerceSystem.entities;
 
 import com.e_commerceSystem.entities.glass.Glass;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-@Entity
+@Entity(name = "`order`")
 public class Order {
 
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    private int amount;
-    private float price;
-    private float cost;
+    private Float cost;
 
-    @Column(nullable = false)
+    @Column(name = "product_type")
+    private String productType;
+
+    @Column(name = "order_status")
     private String status;
 
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date")
     private LocalDateTime creationDate;
+
     private LocalDateTime deadline;
 
     @OneToMany(mappedBy = "order")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private Set<OrderItem> orderItems = new HashSet<>();
 
     @OneToMany(mappedBy = "order")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private Set<Glass> glassList = new HashSet<>();
 
     public Order() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
     }
 
     public String getStatus() {
@@ -78,11 +66,11 @@ public class Order {
         this.customer = customer;
     }
 
-    public float getCost() {
+    public Float getCost() {
         return cost;
     }
 
-    public void setCost(float cost) {
+    public void setCost(Float cost) {
         this.cost = cost;
     }
 
@@ -110,16 +98,32 @@ public class Order {
         this.orderItems = orderItems;
     }
 
+    public Set<Glass> getGlassList() {
+        return glassList;
+    }
+
+    public void setGlassList(Set<Glass> glassList) {
+        this.glassList = glassList;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && amount == order.amount && Float.compare(order.price, price) == 0 && Float.compare(order.cost, cost) == 0 && status.equals(order.status) && creationDate.equals(order.creationDate) && Objects.equals(deadline, order.deadline);
+        return id.equals(order.id) && Objects.equals(customer, order.customer) && cost.equals(order.cost) && productType.equals(order.productType) && status.equals(order.status) && creationDate.equals(order.creationDate) && Objects.equals(deadline, order.deadline);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount, price, cost, status, creationDate, deadline);
+        return Objects.hash(id, customer, cost, productType, status, creationDate, deadline);
     }
 }

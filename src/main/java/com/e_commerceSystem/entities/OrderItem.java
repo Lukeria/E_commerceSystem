@@ -13,11 +13,6 @@ public class OrderItem {
     private OrderItemKey id;
 
     private int amount;
-    private float price;
-
-    @Column(name = "product_type")
-    private String productType;
-
     @ManyToOne
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
@@ -47,22 +42,6 @@ public class OrderItem {
         this.amount = amount;
     }
 
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public String getProductType() {
-        return productType;
-    }
-
-    public void setProductType(String productType) {
-        this.productType = productType;
-    }
-
     public Order getOrder() {
         return order;
     }
@@ -83,12 +62,12 @@ public class OrderItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderItem cartItem = (OrderItem) o;
-        return amount == cartItem.amount && Float.compare(cartItem.price, price) == 0 && id.equals(cartItem.id) && productType.equals(cartItem.productType);
+        OrderItem orderItem = (OrderItem) o;
+        return amount == orderItem.amount && id.equals(orderItem.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount, price, productType);
+        return Objects.hash(id, amount);
     }
 }

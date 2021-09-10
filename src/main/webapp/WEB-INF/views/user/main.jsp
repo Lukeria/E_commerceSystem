@@ -18,6 +18,9 @@
     <a href="/main">About</a>
     <a href="/calculator/">Calculate order</a>
     <a href="/catalog/">Catalog</a>
+<security:authorize access="hasRole('USER')">
+    <a href="/cart/">Cart</a>
+</security:authorize>
 </div>
 </body>
 </html>

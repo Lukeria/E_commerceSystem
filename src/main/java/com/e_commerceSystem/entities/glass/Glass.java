@@ -3,6 +3,7 @@ package com.e_commerceSystem.entities.glass;
 import com.e_commerceSystem.entities.Order;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.*;
@@ -12,9 +13,11 @@ import java.util.*;
 public class Glass{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer width;
     private Integer height;
+    private Integer amount;
 
     @ManyToOne
     @JoinColumn(name = "glass_type_id")
@@ -22,6 +25,7 @@ public class Glass{
     private GlassType glassType;
 
     @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinTable(
             name = "Glass_Processing",
             joinColumns = { @JoinColumn(name = "glass_id") },
@@ -32,7 +36,7 @@ public class Glass{
     @Transient
     private List<Processing> processingArrayList = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
@@ -69,20 +73,28 @@ public class Glass{
 
     public void setGlassType(GlassType glassType) {
         this.glassType = glassType;
+//        glassType.addToGlass(this);
     }
 
     public Set<Processing> getProcessingList() {
         return processingList;
     }
 
-    public void setProcessingList(List<Processing> processingList) {
+    public void setProcessingList(Set<Processing> processingList) {
 
-        this.processingList.clear();
-        for (Processing processing: processingList){
-            if(!this.processingList.contains(processing)) {
-                this.processingList.add(processing);
-            }
-        }
+       this.processingList = processingList;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public List<Processing> getProcessingListAsList() {
+        return new ArrayList<>(processingList);
     }
 
     public Order getOrder() {
@@ -91,6 +103,7 @@ public class Glass{
 
     public void setOrder(Order order) {
         this.order = order;
+//        order.addToGlassList(this);
     }
 
     public List<Processing> getProcessingArrayList() {
