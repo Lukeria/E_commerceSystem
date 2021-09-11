@@ -3,8 +3,10 @@ package com.e_commerceSystem.repositories;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.components.Accessory;
+import com.e_commerceSystem.entities.components.Component;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.repositories.interfaces.OrderDao;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,7 +21,12 @@ public class OrderDaoImp implements OrderDao {
 
     @Override
     public List<Order> getOrdersByStatus(String status) {
-        return null;
+
+        List<Order> orderList = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_order_by_status", Order.class)
+                .setParameter("order_status", status)
+                .getResultList();
+        return orderList;
     }
 
     @Override

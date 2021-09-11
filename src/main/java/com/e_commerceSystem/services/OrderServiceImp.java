@@ -25,7 +25,7 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public List<Order> getOrdersByStatus(String status) {
-        return null;
+        return orderDao.getOrdersByStatus(status);
     }
 
     @Override

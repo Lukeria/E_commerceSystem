@@ -7,7 +7,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Entity(name = "`order`")
+@NamedQuery(name = "get_order_by_status", query = "from orders where order_status=:order_status")
+
+@Entity(name = "orders")
 public class Order {
 
     @Id

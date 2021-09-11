@@ -1,10 +1,7 @@
 package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.entities.Order;
-import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.interfaces.OrderService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,10 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -28,7 +21,18 @@ public class OrderController {
 
     @GetMapping("/")
     public ModelAndView order() {
-        return new ModelAndView("order");
+        return new ModelAndView("redirect:/order/all");
+    }
+
+    @GetMapping("/all")
+    public ModelAndView orders() {
+
+        ModelAndView modelAndView = new ModelAndView("/admin/orders");
+
+        modelAndView.addObject("activeOrders", orderService.getOrdersByStatus("Active"));
+        modelAndView.addObject("closedOrders", orderService.getOrdersByStatus("Closed"));
+
+        return modelAndView;
     }
 
     @PostMapping("/create")
@@ -44,11 +48,6 @@ public class OrderController {
         modelAndView.addObject("order", order);
 
         return modelAndView;
-    }
-
-    @GetMapping("/all")
-    public ModelAndView orders() {
-        return new ModelAndView("/admin/orders");
     }
 
     @PostMapping("/update")
