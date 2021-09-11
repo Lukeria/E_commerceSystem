@@ -13,6 +13,10 @@
 <spring:url value="/order/update" var="orderAdd"/>
 <form:form method="post" action="${orderAdd}" modelAttribute="order">
 <%--        <input path="glassList" value="${tableJson}" type="hidden"/>--%>
+   <spring:bind path="id">
+       <form:input path="id" type="hidden" class="form-control"
+                   id="id"/>
+   </spring:bind>
     <spring:bind path="customer.name">
         <div class="form-group ${status.error ? 'has-error' : ''}">
             <label class="col-sm-2 control-label">Name</label>

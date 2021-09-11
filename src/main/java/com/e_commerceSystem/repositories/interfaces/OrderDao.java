@@ -11,7 +11,8 @@ public interface OrderDao {
     List<Order> getOrdersByStatus(String status);
     List<Order> getOrdersByStatusAndCustomer(String status, Customer customer);
     void addOrder(Order order);
-    void addGlass(Glass glass);
     void updateOrder();
+    void updateOrderCustomer(Order order);
     void deleteOrder();
+    Order getOrderById(Long id);
 }

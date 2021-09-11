@@ -32,35 +32,17 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public ModelAndView customerInfo(@RequestParam Map<String, String> allParams) {
+    public ModelAndView createOrder(@RequestParam Map<String, String> allParams) {
+
         ModelAndView modelAndView = new ModelAndView("customerInfo");
 
-        Order order = new Order();
-        order.setCost(Float.parseFloat(allParams.get("result")));
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        List<Glass> table = null;
-        try {
-            table = objectMapper.readValue(allParams.get("tableJson"), new TypeReference<List<Glass>>() {
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        order.setStatus("Active");
-        order.setCreationDate(LocalDateTime.now());
-        order.setProductType("Glass");
+        Float cost = Float.parseFloat(allParams.get("result"));
+        String productType = allParams.get("productType");
+        String glassListJson = allParams.get("tableJson");
+        Order order = orderService.addOrder("Active", productType, cost, glassListJson);
 
         modelAndView.addObject("order", order);
-        for (Glass glass : table) {
-            glass.setOrder(order);
-            glass.setAmount(0);
-            glass.setProcessingList(new HashSet<>(glass.getProcessingArrayList()));
-            order.getGlassList().add(glass);
-        }
 
-        orderService.addOrder(order);
         return modelAndView;
     }
 
@@ -70,16 +52,18 @@ public class OrderController {
     }
 
     @PostMapping("/update")
-    public ModelAndView addOrder(@ModelAttribute("order") @Validated Order order,
+    public ModelAndView updateOrder(@ModelAttribute("order") @Validated Order order,
                                  BindingResult result, RedirectAttributes redirectAttributes) {
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("admin/orders");
+        modelAndView.setViewName("redirect:/order/all");
 
         if (result.hasErrors()) {
             modelAndView.setViewName("customerInfo");
             return modelAndView;
         }
+
+        orderService.updateOrderCustomer(order);
 
         return modelAndView;
     }

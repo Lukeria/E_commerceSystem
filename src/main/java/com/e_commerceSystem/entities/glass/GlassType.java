@@ -17,7 +17,6 @@ public class GlassType{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @TableGenerator(table = "sequence", name = "IdGenerator")
 
     @JsonView(ComponentViews.Normal.class)
     protected Long id;
@@ -72,10 +71,6 @@ public class GlassType{
     public void setGlass(Set<Glass> glass) {
         this.glass = glass;
     }
-
-//    public void addToGlass(Glass glass) {
-//        this.glass.add(glass);
-//    }
 
     public Float getPrice() {
         return price;

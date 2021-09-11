@@ -16,6 +16,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private Customer customer;
 
     private Float cost;
@@ -32,11 +33,11 @@ public class Order {
     private LocalDateTime deadline;
 
     @OneToMany(mappedBy = "order")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private Set<OrderItem> orderItems = new HashSet<>();
 
     @OneToMany(mappedBy = "order")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private Set<Glass> glassList = new HashSet<>();
 
     public Order() {

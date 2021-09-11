@@ -2,6 +2,7 @@ package com.e_commerceSystem.repositories;
 
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
+import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.repositories.interfaces.OrderDao;
 import org.hibernate.SessionFactory;
@@ -32,16 +33,24 @@ public class OrderDaoImp implements OrderDao {
     }
 
     @Override
-    public void addGlass(Glass glass){
-        sessionFactory.getCurrentSession().persist(glass);
-    }
-    @Override
     public void updateOrder() {
 
     }
 
     @Override
+    public void updateOrderCustomer(Order order) {
+        Order orderToUpdate = getOrderById(order.getId());
+        orderToUpdate.setCustomer(order.getCustomer());
+        sessionFactory.getCurrentSession().saveOrUpdate(orderToUpdate);
+    }
+
+    @Override
     public void deleteOrder() {
 
+    }
+
+    @Override
+    public Order getOrderById(Long id) {
+        return sessionFactory.getCurrentSession().get(Order.class, id);
     }
 }

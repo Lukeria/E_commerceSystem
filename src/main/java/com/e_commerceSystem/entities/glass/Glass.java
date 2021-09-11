@@ -25,7 +25,6 @@ public class Glass{
     private GlassType glassType;
 
     @ManyToMany
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinTable(
             name = "Glass_Processing",
             joinColumns = { @JoinColumn(name = "glass_id") },
@@ -36,7 +35,7 @@ public class Glass{
     @Transient
     private List<Processing> processingArrayList = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
