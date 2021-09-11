@@ -10,7 +10,7 @@
     <title>Title</title>
 </head>
 <body>
-<spring:url value="/order/update" var="orderAdd"/>
+<spring:url value="/order/save" var="orderAdd"/>
 <form:form method="post" action="${orderAdd}" modelAttribute="order">
 <%--        <input path="glassList" value="${tableJson}" type="hidden"/>--%>
    <spring:bind path="id">

@@ -64,8 +64,8 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public void updateOrder() {
-
+    public void updateOrder(Order order) {
+        orderDao.updateOrder(order);
     }
 
     @Override
@@ -74,7 +74,12 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public void deleteOrder() {
+    public void deleteOrder(Order order) {
+        orderDao.deleteOrder(order);
+    }
 
+    @Override
+    public Order getOrderById(Long id) {
+        return orderDao.getOrderById(id);
     }
 }

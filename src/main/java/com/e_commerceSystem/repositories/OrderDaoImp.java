@@ -40,8 +40,12 @@ public class OrderDaoImp implements OrderDao {
     }
 
     @Override
-    public void updateOrder() {
-
+    public void updateOrder(Order order) {
+        Order orderToUpdate = getOrderById(order.getId());
+        orderToUpdate.setDeadline(order.getDeadline());
+        orderToUpdate.setStatus(order.getStatus());
+        orderToUpdate.setProductType(order.getProductType());
+        sessionFactory.getCurrentSession().update(orderToUpdate);
     }
 
     @Override
@@ -52,8 +56,8 @@ public class OrderDaoImp implements OrderDao {
     }
 
     @Override
-    public void deleteOrder() {
-
+    public void deleteOrder(Order order) {
+        sessionFactory.getCurrentSession().delete(order);
     }
 
     @Override

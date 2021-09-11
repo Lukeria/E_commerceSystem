@@ -24,7 +24,7 @@ public class Glass{
     @JsonProperty("type")
     private GlassType glassType;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Glass_Processing",
             joinColumns = { @JoinColumn(name = "glass_id") },

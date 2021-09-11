@@ -46,7 +46,8 @@
     <button type="submit" id="addOrder">Next</button>
     </security:authorize>
 </form>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--%>
+    <script src="${pageContext.request.contextPath}/resources/js/core/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/calculator.js"></script>
 </body>
 </html>
