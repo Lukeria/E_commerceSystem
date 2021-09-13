@@ -2,21 +2,16 @@ package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.JsonResponse;
-import com.e_commerceSystem.entities.glass.GlassType;
-import com.e_commerceSystem.entities.glass.Processing;
+import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.interfaces.ComponentService;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/calculator")
@@ -38,9 +33,9 @@ public class CalculatorController {
     @PostMapping("/calculate")
     @ResponseBody
     @JsonView(ComponentViews.Normal.class)
-    public JsonResponse calculateAjax(@RequestParam Map<String,String> allParams){
+    public JsonResponse calculateAjax(@RequestBody List<Glass> glassList){
 
-        float resultPrice = calculatingService.calculatePrice(allParams.get("tableJSON"));
+        float resultPrice = calculatingService.calculatePrice(glassList);
 
         JsonResponse response = new JsonResponse();
         response.setStatus("SUCCESS");

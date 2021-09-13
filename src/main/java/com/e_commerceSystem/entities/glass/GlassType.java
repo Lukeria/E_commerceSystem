@@ -7,13 +7,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "glass_type")
-public class GlassType{
+public class GlassType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

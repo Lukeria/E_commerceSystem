@@ -303,7 +303,8 @@ function doAjaxCalculatePost() {
     $.ajax({
         type: "POST",
         url: "/calculator/calculate",
-        data: "tableJSON=" + JSON,
+        contentType: "application/json",
+        data: JSON,
         success: function (response) {
             // we have the response
             if (response.status == "SUCCESS") {

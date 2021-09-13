@@ -6,11 +6,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Glass{
+public class Glass implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
