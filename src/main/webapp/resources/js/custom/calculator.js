@@ -1,72 +1,66 @@
-let row = 1;
-let rowProcessing;
-let glassTypes = JSON.parse($('#glassTypeList').val());
-let processing = JSON.parse($('#processingList').val())
-
+let glassTypeList = [];
+let processingList = [];
 
 $(document).ready(function () {
-    $("#addRaw").click(function () {
-        addTableRowGlass();
-    });
-    $("#calculatorForm").submit(function (event) {
-        //event.preventDefault();
-        // doAjaxCalculatePost();
 
+    prepareData();
+
+    $("#glassType").change(function () {
+        prepareThickness($(this));
+    })
+
+    $("#addRaw").click(function () {
+        addGlassRow();
     });
+
+    $('#delete').click(function () {
+        if ($(this).parents("tr")[0].id != "row_1") {
+            $(this).parents("tr").remove();
+        }
+    });
+
+    $('#addProcessing').click(function () {
+        addProcessingRow($(this).parents("tr")[0]);
+    });
+
     $("#addToCart").click(function (event) {
         doAjaxAddToCartPost();
     });
+
     $("#calculate").click(function (event) {
         doAjaxCalculatePost();
     });
-    addTableRowGlass();
+
 });
 
-function addTableRowGlass() {
-
-    rowProcessing = 1;
-
-    let tableBody = $("#glass");
-
-    let tableRow = $("<tr></tr>");
-
-    let buttonRemoveGlass = $('<a href="javascript:void(0);" id="removeGlass_' + row + '">x</a>');
-    tableRow.append(buttonRemoveGlass);
-    tableRow.append($('<th><label>Type: </label></th><td><select id="glassTypeSelect_' + row + '">' + getGlassTypeSelect() + '</select></td>'));
-    let selectedType = tableRow.find("#glassTypeSelect_" + row + ">option:selected").val();
-    tableRow.append($('<th><label>Thickness: </label></th><td><select id="thicknessSelect_' + row + '">' + getThicknessSelect(selectedType, row) + '</select></td>'));
-    tableRow.append($('<th><label>Width: </label></th><td><input type="number"></td>'));
-    tableRow.append($('<th><label>Height: </label></th><td><input type="number"></td>'));
-
-    let tableProcessing = $('<table><tbody id="processing_' + row + '"></tbody></table>');
-    let buttonAddProcessing = $('<a href="javascript:void(0);" id="addProcessing_' + row + '">Add processing</a>');
-
-    buttonAddProcessing.click(function () {
-        addTableRowProcessing(buttonAddProcessing[0].id);
+////Prepare data////
+function prepareData() {
+    $.ajax({
+        type: "POST",
+        url: "/component/getData",
+        success: function (response) {
+            // we have the response
+            if (response.status == "SUCCESS") {
+                let result = JSON.parse(response.result);
+                glassTypeList = result.glassTypeList;
+                processingList = result.processingList;
+                let glassTypeSelect = prepareGlassType();
+                prepareThickness(glassTypeSelect);
+            }
+        },
+        error: function (e) {
+            alert('Error: ' + e);
+        }
     });
-
-    buttonRemoveGlass.click(function () {
-        buttonRemoveGlass.parent().remove();
-    });
-
-    tableRow.find("#glassTypeSelect_" + row).change(function () {
-        let currentGlassType = $(this).find('option:selected').val();
-        let thicknessId = $(this)[0].id.split("_")[1];
-        let thicknessSelect = $('#thicknessSelect_' + thicknessId);
-        thicknessSelect.empty();
-        thicknessSelect.append($(getThicknessSelect(currentGlassType)));
-    })
-    tableRow.append(buttonAddProcessing);
-    tableRow.append(tableProcessing);
-    tableBody.append(tableRow);
-
-    row++;
 }
 
-function getGlassTypeSelect() {
+function prepareGlassType() {
+
+    let currentRow = $('#glass tr:last-child');
+    let glassTypeSelect = $(currentRow).find('#glassType');
 
     glassTypesSet = new Set();
-    glassTypes.forEach(function (item) {
+    glassTypeList.forEach(function (item) {
         glassTypesSet.add(item.name)
     });
 
@@ -75,13 +69,24 @@ function getGlassTypeSelect() {
         let option = "<option value=" + item + ">" + item + "</option>";
         select += option;
     });
-    return select;
 
+    glassTypeSelect.append(select);
+
+    return glassTypeSelect;
 }
 
-function getThicknessSelect(glassTypeNameValue) {
+function prepareThickness(selected) {
 
-    let thicknessList = glassTypes.filter(type => type.name === glassTypeNameValue);
+    let currentGlassType = selected.find('option:selected').val();
+    let currentRow = selected.parents("tr");
+    let thicknessSelect = $(currentRow).find('#thickness');
+    thicknessSelect.empty();
+
+    let thicknessList = glassTypeList
+        .filter(type => type.name === currentGlassType)
+        .sort(function (a, b) {
+            return a.thickness - b.thickness
+        });
     let thicknessSet = new Set();
     thicknessList.forEach(function (item) {
         thicknessSet.add({"id": item.id, "thickness": item.thickness})
@@ -92,13 +97,17 @@ function getThicknessSelect(glassTypeNameValue) {
         let option = "<option value=" + item.id + ">" + item.thickness + "</option>";
         select += option;
     })
-    return select;
+
+    thicknessSelect.append(select);
 }
 
-function getProcessingTypeSelect(){
+function prepareProcessingType(glassRow) {
+
+    let currentRow = $(glassRow).find('#processing>tr:last-child');
+    let typeSelect = $(currentRow).find('#type');
 
     processingTypesSet = new Set();
-    processing.forEach(function (item) {
+    processingList.forEach(function (item) {
         processingTypesSet.add(item.type)
     });
 
@@ -107,14 +116,22 @@ function getProcessingTypeSelect(){
         let option = "<option value=" + item + ">" + item + "</option>";
         select += option;
     });
-    return select;
+
+    typeSelect.append(select);
+    return typeSelect;
 }
 
-function getProcessingNameSelect(processingTypeValue){
+function prepareProcessingName(selected) {
 
-    let processingList = processing.filter(item => item.type === processingTypeValue);
+    let currentType = selected.find('option:selected').val();
+    let currentRow = selected.parents("#processing>tr");
+    let nameSelect = $(currentRow).find('#name');
+    nameSelect.empty();
+
+    let processingNameList = processingList
+        .filter(item => item.type === currentType);
     let processingSet = new Set();
-    processingList.forEach(function (item) {
+    processingNameList.forEach(function (item) {
         processingSet.add({"id": item.id, "name": item.name})
     })
 
@@ -123,73 +140,148 @@ function getProcessingNameSelect(processingTypeValue){
         let option = "<option value=" + item.id + ">" + item.name + "</option>";
         select += option;
     })
-    return select;
+
+    nameSelect.append(select);
 }
 
-function addTableRowProcessing(id) {
-    let rowNumber = id.split("_")[1]
+///////////////////////
 
-    let tableBody = $('#processing_' + rowNumber);
+////Add rows////
+function addGlassRow() {
 
-    let tableRow = $("<tr></tr>");
+    let tableBody = $('#glass');
+    let currentRow = $('#glass>tr:last-child');
 
-    let buttonRemoveProcessing = $('<a href="javascript:void(0);" id="removeProcessing_' + rowNumber + '_'+rowProcessing + '">x</a>');
-    tableRow.append(buttonRemoveProcessing);
-    tableRow.append('<th><label>Type: </label></th><td><select id="processingTypeSelect_' + rowNumber + '_'+rowProcessing+'">' + getProcessingTypeSelect() + '</select></td></td>');
-    let selectedType = tableRow.find("#processingTypeSelect_" + rowNumber + "_"+rowProcessing+">option:selected").val();
-    tableRow.append('<th><label>Name: </label></th><td><select id="processingNameSelect_' + rowNumber + '_'+rowProcessing+'">' + getProcessingNameSelect(selectedType) + '</select></td>');
+    let currentId = Number.parseInt(currentRow[0].id.split("_")[1]) || 0;
+    let newRow = $(currentRow).clone().prop("id", "row_" + (currentId + 1));
+    newRow.find("input").val("");
+    newRow.find("#processing").empty();
 
-    buttonRemoveProcessing.click(function () {
-        buttonRemoveProcessing.parent().remove();
-    })
+    newRow.find('#glassType').change(function () {
+        prepareThickness($(this));
+    });
 
-    tableRow.find("#processingTypeSelect_" + rowNumber+ "_"+rowProcessing).change(function () {
-        let currentType = $(this).find('option:selected').val();
-        let processingIdRow = $(this)[0].id.split("_")[1];
-        let processingIdChildRow = $(this)[0].id.split("_")[2];
-
-        if(currentType === 'Отверстие' || currentType === 'Закругление') {
-            tableRow.append('<th><label for="processingQuantity_' + processingIdRow + '_' + processingIdChildRow + '">Quantity: </label></th><td><input type="number" id="processingQuantity_' + processingIdRow + '_' + processingIdChildRow + '"></td>');
-        }else{
-            tableRow.find('#processingQuantity_' + processingIdRow + '_'+processingIdChildRow+'').parent().remove();
-            tableRow.find('label[for=processingQuantity_' + processingIdRow + '_'+processingIdChildRow+']').parent().remove();
+    newRow.find('#delete').click(function () {
+        if ($(this).parents("tr")[0].id != "row_1") {
+            $(this).parents("tr").remove();
         }
+    });
 
-        let processingTypeSelect = $('#processingNameSelect_' + processingIdRow+'_'+processingIdChildRow);
-        processingTypeSelect.empty();
-        processingTypeSelect.append($(getProcessingNameSelect(currentType)));
-    })
+    newRow.find('#addProcessing').click(function () {
+        addProcessingRow($(this).parents("tr")[0]);
+    });
 
-    tableBody.append(tableRow);
+    let select = newRow.find("#glassType");
+    prepareThickness(select);
 
-    rowProcessing++;
+    tableBody.append(newRow);
+
 }
 
+function addProcessingRow(glassRow) {
+
+    let tableProcessing = $(glassRow).find('#processing');
+    let currentRow = $(glassRow).find('#processing>tr:last-child');
+    let newRow;
+    let type;
+    if (currentRow.length === 0) {
+        newRow = createProcessingRow();
+        tableProcessing.append(newRow);
+
+        type = prepareProcessingType(glassRow);
+    } else {
+        let currentId = Number.parseInt(currentRow[0].id.split("_")[1]) || 0;
+        newRow = $(currentRow).clone().prop("id", "row_" + (currentId + 1));
+        newRow.find("input").val("");
+        tableProcessing.append(newRow);
+
+        type = newRow.find("#type");
+    }
+
+    prepareProcessingName(type);
+    manageProcessingInputsVisibility(newRow);
+
+    newRow.find('#type').change(function () {
+        prepareProcessingName($(this));
+        manageProcessingInputsVisibility($(this).parents('#processing>tr')[0]);
+    });
+
+    newRow.find('#delete').click(function () {
+        $(this).parents("#processing>tr").remove();
+    });
+}
+
+function createProcessingRow() {
+
+    let currentRow = $("<tr id='row_1'></tr>");
+
+    currentRow.append('<td class="td-action">\n' +
+        '<button type="button" id="delete" type="button" rel="tooltip"\n' +
+        'class="btn btn-link btn-danger btn-sm btn-icon">\n' +
+        '<i class="tim-icons icon-trash-simple"></i>\n' +
+        '</button>\n' +
+        '</td>');
+    currentRow.append('<td>' +
+        '<select class="form-control" id="type">\n' +
+        '</select>' +
+        '</td>');
+    currentRow.append('<td>' +
+        '<select class="form-control" id="name">\n' +
+        '</select>' +
+        '</td>');
+    currentRow.append('<td>' +
+        '<input class="form-control" type="number" id="quantity" placeholder="Quantity">\n' +
+        '</td>')
+
+    return currentRow;
+}
+
+function manageProcessingInputsVisibility(currentRow) {
+
+    let typeValue = $(currentRow).find("#type>option:selected").val();
+    let name = $(currentRow).find("#name");
+    let quantity = $(currentRow).find("#quantity");
+
+    if (typeValue === "Полировка") {
+        name.val($(name).find("option:first").val());
+        name.parents('#processing>tr>td').hide();
+        quantity.parents('#processing>tr>td').hide();
+    } else if (typeValue === "Фацет") {
+        name.parents('#processing>tr>td').show();
+        quantity.parents('#processing>tr>td').hide();
+    } else {
+        name.parents('#processing>tr>td').show();
+        quantity.parents('#processing>tr>td').show();
+    }
+}
+
+///////////
+
+////Save data////
 function tableToJSON() {
 
     let myRows = [];
-    //loop through tr
+
     $('#glass>tr').each(function () {
-        let obj = {} //create obj
-        //add value to it
+        let obj = {}
 
         let type = {};
-        type["id"] = $(this).find("td:eq(1) select option:selected").val();
-        type["name"] = $(this).find("td:eq(0) select option:selected").text();
-        type["thickness"] = Number.parseInt($(this).find("td:eq(1) select option:selected").text());
+        type["id"] = $(this).find("#thickness>option:selected").val();
+        type["name"] = $(this).find("#glassType>option:selected").val();
+        type["thickness"] = Number.parseInt($(this).find("#thickness>option:selected").text());
 
         obj["type"] = type;
-        obj["width"] = Number.parseInt($(this).find("td:eq(2) input").val()) || 0;
-        obj["height"] = Number.parseInt($(this).find("td:eq(3) input").val()) || 0;
+        obj["width"] = Number.parseInt($(this).find("#width").val()) || 0;
+        obj["height"] = Number.parseInt($(this).find("#height").val()) || 0;
 
-        let tableProcessing = $(this).find("tbody>tr");
+        let tableProcessing = $(this).find("#processing>tr");
         let processingList = [];
         tableProcessing.each(function () {
                 let processingObj = {};
-                processingObj["type"] = $(this).find("td:eq(0) select option:selected").val();
-                processingObj["id"] = $(this).find("td:eq(1) select option:selected").val();
-                processingObj["name"] = $(this).find("td:eq(1) select option:selected").text();
-                processingObj["quantity"] =  Number.parseInt($(this).find("td:eq(2) input").val()) || 0;
+                processingObj["type"] = $(this).find("#type>option:selected").val();
+                processingObj["id"] = $(this).find("#name>option:selected").val();
+                processingObj["name"] = $(this).find("#name>option:selected").text();
+                processingObj["quantity"] = Number.parseInt($(this).find("#quantity").val()) || 0;
 
                 processingList.push(processingObj);
             }
@@ -197,7 +289,7 @@ function tableToJSON() {
 
         obj["processingArrayList"] = processingList;
 
-        myRows.push(obj) //push obj to array
+        myRows.push(obj)
     });
 
     return JSON.stringify(myRows);
@@ -210,17 +302,19 @@ function doAjaxCalculatePost() {
     $('#tableJSON').val(JSON);
     $.ajax({
         type: "POST",
-        url: "/calculator/calculateAjax",
+        url: "/calculator/calculate",
         data: "tableJSON=" + JSON,
         success: function (response) {
             // we have the response
             if (response.status == "SUCCESS") {
                 $('#result').val(response.result);
                 $('#resultText').text(response.result);
+            } else {
+                showNotification("An <b>error</b> occurred while processing the request", "danger");
             }
         },
         error: function (e) {
-            alert('Error: ' + e);
+            showNotification(e, "danger");
         }
     });
 }
@@ -233,17 +327,33 @@ function doAjaxAddToCartPost() {
     $.ajax({
         type: "POST",
         url: "/cart/add",
-        data: "tableJSON=" + JSON + "&price="+price,
+        data: "tableJSON=" + JSON + "&price=" + price,
         success:
             function (response) {
-            // we have the response
-            if (response.indexOf("loginForm") != -1) {
-                window.location = "/login";
+                // we have the response
+                if (response.indexOf("loginForm") != -1) {
+                    window.location = "/login";
 
-            }
-        },
+                }
+            },
         error: function (e) {
             alert('Error: ' + e);
+        }
+    });
+}
+
+/////Вынести в отдельный файл!!!
+function showNotification(text, color){
+    $.notify({
+        icon: "tim-icons icon-bell-55",
+        message: text
+
+    }, {
+        type: color,
+        timer: 8000,
+        placement: {
+            from: 'bottom',
+            align: 'center'
         }
     });
 }

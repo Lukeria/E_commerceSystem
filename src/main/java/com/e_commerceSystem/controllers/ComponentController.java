@@ -1,15 +1,14 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.services.interfaces.ComponentService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -89,5 +88,30 @@ public class ComponentController {
     @GetMapping("/update")
     public ModelAndView componentUpdate() {
         return new ModelAndView("/admin/component");
+    }
+
+    @PostMapping("/getData")
+    @ResponseBody
+    public JsonResponse getListData(){
+
+        List<GlassType> glassTypeList = componentService.getGlassTypeList();
+        List<Processing> processingList = componentService.getProcessingList();
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonGlassTypeList = "";
+        String jsonProcessing = "";
+        try {
+            jsonGlassTypeList = mapper.writeValueAsString(glassTypeList);
+            jsonProcessing = mapper.writeValueAsString(processingList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String result = "{\"glassTypeList\":"+jsonGlassTypeList+", \"processingList\":" + jsonProcessing +"}";
+        JsonResponse response = new JsonResponse();
+        response.setStatus("SUCCESS");
+        response.setResult(result);
+
+        return response;
     }
 }

@@ -49,11 +49,6 @@ public class CalculatorServiceImp implements CalculatorService {
             }
         }
 
-        return roundAvoid(price, 2);
-    }
-
-    public float roundAvoid(float value, int places) {
-        double scale = Math.pow(10, places);
-        return (float)(Math.round(value * scale) / scale);
+        return Math.round(price);
     }
 }

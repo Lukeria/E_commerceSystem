@@ -31,39 +31,11 @@ public class CalculatorController {
     public ModelAndView calculator(){
 
         ModelAndView modelAndView = new ModelAndView("calculator");
-
-        List<GlassType> glassTypeList = componentService.getGlassTypeList();
-        List<Processing> processingList = componentService.getProcessingList();
-
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonGlassTypeList = "";
-        String jsonProcessing = "";
-        try {
-            jsonGlassTypeList = mapper.writeValueAsString(glassTypeList);
-            jsonProcessing = mapper.writeValueAsString(processingList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        modelAndView.addObject("glassTypeList", jsonGlassTypeList);
-        modelAndView.addObject("processingList", jsonProcessing);
-
         return modelAndView;
+
     }
 
     @PostMapping("/calculate")
-    public ModelAndView calculate(@RequestParam Map<String,String> allParams){
-
-        ModelAndView modelAndView = new ModelAndView("");
-        float result = calculatingService.calculatePrice(allParams.get("tableJSON"));
-
-        modelAndView.addAllObjects(allParams);
-        modelAndView.addObject("result", result);
-
-        return modelAndView;
-    }
-
-    @PostMapping("/calculateAjax")
     @ResponseBody
     @JsonView(ComponentViews.Normal.class)
     public JsonResponse calculateAjax(@RequestParam Map<String,String> allParams){
@@ -76,6 +48,5 @@ public class CalculatorController {
 
        return response;
     }
-
 
 }
