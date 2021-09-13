@@ -41,7 +41,6 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col">
-                                <%--                                <h5><strong>Glass</strong></h5>--%>
                                 <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
                                     <table class="table">
                                         <thead>
@@ -129,7 +128,7 @@
                                     <button type="button" class="btn btn-success" id="addToCart">Add to cart</button>
                                 </security:authorize>
                                 <security:authorize access="hasRole('ADMIN')">
-                                    <button type="submit" class="btn btn-success" id="addOrder">Next</button>
+                                    <button type="submit" class="btn btn-success" id="addOrder">Save</button>
                                 </security:authorize>
                             </div>
                         </div>

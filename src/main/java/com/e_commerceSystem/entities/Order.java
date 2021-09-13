@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @NamedQuery(name = "get_order_by_status", query = "from orders where order_status=:order_status")
@@ -31,6 +32,9 @@ public class Order {
 
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
+
+    @Transient
+    private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     private LocalDateTime deadline;
 
@@ -81,6 +85,10 @@ public class Order {
         return creationDate;
     }
 
+    public String getCreationDateFormat(){
+        return creationDate.format(dateFormat);
+    }
+
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
@@ -89,6 +97,9 @@ public class Order {
         return deadline;
     }
 
+    public String getDeadlineFormat(){
+        return "";
+    }
     public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }

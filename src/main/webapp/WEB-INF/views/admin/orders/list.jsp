@@ -50,7 +50,7 @@
                                 <a href="/order/add" class="btn btn-success">Add order</a>
                             </div>
                             <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                <table class="table">
+                                <table class="table tablesorter">
                                     <thead>
                                     <tr>
                                         <th class="text-center">#</th>
@@ -67,7 +67,7 @@
                                         <td class="text-center">${status.count}</td>
                                         <td>${order.customer.name}</td>
                                         <td>${order.productType}</td>
-                                        <td>${order.creationDate}</td>
+                                        <td>${order.creationDateFormat}</td>
                                         <td class="text-right">${order.cost}</td>
                                         <td class="td-actions text-right">
                                             <spring:url value="/order/${order.id}" var="orderUrl" />
@@ -106,7 +106,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                <table class="table">
+                                <table class="table tablesorter">
                                     <thead class="text-primary">
                                     <tr>
                                         <th>Name</th>
@@ -124,7 +124,7 @@
                                             <td class="td-actions text-right">
                                                 <spring:url value="/order/${order.id}" var="orderUrlClosed" />
                                                 <button type="button" rel="tooltip"
-                                                        class="btn btn-link btn-info btn-sm btn-icon"
+                                                        class="btn btn-link btn-primary btn-sm btn-icon"
                                                         onclick="location.href='${orderUrlClosed}'">
                                                     <i class="tim-icons icon-tap-02"></i>
                                                 </button>
@@ -194,6 +194,11 @@
     $(document).ready(function () {
         $( "#sidebar" ).load( "/resources/htmlToLoad/admin.html #sidebarAdmin" );
         $( "#navbar" ).load( "/resources/htmlToLoad/admin.html #navbarAdmin" );
+
+        $( "#navbar" ).ready(function () {
+            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
+            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
+        })
 
         $().ready(function() {
             $sidebar = $('.sidebar');

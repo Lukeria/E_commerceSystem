@@ -53,3 +53,7 @@ option{
     color: #9A9A9A;
     background: white;
 }
+
+table{
+    font-size: 0.875rem;
+}

@@ -37,7 +37,7 @@
             </c:if>
             <div class="row">
                 <div class="col-lg-8 col-md-12">
-                    <div class="card card-plain" style="margin-bottom: 0px">
+                    <div class="card card-plain">
                         <div class="card-header">
                             <h4 class="card-title">Order #${order.id}
                                 <c:choose>
@@ -50,65 +50,34 @@
                                 </c:choose>
                             </h4>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                            <table class="table">
-                                <tbody>
-                                <tr>
-                                    <td><label>Creation date:</label></td>
-                                    <td class="text-left">${order.creationDate}</td>
-                                </tr>
-                                <tr>
-                                    <td><label>Deadline:</label></td>
-                                    <td class="text-left">${order.deadline}</td>
-                                </tr>
-                                <tr>
-                                    <td><label>Product type:</label></td>
-                                    <td class="text-left">${order.productType}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Customer contacts</h4>
-                        </div>
                         <div class="card-body">
                             <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                <table class="table">
+                                <table class="table tablesorter">
                                     <tbody>
                                     <tr>
-                                        <td><label>Name:</label></td>
-                                        <td>${order.customer.name}</td>
+                                        <td><label>Creation date:</label></td>
+                                        <td class="text-left">${order.creationDateFormat}</td>
                                     </tr>
                                     <tr>
-                                        <td><label>Phone:</label></td>
-                                        <td>${order.customer.phone}</td>
+                                        <td><label>Deadline:</label></td>
+                                        <td class="text-left">${order.deadlineFormat}</td>
                                     </tr>
                                     <tr>
-                                        <td><label>Email:</label></td>
-                                        <td>${order.customer.email}</td>
+                                        <td><label>Product type:</label></td>
+                                        <td class="text-left">${order.productType}</td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Glass</h4>
                         </div>
                         <div class="card-body">
                             <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                <table class="table">
+                                <table class="table tablesorter">
                                     <thead>
                                     <tr>
                                         <th class="text-center">#</th>
@@ -143,12 +112,46 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                <i class="tim-icons icon-single-02 text-success"></i>
+                                Customer contacts</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table tablesorter">
+                                    <tbody>
+                                    <tr>
+                                        <td><label>Name:</label></td>
+                                        <td>${order.customer.name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Phone:</label></td>
+                                        <td>${order.customer.phone}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Email:</label></td>
+                                        <td>${order.customer.email}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+
+                </div>
             </div>
             <c:if test="${!order.status.equals('Closed')}">
                 <div class="row">
                     <div class="col-lg-12">
-                        <a href="/calculator/" class="btn btn-info">Update</a>
-                        <a href="/order/${order.id}/close" class="btn btn-danger" id="closeOrder">Mark as closed</a>
+                        <a href="/order/${order.id}/update" class="btn btn-success">Update</a>
+                        <a href="/order/${order.id}/close" class="btn btn-primary" id="closeOrder">Mark as closed</a>
                     </div>
                 </div>
             </c:if>

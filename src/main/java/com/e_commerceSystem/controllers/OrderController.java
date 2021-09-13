@@ -1,7 +1,7 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
-import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.interfaces.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.jws.WebParam;
 import java.util.Map;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/order")
@@ -65,7 +63,7 @@ public class OrderController {
     @GetMapping(value = "/{id}/close")
     public ModelAndView closeOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/order/"+id);
+        ModelAndView modelAndView = new ModelAndView("redirect:/order/" + id);
 
         Order order = orderService.getOrderById(id);
         if (order == null) {
@@ -91,7 +89,7 @@ public class OrderController {
         ModelAndView modelAndView = new ModelAndView("redirect:/order/all");
 
         Order order = orderService.getOrderById(id);
-        if(order == null){
+        if (order == null) {
 //            redirectAttributes.addAttribute("css", "danger");
 //            redirectAttributes.addAttribute("msg", "Error while deleting order");
         } else {
@@ -102,34 +100,55 @@ public class OrderController {
         return modelAndView;
     }
 
+    @GetMapping("/{id}/update")
+    public ModelAndView updateOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
+
+        Order order = orderService.getOrderById(id);
+        if (order == null) {
+//            redirectAttributes.addAttribute("css", "danger");
+//            redirectAttributes.addAttribute("msg", "Error while deleting order");
+        } else {
+            orderService.deleteOrder(order);
+//            redirectAttributes.addAttribute("css", "success");
+//            redirectAttributes.addAttribute("msg", "Order deletes successfully");
+        }
+        redirectAttributes.addFlashAttribute("glassList", order.getGlassList());
+
+        return modelAndView;
+    }
 
     @PostMapping("/create")
-    public ModelAndView createOrder(@RequestParam Map<String, String> allParams) {
+    public ModelAndView createOrder(@RequestParam Map<String, String> allParams, final RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("customerInfo");
+        ModelAndView modelAndView = new ModelAndView("redirect:/customer/add");
 
         Float cost = Float.parseFloat(allParams.get("result"));
         String productType = allParams.get("productType");
         String glassListJson = allParams.get("tableJson");
         Order order = orderService.addOrder("Active", productType, cost, glassListJson);
 
-        modelAndView.addObject("order", order);
-
+        redirectAttributes.addFlashAttribute("orderId", order.getId());
+        redirectAttributes.addFlashAttribute("customer", new Customer());
         return modelAndView;
     }
 
-    @PostMapping("/save")
-    public ModelAndView saveOrder(@ModelAttribute("order") @Validated Order order,
-                                 BindingResult result, RedirectAttributes redirectAttributes) {
+    @PostMapping("/saveOrderCustomer")
+    public ModelAndView saveOrderCustomer(@ModelAttribute("customer") @Validated Customer customer,
+                                          @RequestParam("orderId") Long orderId,
+                                          BindingResult result, RedirectAttributes redirectAttributes) {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/order/all");
 
         if (result.hasErrors()) {
-            modelAndView.setViewName("customerInfo");
-            return modelAndView;
+//            modelAndView.setViewName("customerInfo");
+//            return modelAndView;
         }
 
+        Order order = orderService.getOrderById(orderId);
+        order.setCustomer(customer);
         orderService.updateOrderCustomer(order);
 
         return modelAndView;
