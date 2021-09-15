@@ -32,60 +32,119 @@
                     <h4 class="card-title">Calculator</h4>
                 </div>
                 <div class="card-body">
-                    <form id="calculatorForm" action="/order/create" method="post">
-                        <div class="form-row">
-                            <div class="form-group col-lg-6 col-md-12">
-                                <label for="productType">Product type: </label>
-                                <input type="text" id="productType" class="form-control" name="productType">
+                    <form:form id="calculatorForm" method="post" action="/order/save" modelAttribute="order">
+                        <c:if test="${order.id != null}">
+                            <div class="form-row">
+                                <div class="form-group col-lg-6">
+                                    <p class="text-primary">Order #<span id="id">${order.id}</span></p>
+                                    <form:input path="id" type="hidden"/>
+                                </div>
                             </div>
-                        </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-lg-6">
+                                    <p class="text-success">Customer: ${order.customer.name}</p>
+                                </div>
+                            </div>
+                        </c:if>
+
+                        <spring:bind path="productType">
+                            <div class="form-row">
+                                <div class="form-group col-lg-6 col-md-12">
+                                    <label for="productType">Product type: </label>
+                                    <form:input path="productType" type="text" id="productType" class="form-control"
+                                                name="productType"/>
+                                </div>
+                            </div>
+                        </spring:bind>
                         <div class="form-row">
                             <div class="form-group col">
                                 <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
                                     <table class="table">
                                         <thead>
                                         <th>Glass</th>
-                                        <th><button type="button" class="btn btn-primary btn-simple btn-sm" id="addRaw">Add</button></th>
+                                        <th>
+                                            <button type="button" class="btn btn-primary btn-simple btn-sm" id="addRaw">
+                                                Add
+                                            </button>
+                                        </th>
                                         <th></th>
                                         <th></th>
                                         <th></th>
                                         <th>Processing</th>
                                         </thead>
                                         <tbody id="glass">
-                                        <tr id="row_1">
-                                            <td class="td-action">
-                                                <button type="button" id="delete" type="button" rel="tooltip"
-                                                        class="btn btn-link btn-danger btn-sm btn-icon">
-                                                    <i class="tim-icons icon-trash-simple"></i>
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <select class="form-control" id="glassType">
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <select class="form-control" id="thickness">
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input class="form-control" type="number" id="width" placeholder="Width">
-                                            </td>
-                                            <td>
-                                                <input class="form-control" type="number" id="height" placeholder="Height">
-                                            </td>
-                                            <td class="td-action">
-                                                <button type="button" id="addProcessing" type="button" rel="tooltip"
-                                                        class="btn btn-link btn-success btn-sm btn-icon">
-                                                    <i class="tim-icons icon-simple-add"></i>
-                                                </button>
-                                                <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                                    <table class="table table-borderless">
-                                                        <tbody id="processing">
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <c:forEach var="glass" items="${order.glassList}" varStatus="status">
+                                            <tr id="row_${status.count}">
+                                                <td class="td-action">
+                                                    <button type="button" id="delete" type="button" rel="tooltip"
+                                                            class="btn btn-link btn-danger btn-sm btn-icon">
+                                                        <i class="tim-icons icon-trash-simple"></i>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" id="glassType">
+                                                        <option selected
+                                                                value="${glass.glassType.name}">${glass.glassType.name}</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" id="thickness">
+                                                        <option selected
+                                                                value="${glass.glassType.id}">${glass.glassType.thickness}</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" type="number" id="width"
+                                                           placeholder="Width" value="${glass.width}">
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" type="number" id="height"
+                                                           placeholder="Height" value="${glass.height}">
+                                                </td>
+                                                <td class="td-action">
+                                                    <button type="button" id="addProcessing" type="button" rel="tooltip"
+                                                            class="btn btn-link btn-success btn-sm btn-icon">
+                                                        <i class="tim-icons icon-simple-add"></i>
+                                                    </button>
+                                                    <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                                                        <table class="table table-borderless">
+                                                            <tbody id="processing">
+                                                            <c:forEach var="processing" items="${glass.processingList}"
+                                                                       varStatus="status">
+                                                                <tr id="row_${status.count}">
+                                                                    <td class="td-action">
+                                                                        <button type="button" id="delete" type="button"
+                                                                                rel="tooltip"
+                                                                                class="btn btn-link btn-danger btn-sm btn-icon">
+                                                                            <i class="tim-icons icon-trash-simple"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                    <td>
+                                                                        <select class="form-control" id="type">
+                                                                            <option selected
+                                                                                    value="${processing.type}">${processing.type}</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <select class="form-control" id="name">
+                                                                            <option selected
+                                                                                    value="${processing.id}">${processing.name}</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input class="form-control" type="number"
+                                                                               id="quantity" placeholder="Quantity"
+                                                                               value="${processing.quantity}">
+                                                                    </td>
+                                                                </tr>
+                                                            </c:forEach>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>
@@ -99,19 +158,20 @@
                             <tbody id="extraService">
                             </tbody>
                         </table>
-                        <input id="tableJSON" type="hidden" name="tableJson">
                         <div class="form-row">
                             <div class="form-group col-lg-4 col-md-6">
                                 <label for="result">Result:</label>
                                 <security:authorize access="hasRole('ADMIN')">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <i class="tim-icons icon-coins text-primary"></i>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="tim-icons icon-coins text-primary"></i>
+                                            </div>
                                         </div>
+                                        <spring:bind path="cost">
+                                            <form:input path="cost" type="number" class="form-control" id="result" name="result"/>
+                                        </spring:bind>
                                     </div>
-                                    <input type="number" class="form-control" id="result" name="result">
-                                </div>
                                 </security:authorize>
                                 <security:authorize access="!hasRole('ADMIN')">
                                     <h3>
@@ -132,7 +192,7 @@
                                 </security:authorize>
                             </div>
                         </div>
-                    </form>
+                    </form:form>
                 </div>
             </div>
         </div>

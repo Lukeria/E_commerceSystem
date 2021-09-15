@@ -64,6 +64,15 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public void addOrder(Order order) {
+        order.setCreationDate(LocalDateTime.now());
+        for (Glass glass : order.getGlassList()) {
+            glass.setOrder(order);
+        }
+        orderDao.addOrder(order);
+    }
+
+    @Override
     public void updateOrder(Order order) {
         orderDao.updateOrder(order);
     }

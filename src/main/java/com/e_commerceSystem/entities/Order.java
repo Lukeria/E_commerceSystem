@@ -85,7 +85,7 @@ public class Order {
         return creationDate;
     }
 
-    public String getCreationDateFormat(){
+    public String getCreationDateFormat() {
         return creationDate.format(dateFormat);
     }
 
@@ -97,9 +97,10 @@ public class Order {
         return deadline;
     }
 
-    public String getDeadlineFormat(){
+    public String getDeadlineFormat() {
         return "";
     }
+
     public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
@@ -126,6 +127,10 @@ public class Order {
 
     public void setProductType(String productType) {
         this.productType = productType;
+    }
+
+    public boolean isNew() {
+        return id == null;
     }
 
     @Override

@@ -5,30 +5,36 @@ $(document).ready(function () {
 
     prepareData();
 
-    $("#glassType").change(function () {
-        prepareThickness($(this));
-    })
+    $().ready(function () {
+        // $("#glassType").change(function () {
+        //     prepareThickness($(this));
+        // })
 
-    $("#addRaw").click(function () {
-        addGlassRow();
-    });
+        $("#addRaw").click(function () {
+            addGlassRow();
+        });
 
-    $('#delete').click(function () {
-        if ($(this).parents("tr")[0].id != "row_1") {
-            $(this).parents("tr").remove();
-        }
-    });
+        $("#addToCart").click(function (event) {
+            doAjaxAddToCartPost();
+        });
 
-    $('#addProcessing').click(function () {
-        addProcessingRow($(this).parents("tr")[0]);
-    });
+        $("#calculate").click(function (event) {
+            doAjaxCalculatePost();
+        });
 
-    $("#addToCart").click(function (event) {
-        doAjaxAddToCartPost();
-    });
+        $('#calculatorForm').submit(function (event) {
+            // event.preventDefault();
+            // let form = $(this);
+            // $("#glassListJson").val(JSON.stringify(glassTable()));
+            // $('#calculatorForm').off("submit");
+            // form.submit();
+            let tableGlass = JSON.stringify(glassTable());
+            $('<input />').attr('type', 'hidden')
+                .attr('name', 'tableGlass')
+                .attr('value', tableGlass)
+                .appendTo('#calculatorForm');
 
-    $("#calculate").click(function (event) {
-        doAjaxCalculatePost();
+        })
     });
 
 });
@@ -44,8 +50,46 @@ function prepareData() {
                 let result = JSON.parse(response.result);
                 glassTypeList = result.glassTypeList;
                 processingList = result.processingList;
-                let glassTypeSelect = prepareGlassType();
-                prepareThickness(glassTypeSelect);
+                $("#glass>tr").each(function () {
+                    let glassTypeSelect = prepareGlassType($(this));
+                    prepareThickness(glassTypeSelect);
+                    let glassRow = $(this);
+                    $(this).find('#glassType').change(function () {
+                        prepareThickness($(this));
+                    });
+
+                    $(this).find('#delete').click(function () {
+                        if ($(this).parents("tr")[0].id != "row_1") {
+                            $(this).parents("tr").remove();
+                        } else{
+                            showNotification("You can't delete first row", "warning")
+                        }
+                    });
+
+                    $(this).find('#addProcessing').click(function () {
+                        addProcessingRow($(this).parents("tr")[0]);
+                    });
+
+                    $(this).find('#processing>tr').each(function () {
+                        let type = prepareProcessingType(glassRow, $(this));
+                        prepareProcessingName(type);
+                        manageProcessingInputsVisibility($(this));
+
+                        $(this).find('#addProcessing').click(function () {
+                            addProcessingRow($(this).parents("tr")[0]);
+                        });
+
+                        $(this).find('#type').change(function () {
+                            prepareProcessingName($(this));
+                            manageProcessingInputsVisibility($(this).parents('#processing>tr')[0]);
+                        });
+
+                        $(this).find('#delete').click(function () {
+                            $(this).parents("#processing>tr").remove();
+                        });
+
+                    });
+                });
             }
         },
         error: function (e) {
@@ -54,10 +98,11 @@ function prepareData() {
     });
 }
 
-function prepareGlassType() {
+function prepareGlassType(currentRow) {
 
-    let currentRow = $('#glass tr:last-child');
     let glassTypeSelect = $(currentRow).find('#glassType');
+    let selectedOption = $(glassTypeSelect).find('option:selected');
+    glassTypeSelect.empty();
 
     glassTypesSet = new Set();
     glassTypeList.forEach(function (item) {
@@ -66,7 +111,13 @@ function prepareGlassType() {
 
     let select = "";
     glassTypesSet.forEach(function (item) {
-        let option = "<option value=" + item + ">" + item + "</option>";
+        let selected = "";
+        if (selectedOption.val() !== "") {
+            if (item === selectedOption.val()) {
+                selected = "selected";
+            }
+        }
+        let option = "<option " + selected + " value=" + item + ">" + item + "</option>";
         select += option;
     });
 
@@ -80,6 +131,7 @@ function prepareThickness(selected) {
     let currentGlassType = selected.find('option:selected').val();
     let currentRow = selected.parents("tr");
     let thicknessSelect = $(currentRow).find('#thickness');
+    let selectedOption = $(thicknessSelect).find('option:selected');
     thicknessSelect.empty();
 
     let thicknessList = glassTypeList
@@ -94,17 +146,25 @@ function prepareThickness(selected) {
 
     let select = "";
     thicknessSet.forEach(function (item) {
-        let option = "<option value=" + item.id + ">" + item.thickness + "</option>";
+        let selected = "";
+        if (selectedOption.val() !== "") {
+            if (item.id === (Number.parseInt(selectedOption.val()) || 0)) {
+                selected = "selected";
+            }
+        }
+        let option = "<option " + selected + " value=" + item.id + ">" + item.thickness + "</option>";
         select += option;
     })
 
     thicknessSelect.append(select);
 }
 
-function prepareProcessingType(glassRow) {
+function prepareProcessingType(glassRow, currentRow) {
 
-    let currentRow = $(glassRow).find('#processing>tr:last-child');
+    // let currentRow = $(glassRow).find('#processing>tr:last-child');
     let typeSelect = $(currentRow).find('#type');
+    let selectedOption = $(typeSelect).find('option:selected');
+    typeSelect.empty();
 
     processingTypesSet = new Set();
     processingList.forEach(function (item) {
@@ -113,7 +173,13 @@ function prepareProcessingType(glassRow) {
 
     let select = "";
     processingTypesSet.forEach(function (item) {
-        let option = "<option value=" + item + ">" + item + "</option>";
+        let selected = "";
+        if (selectedOption.val() !== "") {
+            if (item === selectedOption.val()) {
+                selected = "selected";
+            }
+        }
+        let option = "<option " + selected + " value=" + item + ">" + item + "</option>";
         select += option;
     });
 
@@ -126,6 +192,7 @@ function prepareProcessingName(selected) {
     let currentType = selected.find('option:selected').val();
     let currentRow = selected.parents("#processing>tr");
     let nameSelect = $(currentRow).find('#name');
+    let selectedOption = $(nameSelect).find('option:selected');
     nameSelect.empty();
 
     let processingNameList = processingList
@@ -137,7 +204,12 @@ function prepareProcessingName(selected) {
 
     let select = "";
     processingSet.forEach(function (item) {
-        let option = "<option value=" + item.id + ">" + item.name + "</option>";
+        if (selectedOption.val() !== "") {
+            if (item.id === (Number.parseInt(selectedOption.val()) || 0)) {
+                selected = "selected";
+            }
+        }
+        let option = "<option " + selected + " value=" + item.id + ">" + item.name + "</option>";
         select += option;
     })
 
@@ -164,6 +236,8 @@ function addGlassRow() {
     newRow.find('#delete').click(function () {
         if ($(this).parents("tr")[0].id != "row_1") {
             $(this).parents("tr").remove();
+        } else{
+            showNotification("You can't delete first row", "warning")
         }
     });
 
@@ -188,7 +262,8 @@ function addProcessingRow(glassRow) {
         newRow = createProcessingRow();
         tableProcessing.append(newRow);
 
-        type = prepareProcessingType(glassRow);
+        let processingRow = $(glassRow).find('#processing>tr:last-child')
+        type = prepareProcessingType(glassRow, processingRow);
     } else {
         let currentId = Number.parseInt(currentRow[0].id.split("_")[1]) || 0;
         newRow = $(currentRow).clone().prop("id", "row_" + (currentId + 1));
@@ -258,7 +333,7 @@ function manageProcessingInputsVisibility(currentRow) {
 ///////////
 
 ////Save data////
-function tableToJSON() {
+function glassTable() {
 
     let myRows = [];
 
@@ -292,19 +367,18 @@ function tableToJSON() {
         myRows.push(obj)
     });
 
-    return JSON.stringify(myRows);
+    return myRows;
 
 }
 
 function doAjaxCalculatePost() {
     // get the form values
-    let JSON = tableToJSON();
-    $('#tableJSON').val(JSON);
+    let Json = JSON.stringify(glassTable());
     $.ajax({
         type: "POST",
         url: "/calculator/calculate",
         contentType: "application/json",
-        data: JSON,
+        data: Json,
         success: function (response) {
             // we have the response
             if (response.status == "SUCCESS") {
@@ -320,15 +394,43 @@ function doAjaxCalculatePost() {
     });
 }
 
+function doAjaxSaveOrderPost() {
+    // get the form values
+    let order = {};
+    order["id"] = $('#id').text();
+    order["productType"] = $('#productType').val();
+    order["cost"] = Number.parseFloat($('#result').val()) || 0;
+    order["glassList"] = glassTable();
+
+    let Json = JSON.stringify(order);
+
+    // $.post("/order/save", Json);
+
+    $.ajax({
+        type: "POST",
+        url: "/order/save",
+        contentType: "application/json",
+        async: false,
+        data: Json,
+        success: function (response) {
+            location.href = "/customer/add";
+        },
+        error: function (e) {
+            showNotification(e, "danger");
+        }
+    });
+}
+
+
 function doAjaxAddToCartPost() {
     // get the form values
-    let JSON = tableToJSON();
+    let Json = JSON.stringify(glassTable());
     let price = Number.parseFloat($("#resultText").text()) || 0;
 
     $.ajax({
         type: "POST",
         url: "/cart/add",
-        data: "tableJSON=" + JSON + "&price=" + price,
+        data: "tableJSON=" + Json + "&price=" + price,
         success:
             function (response) {
                 // we have the response
@@ -344,7 +446,7 @@ function doAjaxAddToCartPost() {
 }
 
 /////Вынести в отдельный файл!!!
-function showNotification(text, color){
+function showNotification(text, color) {
     $.notify({
         icon: "tim-icons icon-bell-55",
         message: text

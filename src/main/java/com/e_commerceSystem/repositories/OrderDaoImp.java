@@ -45,6 +45,14 @@ public class OrderDaoImp implements OrderDao {
         orderToUpdate.setDeadline(order.getDeadline());
         orderToUpdate.setStatus(order.getStatus());
         orderToUpdate.setProductType(order.getProductType());
+        orderToUpdate.setCost(order.getCost());
+        for (Glass glass: orderToUpdate.getGlassList()) {
+            sessionFactory.getCurrentSession().delete(glass);
+        }
+        orderToUpdate.setGlassList(order.getGlassList());
+        for(Glass glass: orderToUpdate.getGlassList()){
+            glass.setOrder(orderToUpdate);
+        }
         sessionFactory.getCurrentSession().update(orderToUpdate);
     }
 

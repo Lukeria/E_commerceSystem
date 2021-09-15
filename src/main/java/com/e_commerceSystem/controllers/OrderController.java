@@ -1,17 +1,24 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.services.JsonEditor;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.services.interfaces.OrderService;
+import com.e_commerceSystem.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/order")
@@ -19,6 +26,15 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private JsonEditor jsonEditor;
+    @Autowired
+    private OrderValidator orderValidator;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(orderValidator);
+    }
 
     @GetMapping("/")
     public ModelAndView order() {
@@ -58,6 +74,11 @@ public class OrderController {
 
         return modelAndView;
 
+    }
+
+    @PostMapping(value = "/{id}")
+    public ModelAndView showOrderPost(@PathVariable("id") Long id) {
+        return showOrder(id);
     }
 
     @GetMapping(value = "/{id}/close")
@@ -103,34 +124,36 @@ public class OrderController {
     @GetMapping("/{id}/update")
     public ModelAndView updateOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
+        ModelAndView modelAndView = new ModelAndView("calculator");
 
         Order order = orderService.getOrderById(id);
-        if (order == null) {
-//            redirectAttributes.addAttribute("css", "danger");
-//            redirectAttributes.addAttribute("msg", "Error while deleting order");
-        } else {
-            orderService.deleteOrder(order);
-//            redirectAttributes.addAttribute("css", "success");
-//            redirectAttributes.addAttribute("msg", "Order deletes successfully");
-        }
-        redirectAttributes.addFlashAttribute("glassList", order.getGlassList());
+        modelAndView.addObject("order", order);
 
         return modelAndView;
     }
 
-    @PostMapping("/create")
-    public ModelAndView createOrder(@RequestParam Map<String, String> allParams, final RedirectAttributes redirectAttributes) {
+    @PostMapping("/save")
+    public ModelAndView saveOrder(@ModelAttribute("order") @Validated Order order,
+                                    @RequestParam("tableGlass") String tableGlass,
+                                    BindingResult result,
+                                    HttpServletRequest request) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/customer/add");
+        ModelAndView modelAndView = new ModelAndView();
+        Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
+        order.setGlassList(glassList);
+        order.setStatus("Active");
 
-        Float cost = Float.parseFloat(allParams.get("result"));
-        String productType = allParams.get("productType");
-        String glassListJson = allParams.get("tableJson");
-        Order order = orderService.addOrder("Active", productType, cost, glassListJson);
+        if(order.isNew()){
+            orderService.addOrder(order);
+            modelAndView.setViewName("forward:/customer/add");
+            request.setAttribute("orderId", order.getId());
+//            redirectAttributes.addFlashAttribute("orderId", order.getId());
+//            redirectAttributes.addFlashAttribute("customer", new Customer());
+        } else{
+            orderService.updateOrder(order);
+            modelAndView.setViewName("redirect:/order/"+order.getId());
+        }
 
-        redirectAttributes.addFlashAttribute("orderId", order.getId());
-        redirectAttributes.addFlashAttribute("customer", new Customer());
         return modelAndView;
     }
 
@@ -140,7 +163,7 @@ public class OrderController {
                                           BindingResult result, RedirectAttributes redirectAttributes) {
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/order/all");
+        modelAndView.setViewName("redirect:/order/"+orderId);
 
         if (result.hasErrors()) {
 //            modelAndView.setViewName("customerInfo");
