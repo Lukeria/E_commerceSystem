@@ -52,11 +52,16 @@
                             <div class="form-row">
                                 <div class="form-group col-lg-6 col-md-12">
                                     <label for="productType">Product type: </label>
-                                    <form:input path="productType" type="text" id="productType" class="form-control"
-                                                name="productType"/>
+                                    <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                        <form:input path="productType" type="text" id="productType"
+                                                    class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                    name="productType"/>
+                                    </div>
+                                    <form:errors path="productType" class="form-text text-danger"/>
                                 </div>
                             </div>
                         </spring:bind>
+
                         <div class="form-row">
                             <div class="form-group col">
                                 <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
@@ -158,29 +163,36 @@
                             <tbody id="extraService">
                             </tbody>
                         </table>
-                        <div class="form-row">
-                            <div class="form-group col-lg-4 col-md-6">
-                                <label for="result">Result:</label>
-                                <security:authorize access="hasRole('ADMIN')">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <i class="tim-icons icon-coins text-primary"></i>
+
+                        <spring:bind path="cost">
+                            <div class="form-row">
+                                <div class="form-group col-lg-4 col-md-6">
+                                    <label for="result">Result:</label>
+                                    <security:authorize access="hasRole('ADMIN')">
+                                    <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="tim-icons icon-coins text-primary"></i>
+                                                </div>
                                             </div>
+                                            <form:input path="cost" type="number"
+                                                        class="form-control ${status.error ? 'form-control-danger' : ''}" id="result"
+                                                        name="result"/>
                                         </div>
-                                        <spring:bind path="cost">
-                                            <form:input path="cost" type="number" class="form-control" id="result" name="result"/>
-                                        </spring:bind>
+                                        <form:errors path="cost" class="form-text text-danger"/>
                                     </div>
-                                </security:authorize>
-                                <security:authorize access="!hasRole('ADMIN')">
-                                    <h3>
-                                        <i class="tim-icons icon-coins text-primary"></i>
-                                        <span id="resultText"></span>
-                                    </h3>
-                                </security:authorize>
+                                    </security:authorize>
+                                    <security:authorize access="!hasRole('ADMIN')">
+                                        <h3>
+                                            <i class="tim-icons icon-coins text-primary"></i>
+                                            <span id="resultText"></span>
+                                        </h3>
+                                    </security:authorize>
+                                </div>
                             </div>
-                        </div>
+                        </spring:bind>
+
                         <div class="form-row">
                             <div class="form-group col">
                                 <button type="button" class="btn btn-primary" id="calculate">Calculate</button>

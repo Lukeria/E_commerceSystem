@@ -134,24 +134,32 @@ public class OrderController {
 
     @PostMapping("/save")
     public ModelAndView saveOrder(@ModelAttribute("order") @Validated Order order,
-                                    @RequestParam("tableGlass") String tableGlass,
-                                    BindingResult result,
-                                    HttpServletRequest request) {
+                                  BindingResult result,
+                                  @RequestParam("tableGlass") String tableGlass,
+                                  HttpServletRequest request) {
 
         ModelAndView modelAndView = new ModelAndView();
+
         Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
         order.setGlassList(glassList);
+
+        if (result.hasErrors()) {
+            modelAndView.addObject("order", order);
+            modelAndView.setViewName("calculator");
+            return modelAndView;
+        }
+
         order.setStatus("Active");
 
-        if(order.isNew()){
+        if (order.isNew()) {
             orderService.addOrder(order);
             modelAndView.setViewName("forward:/customer/add");
             request.setAttribute("orderId", order.getId());
 //            redirectAttributes.addFlashAttribute("orderId", order.getId());
 //            redirectAttributes.addFlashAttribute("customer", new Customer());
-        } else{
+        } else {
             orderService.updateOrder(order);
-            modelAndView.setViewName("redirect:/order/"+order.getId());
+            modelAndView.setViewName("redirect:/order/" + order.getId());
         }
 
         return modelAndView;
@@ -163,7 +171,7 @@ public class OrderController {
                                           BindingResult result, RedirectAttributes redirectAttributes) {
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/order/"+orderId);
+        modelAndView.setViewName("redirect:/order/" + orderId);
 
         if (result.hasErrors()) {
 //            modelAndView.setViewName("customerInfo");
