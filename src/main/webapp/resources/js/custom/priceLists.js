@@ -56,13 +56,13 @@ function convertTableToJSON(id) {
 function selectAll(id, value) {
 
     $('#' + id + '>tr').each(function () {
-        $(this).find('td>input[id*="selected_"]').prop('checked', value);
+        $(this).find('.form-check-label>input[id*="selected_"]').prop('checked', value);
     });
 }
 
 function updatePrices(id) {
     $('#' + id + '>tr').each(function () {
-        if (!$(this).find('td>input[id*="selected_"]').is(":checked")) {
+        if (!$(this).find('.form-check-label>input[id*="selected_"]').is(":checked")) {
             return true;
         }
 

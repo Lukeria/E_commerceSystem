@@ -192,13 +192,13 @@
 <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $( "#sidebar" ).load( "/resources/htmlToLoad/admin.html #sidebarAdmin" );
-        $( "#navbar" ).load( "/resources/htmlToLoad/admin.html #navbarAdmin" );
-
-        $( "#navbar" ).ready(function () {
+        $( "#sidebar" ).load( "/resources/htmlToLoad/admin.html #sidebarAdmin", function () {
+            $("#orderSection").addClass("active");
+        });
+        $( "#navbar" ).load( "/resources/htmlToLoad/admin.html #navbarAdmin", function (){
             $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        })
+        });
 
         $().ready(function() {
             $sidebar = $('.sidebar');

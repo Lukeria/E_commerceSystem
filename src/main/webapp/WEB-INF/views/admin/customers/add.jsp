@@ -33,7 +33,7 @@
                     <h4 class="card-title">Customer information</h4>
                 </div>
                 <div class="card-body">
-                    <spring:url value="/order/saveOrderCustomer" var="orderAdd"/>
+                    <spring:url value="/customer/saveOrderCustomer" var="orderAdd"/>
                     <form:form method="post" action="${orderAdd}" modelAttribute="customer">
                         <input name="orderId" type="hidden" class="form-control" id="id" value="${orderId}"/>
                             <div class="form-group">

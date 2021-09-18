@@ -66,6 +66,10 @@
                                         <td><label>Product type:</label></td>
                                         <td class="text-left">${order.productType}</td>
                                     </tr>
+                                    <tr>
+                                        <td><label class="text-primary">Cost:</label></td>
+                                        <td class="text-left t"><span class="text-primary">${order.cost}</span></td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -179,6 +183,10 @@
     $(document).ready(function () {
         $("#sidebar").load("/resources/htmlToLoad/admin.html #sidebarAdmin");
         $("#navbar").load("/resources/htmlToLoad/admin.html #navbarAdmin");
+
+        $("#sidebar").ready(function () {
+            $("#priceList").addClass("active");
+        });
     });
 </script>
 </body>

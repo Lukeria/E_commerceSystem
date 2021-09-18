@@ -164,25 +164,4 @@ public class OrderController {
 
         return modelAndView;
     }
-
-    @PostMapping("/saveOrderCustomer")
-    public ModelAndView saveOrderCustomer(@ModelAttribute("customer") @Validated Customer customer,
-                                          @RequestParam("orderId") Long orderId,
-                                          BindingResult result, RedirectAttributes redirectAttributes) {
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/order/" + orderId);
-
-        if (result.hasErrors()) {
-//            modelAndView.setViewName("customerInfo");
-//            return modelAndView;
-        }
-
-        Order order = orderService.getOrderById(orderId);
-        order.setCustomer(customer);
-        orderService.updateOrderCustomer(order);
-
-        return modelAndView;
-    }
-
 }
