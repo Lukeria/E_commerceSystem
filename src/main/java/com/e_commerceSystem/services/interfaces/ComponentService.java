@@ -28,4 +28,6 @@ public interface ComponentService {
     void updateProcessingPrices(Processing processing);
 //    void deleteProcessing();
 
+
+
 }

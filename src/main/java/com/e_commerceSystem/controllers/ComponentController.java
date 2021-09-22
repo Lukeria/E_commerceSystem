@@ -1,10 +1,13 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.additional.ComponentTypes;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
+import com.e_commerceSystem.services.ComponentServiceFactory;
 import com.e_commerceSystem.services.interfaces.ComponentService;
+import com.e_commerceSystem.services.interfaces.ComponentService_2_0;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 @RequestMapping("/component")
@@ -20,22 +24,23 @@ public class ComponentController {
 
     @Autowired
     private ComponentService componentService;
-
-    @GetMapping("/")
-    public ModelAndView componentMenu() {
-
-        ModelAndView modelAndView = new ModelAndView("admin/componentList");
-
-        List<GlassType> glassTypeList = componentService.getGlassTypeList();
-        List<Processing> processingList = componentService.getProcessingList();
-        List<Accessory> accessoryList = componentService.getAccessoryList();
-
-        modelAndView.addObject("glassTypeList", glassTypeList);
-        modelAndView.addObject("processingList", processingList);
-        modelAndView.addObject("accessoryList", accessoryList);
-
-        return modelAndView;
-    }
+    @Autowired
+    private ComponentServiceFactory componentServiceFactory;
+//    @GetMapping("/")
+//    public ModelAndView componentMenu() {
+//
+//        ModelAndView modelAndView = new ModelAndView("admin/componentList");
+//
+//        List<GlassType> glassTypeList = componentService.getGlassTypeList();
+//        List<Processing> processingList = componentService.getProcessingList();
+//        List<Accessory> accessoryList = componentService.getAccessoryList();
+//
+//        modelAndView.addObject("glassTypeList", glassTypeList);
+//        modelAndView.addObject("processingList", processingList);
+//        modelAndView.addObject("accessoryList", accessoryList);
+//
+//        return modelAndView;
+//    }
 
     @GetMapping("/add")
     public ModelAndView componentAdd() {
@@ -113,5 +118,29 @@ public class ComponentController {
         response.setResult(result);
 
         return response;
+    }
+
+    ///////////////////////////////
+
+    @GetMapping("/")
+    public ModelAndView componentMain() {
+
+        ModelAndView modelAndView = new ModelAndView("admin/components/main");
+        return modelAndView;
+    }
+
+
+    @GetMapping("{componentType}/all")
+    public ModelAndView componentList(@PathVariable ComponentTypes componentType){
+
+        ModelAndView modelAndView = new ModelAndView("admin/components/list");
+
+        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+        if (componentService != null){
+            modelAndView.addObject("componentList", componentService.getComponentList());
+            modelAndView.addObject("componentType", componentType);
+        }
+
+        return modelAndView;
     }
 }
