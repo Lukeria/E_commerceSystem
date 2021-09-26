@@ -14,6 +14,7 @@ public interface OrderService {
     void addOrder(Order order);
     void updateOrder(Order order);
     void updateOrderCustomer(Order order);
+    void updateOrderStatus(Order order);
     void deleteOrder(Order order);
     Order getOrderById(Long id);
 

@@ -1,6 +1,8 @@
 package com.e_commerceSystem.entities.glass;
 
 import com.e_commerceSystem.additional.ComponentViews;
+import com.e_commerceSystem.additional.ProcessingType;
+import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -12,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("processing")
-public class Processing implements Serializable {
+public class Processing implements Serializable, DefaultComponent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +24,9 @@ public class Processing implements Serializable {
 
     @JsonView(ComponentViews.Normal.class)
     private String type;
+
+    @Transient
+    private ProcessingType processingType;
 
     @JsonView(ComponentViews.Normal.class)
     private String name;
@@ -107,6 +112,19 @@ public class Processing implements Serializable {
 
     public void setPriceUSD(Float priceUSD) {
         this.priceUSD = priceUSD;
+    }
+
+    public ProcessingType getProcessingType() {
+        return processingType;
+    }
+
+    public void setProcessingType(ProcessingType processingType) {
+        this.processingType = processingType;
+    }
+
+    @Override
+    public boolean isNew() {
+        return id == null;
     }
 
     @Override

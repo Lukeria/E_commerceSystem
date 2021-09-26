@@ -92,13 +92,11 @@ public class OrderController {
 //            redirectAttributes.addAttribute("msg", "Error while closing order");
         } else {
             order.setStatus("Closed");
-            orderService.updateOrder(order);
+            orderService.updateOrderStatus(order);
 //
 //            redirectAttributes.addAttribute("css", "success");
 //            redirectAttributes.addAttribute("msg", "Order closed successfully");
         }
-
-        modelAndView.addObject("order", order);
 
         return modelAndView;
 

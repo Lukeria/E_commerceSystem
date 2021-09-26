@@ -83,6 +83,11 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public void updateOrderStatus(Order order) {
+        orderDao.updateOrderStatus(order);
+    }
+
+    @Override
     public void deleteOrder(Order order) {
         orderDao.deleteOrder(order);
     }

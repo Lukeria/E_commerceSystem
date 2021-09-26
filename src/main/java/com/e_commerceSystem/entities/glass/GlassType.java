@@ -2,6 +2,7 @@ package com.e_commerceSystem.entities.glass;
 
 import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.entities.components.Component;
+import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "glass_type")
-public class GlassType implements Serializable {
+public class GlassType implements Serializable, DefaultComponent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,6 +88,11 @@ public class GlassType implements Serializable {
 
     public void setPriceUSD(Float priceUSD) {
         this.priceUSD = priceUSD;
+    }
+
+    @Override
+    public boolean isNew() {
+        return id == null;
     }
 
     @Override

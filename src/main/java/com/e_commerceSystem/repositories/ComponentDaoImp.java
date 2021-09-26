@@ -55,7 +55,7 @@ public class ComponentDaoImp implements ComponentDao {
 
     @Override
     public void deleteGlassType(GlassType glassType) {
-
+        sessionFactory.getCurrentSession().delete(glassType);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ComponentDaoImp implements ComponentDao {
 
     @Override
     public void deleteAccessory(Accessory accessory) {
-
+        sessionFactory.getCurrentSession().delete(accessory);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class ComponentDaoImp implements ComponentDao {
 
     @Override
     public void deleteProcessing(Processing processing) {
-
+        sessionFactory.getCurrentSession().delete(processing);
     }
 
 

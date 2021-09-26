@@ -31,7 +31,7 @@ function convertTableToJSON(id) {
     let myRows = [];
     //loop through tr
     $('#' + id + '>tr').each(function () {
-        if (!$(this).find('td>input[id*="selected_"]').is(":checked")) {
+        if (!$(this).find('.form-check-label>input[id*="selected_"]').is(":checked")) {
             return true;
         }
 
@@ -96,5 +96,11 @@ function doAjaxPost() {
             alert('Error: ' + e);
         }
     });
+}
+
+function setSelect(id){
+
+    let currentRow = $('#'+id).parents('tr');
+    $(currentRow).find('.form-check-label>input[id*="selected_"]').prop('checked', true);
 }
 

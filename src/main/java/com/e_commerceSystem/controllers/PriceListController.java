@@ -1,12 +1,15 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.additional.ComponentTypes;
 import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
+import com.e_commerceSystem.services.ComponentServiceFactory;
 import com.e_commerceSystem.services.interfaces.ComponentService;
+import com.e_commerceSystem.services.interfaces.ComponentService_2_0;
 import com.e_commerceSystem.services.interfaces.PriceListService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -30,7 +33,7 @@ public class PriceListController {
 //        return new ModelAndView();
 //    }5
     @Autowired
-    private ComponentService componentService;
+    private ComponentServiceFactory componentServiceFactory;
     @Autowired
     private PriceListService priceListService;
 
@@ -39,9 +42,9 @@ public class PriceListController {
 
         ModelAndView modelAndView = new ModelAndView("admin/priceLists");
 
-        List<GlassType> glassTypeList = componentService.getGlassTypeList();
-        List<Processing> processingList = componentService.getProcessingList();
-        List<Accessory> accessoryList = componentService.getAccessoryList();
+        List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentTypes.GLASS_TYPE).getComponentList();
+        List<Processing> processingList = componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentList();
+        List<Accessory> accessoryList = componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentList();;
 
         modelAndView.addObject("glassTypeList", glassTypeList);
         modelAndView.addObject("processingList", processingList);

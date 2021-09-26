@@ -27,12 +27,33 @@
 
         <div class="content">
             <div class="row">
-                <div class="col-lg-12 col-md-12">
+                <div class="col-lg-4 col-md-6">
                     <div class="card">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/glassType.jpg" alt="Card image cap">
                         <div class="card-body">
-                            <a href="/component/glassType/all" class="btn btn-success">Glass types</a>
-                            <a href="/component/processing/all" class="btn btn-success">Processing</a>
-                            <a href="/component/accessory/all" class="btn btn-success">Accessory</a>
+                            <h4 class="card-title">Glass types</h4>
+                            <p class="card-text">Add, delete, update glass types</p>
+                            <a href="/component/glassType/all" class="btn btn-success">Open</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/processing.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h4 class="card-title">Processing</h4>
+                            <p class="card-text">Add, delete, update processing</p>
+                            <a href="/component/processing/all" class="btn btn-success">Open</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/accessory.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h4 class="card-title">Accessory</h4>
+                            <p class="card-text">Add, delete, update accessory</p>
+                            <a href="/component/accessory/all" class="btn btn-success">Open</a>
                         </div>
                     </div>
                 </div>

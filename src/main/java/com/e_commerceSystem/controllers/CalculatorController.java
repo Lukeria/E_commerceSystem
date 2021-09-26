@@ -21,9 +21,7 @@ import java.util.List;
 public class CalculatorController {
 
     @Autowired
-    CalculatorService calculatingService;
-    @Autowired
-    ComponentService componentService;
+    private CalculatorService calculatingService;
 
     @GetMapping("/")
     public ModelAndView calculator() {
@@ -43,7 +41,7 @@ public class CalculatorController {
     @PostMapping("/calculate")
     @ResponseBody
     @JsonView(ComponentViews.Normal.class)
-    public JsonResponse calculateAjax(@RequestBody List<Glass> glassList) {
+    public JsonResponse calculate(@RequestBody List<Glass> glassList) {
 
         float resultPrice = calculatingService.calculatePrice(glassList);
 

@@ -36,12 +36,16 @@
                         <div class="card-body">
                             <div>
                                 <spring:url value="/component/${componentType.name}/add" var="componentAddUrl" />
-                                <a href="${componentAddUrl}" class="btn btn-success">Add order</a>
+<%--                                <spring:url value="/component/add" var="componentAddUrl" />--%>
+                                <a href="${componentAddUrl}" class="btn btn-success">Add</a>
                             </div>
                             <div class="table-full-width ps ps--active-y ps--scrolling-y">
                                 <table class="table tablesorter">
                                     <thead>
                                     <tr>
+                                        <c:if test="${componentType.name.equals('processing')}">
+                                            <th>Type</th>
+                                        </c:if>
                                         <th>Name</th>
                                         <c:if test="${componentType.name.equals('glassType')}">
                                             <th>Thickness</th>
@@ -55,6 +59,9 @@
                                         <c:forEach var="item" items="${componentList}" varStatus="counter">
                                         <tr>
                                             <td style="display:none;">${item.id}</td>
+                                            <c:if test="${componentType.name.equals('processing')}">
+                                                <td>${item.type}</td>
+                                            </c:if>
                                             <td>${item.name}</td>
                                             <c:if test="${componentType.name.equals('glassType')}">
                                                 <td>${item.thickness}</td>
@@ -63,8 +70,8 @@
                                                 <td>${item.symbol}</td>
                                             </c:if>
                                             <td class="td-actions text-right">
-                                                <spring:url value="/component/${componentType.name}/delete" var="deleteUrl" />
-                                                <spring:url value="/component/${componentType.name}/update" var="updateUrl" />
+                                                <spring:url value="/component/${componentType.name}/${item.id}/delete" var="deleteUrl" />
+                                                <spring:url value="/component/${componentType.name}/${item.id}/update" var="updateUrl" />
                                                 <button type="button" rel="tooltip"
                                                         class="btn btn-link btn-success btn-sm btn-icon"
                                                         onclick="location.href='${updateUrl}'">
@@ -72,7 +79,7 @@
                                                 </button>
                                                 <button type="button" rel="tooltip"
                                                         class="btn btn-link btn-danger btn-sm btn-icon"
-                                                        onclick="location.href='${deleteUrl}')">
+                                                        onclick="post('${deleteUrl}')">
                                                     <i class="tim-icons icon-simple-remove"></i>
                                                 </button>
                                             </td>
@@ -115,6 +122,28 @@
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
         });
     });
+
+    function post(path, params, method) {
+        method = method || "post";
+
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+
+        for ( var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 </body>
 </html>

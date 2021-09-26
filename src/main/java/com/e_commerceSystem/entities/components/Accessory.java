@@ -5,8 +5,13 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("accessory")
-public class Accessory extends Component {
+public class Accessory extends Component implements DefaultComponent {
 
     public Accessory() {
+    }
+
+    @Override
+    public boolean isNew() {
+        return id == null;
     }
 }

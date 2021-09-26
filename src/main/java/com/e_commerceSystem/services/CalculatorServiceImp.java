@@ -1,5 +1,6 @@
 package com.e_commerceSystem.services;
 
+import com.e_commerceSystem.additional.ComponentTypes;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.entities.glass.Glass;
@@ -17,7 +18,7 @@ import java.util.List;
 public class CalculatorServiceImp implements CalculatorService {
 
     @Autowired
-    private ComponentService componentService;
+    private ComponentServiceFactory componentServiceFactory;
 
     public float calculatePrice(String tableJson) {
 
@@ -36,11 +37,11 @@ public class CalculatorServiceImp implements CalculatorService {
             float square = (float) (glass.getHeight() * glass.getWidth() / 1000000.);
             float perimeter = (float) ((glass.getHeight() + glass.getWidth()) / 1000. * 2);
 
-            GlassType glassType = componentService.getGlassTypeById(glass.getGlassType().getId());
+            GlassType glassType = (GlassType) componentServiceFactory.getComponentService(ComponentTypes.GLASS_TYPE).getComponentById(glass.getGlassType().getId());
             price = square * glassType.getPrice();
             for (Processing currentProcessing : glass.getProcessingArrayList()) {
 
-                Processing processing = componentService.getProcessingById(currentProcessing.getId());
+                Processing processing = (Processing) componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentById(currentProcessing.getId());
                 price += processing.getPrice() * perimeter * (currentProcessing.getQuantity() != 0 ? currentProcessing.getQuantity() : 1);
             }
         }
@@ -57,11 +58,11 @@ public class CalculatorServiceImp implements CalculatorService {
             float square = (float) (glass.getHeight() * glass.getWidth() / 1000000.);
             float perimeter = (float) ((glass.getHeight() + glass.getWidth()) / 1000. * 2);
 
-            GlassType glassType = componentService.getGlassTypeById(glass.getGlassType().getId());
+            GlassType glassType = (GlassType) componentServiceFactory.getComponentService(ComponentTypes.GLASS_TYPE).getComponentById(glass.getGlassType().getId());
             price += square * glassType.getPrice();
             for (Processing currentProcessing : glass.getProcessingArrayList()) {
 
-                Processing processing = componentService.getProcessingById(currentProcessing.getId());
+                Processing processing = (Processing) componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentById(currentProcessing.getId());
                 price += processing.getPrice() * perimeter * (currentProcessing.getQuantity() != 0 ? currentProcessing.getQuantity() : 1);
             }
         }

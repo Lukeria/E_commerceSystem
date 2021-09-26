@@ -4,7 +4,7 @@ import com.e_commerceSystem.services.interfaces.ComponentService_2_0;
 
 public enum ComponentTypes {
 
-    GLASS_TYPE("glassType", "Glass types"),
+    GLASS_TYPE("glassType", "Glass type"),
     PROCESSING("processing", "Processing"),
     ACCESSORY("accessory", "Accessory");
 

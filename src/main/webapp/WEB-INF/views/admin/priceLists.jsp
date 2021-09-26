@@ -40,7 +40,7 @@
                                                 BYN
                                             </span>
                                         </div>
-                                        <input id="currency" type="number" name="currency" class="form-control">
+                                        <input id="currency" type="number" class="form-control" step="0.01">
                                     </div>
                                 </div>
                                 <div class="form-group col-lg-6 col-md-12">
@@ -53,8 +53,8 @@
                                                     %
                                                 </span>
                                             </div>
-                                            <input id="increasePercent" type="number" name="increasePercent"
-                                                   class="form-control">
+                                            <input id="increasePercent" type="number"
+                                                   class="form-control" step="0.01">
                                         </div>
                                     </div>
                                 </div>
@@ -104,9 +104,9 @@
                                                     <td id="thickness_${counter.count}">${item.thickness}</td>
                                                     <td><input type="number" value="${item.priceUSD}"
                                                                class="form-control"
-                                                               id="priceUSD_${counter.count}"></td>
+                                                               id="priceUSD_${counter.count}" onchange="setSelect(this.id)"></td>
                                                     <td><input type="number" value="${item.price}" class="form-control"
-                                                               id="price_${counter.count}"></td>
+                                                               id="price_${counter.count}" onchange="setSelect(this.id)"></td>
                                                     <td>
                                                         <div class="form-check">
                                                             <label class="form-check-label">
@@ -161,10 +161,11 @@
                                                     <td style="display:none;" id="id_${counter.count}">${item.id}</td>
                                                     <td id="name_${counter.count}">${item.name}</td>
                                                     <td><input type="number" value="${item.priceUSD}"
-                                                               id="priceUSD_${counter.count}" class="form-control"></td>
+                                                               id="priceUSD_${counter.count}" class="form-control"
+                                                               onchange="setSelect(this.id)"></td>
                                                     <td><input type="number" value="${item.price}"
                                                                id="price_${counter.count}"
-                                                               class="form-control">
+                                                               class="form-control" onchange="setSelect(this.id)">
                                                     </td>
                                                     <td>
                                                         <div class="form-check">
@@ -221,9 +222,10 @@
                                                     <td style="display:none;" id="id_${counter.count}">${item.id}</td>
                                                     <td id="name_${counter.count}">${item.name}</td>
                                                     <td><input type="number" value="${item.priceUSD}"
-                                                               id="priceUSD_${counter.count}" class="form-control"></td>
+                                                               id="priceUSD_${counter.count}" class="form-control"
+                                                               onchange="setSelect(this.id)"></td>
                                                     <td><input type="number" value="${item.price}"
-                                                               id="price_${counter.count}"
+                                                               id="price_${counter.count}" onchange="setSelect(this.id)"
                                                                class="form-control">
                                                     </td>
                                                     <td>

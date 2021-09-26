@@ -2,7 +2,9 @@ package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.additional.ComponentTypes;
 import com.e_commerceSystem.additional.JsonResponse;
+import com.e_commerceSystem.additional.ProcessingType;
 import com.e_commerceSystem.entities.components.Accessory;
+import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.services.ComponentServiceFactory;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,84 +26,89 @@ import java.util.Optional;
 public class ComponentController {
 
     @Autowired
-    private ComponentService componentService;
-    @Autowired
     private ComponentServiceFactory componentServiceFactory;
-//    @GetMapping("/")
-//    public ModelAndView componentMenu() {
-//
-//        ModelAndView modelAndView = new ModelAndView("admin/componentList");
-//
-//        List<GlassType> glassTypeList = componentService.getGlassTypeList();
-//        List<Processing> processingList = componentService.getProcessingList();
-//        List<Accessory> accessoryList = componentService.getAccessoryList();
-//
-//        modelAndView.addObject("glassTypeList", glassTypeList);
-//        modelAndView.addObject("processingList", processingList);
-//        modelAndView.addObject("accessoryList", accessoryList);
-//
-//        return modelAndView;
-//    }
 
-    @GetMapping("/add")
-    public ModelAndView componentAdd() {
+    @GetMapping("/")
+    public ModelAndView componentMain() {
 
-        return new ModelAndView("/admin/component");
+        ModelAndView modelAndView = new ModelAndView("admin/components/main");
+        return modelAndView;
     }
 
-    @PostMapping("/save")
-    public ModelAndView componentSave(@RequestParam Map<String, String> allParams) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/component/");
+    @GetMapping("{componentType}/all")
+    public ModelAndView componentList(@PathVariable ComponentTypes componentType) {
 
-        String type="";
-        String name = "";
-        Integer thickness = 0;
-        String symbol = "";
+        ModelAndView modelAndView = new ModelAndView("admin/components/list");
 
-        for (Map.Entry<String, String> entry : allParams.entrySet()) {
-            if(entry.getKey().equals("componentType")){
-                type = entry.getValue();
-            } else if (entry.getKey().equals("name")){
-                name = entry.getValue();
-            } else if (entry.getKey().equals("thickness")){
-                try {
-                    thickness = Integer.parseInt(entry.getValue());
-                }catch (NumberFormatException e){
-                    e.printStackTrace();
-                }
-            } else if (entry.getKey().equals("symbol")){
-                symbol = entry.getValue();
-            }
-        }
-
-        if(type.equals("glassType")){
-            componentService.addGlassType(name, thickness);
-        }else if(type.equals("processing")){
-           componentService.addProcessing(name, symbol);
-        }else if(type.equals("accessory")){
-           componentService.addAccessory(name);
+        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+        if (componentService != null) {
+            modelAndView.addObject("componentList", componentService.getComponentList());
+            modelAndView.addObject("componentType", componentType);
         }
 
         return modelAndView;
     }
 
-    @GetMapping("/delete")
-    public ModelAndView componentDelete() {
-        return new ModelAndView("/admin/componentList");
+    @GetMapping("{componentType}/add")
+    public ModelAndView componentAdd(@PathVariable ComponentTypes componentType) {
+
+        ModelAndView modelAndView = new ModelAndView("/admin/components/add");
+
+        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+
+        modelAndView.addObject("component", componentService.getEmptyComponent());
+        modelAndView.addObject("processingTypes", ProcessingType.values());
+        return modelAndView;
     }
 
-    @GetMapping("/update")
-    public ModelAndView componentUpdate() {
-        return new ModelAndView("/admin/component");
+    @PostMapping("{componentType}/save")
+    public ModelAndView componentSave(@PathVariable ComponentTypes componentType,
+                                      @RequestParam Map<String, String> allParams) {
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/component/"+componentType.getName()+"/all");
+
+        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+        DefaultComponent component = componentService.extractComponentFromRequest(allParams);
+        if(component.isNew()){
+            componentService.addComponent(component);
+        } else {
+            componentService.updateComponent(component);
+        }
+
+        return modelAndView;
+    }
+
+    @PostMapping("{componentType}/{id}/delete")
+    public ModelAndView componentDelete(@PathVariable ComponentTypes componentType, @PathVariable Long id) {
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/component/" + componentType.getName() + "/all");
+        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+        if (componentService != null) {
+            componentService.deleteComponent(componentService.getComponentById(id));
+        }
+        return modelAndView;
+    }
+
+    @GetMapping("{componentType}/{id}/update")
+    public ModelAndView componentUpdate(@PathVariable ComponentTypes componentType, @PathVariable Long id) {
+
+        ModelAndView modelAndView = new ModelAndView("/admin/components/add");
+
+        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+
+        modelAndView.addObject("component", componentService.getComponentById(id));
+        modelAndView.addObject("processingTypes", ProcessingType.values());
+
+        return modelAndView;
     }
 
     @PostMapping("/getData")
     @ResponseBody
-    public JsonResponse getListData(){
+    public JsonResponse getListData() {
 
-        List<GlassType> glassTypeList = componentService.getGlassTypeList();
-        List<Processing> processingList = componentService.getProcessingList();
+        List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentTypes.GLASS_TYPE).getComponentList();
+        List<Processing> processingList = componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentList();
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonGlassTypeList = "";
@@ -112,7 +120,7 @@ public class ComponentController {
             e.printStackTrace();
         }
 
-        String result = "{\"glassTypeList\":"+jsonGlassTypeList+", \"processingList\":" + jsonProcessing +"}";
+        String result = "{\"glassTypeList\":" + jsonGlassTypeList + ", \"processingList\":" + jsonProcessing + "}";
         JsonResponse response = new JsonResponse();
         response.setStatus("SUCCESS");
         response.setResult(result);
@@ -120,27 +128,4 @@ public class ComponentController {
         return response;
     }
 
-    ///////////////////////////////
-
-    @GetMapping("/")
-    public ModelAndView componentMain() {
-
-        ModelAndView modelAndView = new ModelAndView("admin/components/main");
-        return modelAndView;
-    }
-
-
-    @GetMapping("{componentType}/all")
-    public ModelAndView componentList(@PathVariable ComponentTypes componentType){
-
-        ModelAndView modelAndView = new ModelAndView("admin/components/list");
-
-        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
-        if (componentService != null){
-            modelAndView.addObject("componentList", componentService.getComponentList());
-            modelAndView.addObject("componentType", componentType);
-        }
-
-        return modelAndView;
-    }
 }

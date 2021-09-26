@@ -43,7 +43,6 @@ public class OrderDaoImp implements OrderDao {
     public void updateOrder(Order order) {
         Order orderToUpdate = getOrderById(order.getId());
         orderToUpdate.setDeadline(order.getDeadline());
-        orderToUpdate.setStatus(order.getStatus());
         orderToUpdate.setProductType(order.getProductType());
         orderToUpdate.setCost(order.getCost());
         for (Glass glass: orderToUpdate.getGlassList()) {
@@ -60,6 +59,13 @@ public class OrderDaoImp implements OrderDao {
     public void updateOrderCustomer(Order order) {
         Order orderToUpdate = getOrderById(order.getId());
         orderToUpdate.setCustomer(order.getCustomer());
+        sessionFactory.getCurrentSession().saveOrUpdate(orderToUpdate);
+    }
+
+    @Override
+    public void updateOrderStatus(Order order) {
+        Order orderToUpdate = getOrderById(order.getId());
+        orderToUpdate.setStatus(order.getStatus());
         sessionFactory.getCurrentSession().saveOrUpdate(orderToUpdate);
     }
 

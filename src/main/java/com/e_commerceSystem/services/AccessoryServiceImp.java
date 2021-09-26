@@ -1,11 +1,13 @@
 package com.e_commerceSystem.services;
 
 import com.e_commerceSystem.additional.ComponentTypes;
-import com.e_commerceSystem.additional.ProcessingType;
+import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.components.DefaultComponent;
+import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.exceptions.ComponentExtractionException;
 import com.e_commerceSystem.repositories.interfaces.ComponentDao;
+import com.e_commerceSystem.services.interfaces.ComponentService;
 import com.e_commerceSystem.services.interfaces.ComponentService_2_0;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -17,70 +19,68 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class ProcessingServiceImp implements ComponentService_2_0<Processing> {
+public class AccessoryServiceImp implements ComponentService_2_0<Accessory> {
 
     @Autowired
-    private ComponentDao componentDao;
+    ComponentDao componentDao;
 
     @Override
-    public List<Processing> getComponentList() {
-        return componentDao.getProcessingAll();
+    public List<Accessory> getComponentList() {
+        return componentDao.getAccessoryAll();
     }
 
     @Override
-    public void addComponent(Processing component) {
+    public void addComponent(Accessory component) {
 
         component.setPrice(0.0F);
         component.setPriceUSD(0.0F);
-        componentDao.addProcessing(component);
+        componentDao.addAccessory(component);
+
     }
 
     @Override
-    public Processing getComponentById(Long id) {
-        return componentDao.getProcessingById(id);
+    public Accessory getComponentById(Long id) {
+        return componentDao.getAccessoryById(id);
     }
 
     @Override
-    public void updateComponent(Processing component) {
-        componentDao.updateProcessing(component);
+    public void updateComponent(Accessory accessory) {
+        componentDao.updateAccessory(accessory);
     }
 
     @Override
-    public void deleteComponent(Processing component) {
-        componentDao.deleteProcessing(component);
+    public void deleteComponent(Accessory component) {
+        componentDao.deleteAccessory(component);
     }
 
     @Override
-    public void updateComponentPrices(Processing component) {
-        componentDao.updateProcessingPrices(component);
+    public void updateComponentPrices(Accessory accessory) {
+        componentDao.updateAccessoryPrices(accessory);
     }
 
     @Override
     public boolean canHandle(ComponentTypes componentTypes) {
-        return componentTypes == ComponentTypes.PROCESSING;
+        return componentTypes == ComponentTypes.ACCESSORY;
     }
 
     @Override
-    public Processing getEmptyComponent() {
-        return new Processing();
+    public Accessory getEmptyComponent() {
+        return new Accessory();
     }
 
     @Override
     public DefaultComponent extractComponentFromRequest(Map<String, String> params) throws ComponentExtractionException {
 
-        Processing processing = new Processing();
+        Accessory accessory = new Accessory();
+        accessory.setName(params.get("name"));
         try {
             if(!params.get("id").isEmpty()) {
-                processing.setId(Long.parseLong(params.get("id")));
+                accessory.setId(Long.parseLong(params.get("id")));
             }
         } catch (NumberFormatException exception){
             throw new ComponentExtractionException();
         }
-        processing.setType(ProcessingType.valueOf(params.get("type")).getNameRus());
-        processing.setProcessingType(ProcessingType.valueOf(params.get("type")));
-        processing.setName(params.get("name"));
-        processing.setSymbol(params.get("symbol"));
 
-        return processing;
+        return accessory;
     }
 }
