@@ -15,7 +15,7 @@ public class AuthenticationController {
         return new ModelAndView("login");
     }
 
-    @GetMapping("/registrationPage")
+    @GetMapping("/signUp")
     public ModelAndView registrationPage(){
         return new ModelAndView("registration");
     }
