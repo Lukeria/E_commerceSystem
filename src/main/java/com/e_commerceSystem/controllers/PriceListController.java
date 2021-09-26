@@ -4,22 +4,16 @@ import com.e_commerceSystem.additional.ComponentTypes;
 import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.components.Accessory;
-import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.services.ComponentServiceFactory;
-import com.e_commerceSystem.services.interfaces.ComponentService;
-import com.e_commerceSystem.services.interfaces.ComponentService_2_0;
 import com.e_commerceSystem.services.interfaces.PriceListService;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 

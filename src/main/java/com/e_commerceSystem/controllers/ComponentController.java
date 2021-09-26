@@ -3,23 +3,19 @@ package com.e_commerceSystem.controllers;
 import com.e_commerceSystem.additional.ComponentTypes;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.ProcessingType;
-import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.services.ComponentServiceFactory;
 import com.e_commerceSystem.services.interfaces.ComponentService;
-import com.e_commerceSystem.services.interfaces.ComponentService_2_0;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Component
 @RequestMapping("/component")
@@ -41,7 +37,7 @@ public class ComponentController {
 
         ModelAndView modelAndView = new ModelAndView("admin/components/list");
 
-        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+        ComponentService componentService = componentServiceFactory.getComponentService(componentType);
         if (componentService != null) {
             modelAndView.addObject("componentList", componentService.getComponentList());
             modelAndView.addObject("componentType", componentType);
@@ -55,7 +51,7 @@ public class ComponentController {
 
         ModelAndView modelAndView = new ModelAndView("/admin/components/add");
 
-        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+        ComponentService componentService = componentServiceFactory.getComponentService(componentType);
 
         modelAndView.addObject("component", componentService.getEmptyComponent());
         modelAndView.addObject("processingTypes", ProcessingType.values());
@@ -68,7 +64,7 @@ public class ComponentController {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/component/"+componentType.getName()+"/all");
 
-        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+        ComponentService componentService = componentServiceFactory.getComponentService(componentType);
         DefaultComponent component = componentService.extractComponentFromRequest(allParams);
         if(component.isNew()){
             componentService.addComponent(component);
@@ -83,7 +79,7 @@ public class ComponentController {
     public ModelAndView componentDelete(@PathVariable ComponentTypes componentType, @PathVariable Long id) {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/component/" + componentType.getName() + "/all");
-        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+        ComponentService componentService = componentServiceFactory.getComponentService(componentType);
         if (componentService != null) {
             componentService.deleteComponent(componentService.getComponentById(id));
         }
@@ -95,7 +91,7 @@ public class ComponentController {
 
         ModelAndView modelAndView = new ModelAndView("/admin/components/add");
 
-        ComponentService_2_0 componentService = componentServiceFactory.getComponentService(componentType);
+        ComponentService componentService = componentServiceFactory.getComponentService(componentType);
 
         modelAndView.addObject("component", componentService.getComponentById(id));
         modelAndView.addObject("processingTypes", ProcessingType.values());

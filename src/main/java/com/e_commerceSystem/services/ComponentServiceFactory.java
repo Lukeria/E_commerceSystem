@@ -1,20 +1,19 @@
 package com.e_commerceSystem.services;
 
 import com.e_commerceSystem.additional.ComponentTypes;
-import com.e_commerceSystem.services.interfaces.ComponentService_2_0;
+import com.e_commerceSystem.services.interfaces.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ComponentServiceFactory {
 
     @Autowired
-    private List<ComponentService_2_0> componentServiceList;
+    private List<ComponentService> componentServiceList;
 
-    public ComponentService_2_0 getComponentService(ComponentTypes componentType) {
+    public ComponentService getComponentService(ComponentTypes componentType) {
 
         return componentServiceList.stream()
                 .filter(service -> service.canHandle(componentType))

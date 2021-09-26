@@ -1,33 +1,24 @@
 package com.e_commerceSystem.services.interfaces;
 
-import com.e_commerceSystem.entities.components.Accessory;
+import com.e_commerceSystem.additional.ComponentTypes;
+import com.e_commerceSystem.entities.components.Component;
+import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.e_commerceSystem.entities.glass.GlassType;
-import com.e_commerceSystem.entities.glass.Processing;
+import com.e_commerceSystem.exceptions.ComponentExtractionException;
 
 import java.util.List;
+import java.util.Map;
 
-public interface ComponentService {
+public interface ComponentService<Type> {
 
-    List<GlassType> getGlassTypeList();
-    void addGlassType(String name, Integer thickness);
-    GlassType getGlassTypeById(Long id);
-    void updateGlassType(GlassType glassType);
-    void updateGlassTypePrices(GlassType glassType);
-//    void deleteGlassType();
+    List<Type> getComponentList();
+    void addComponent(Type component);
+    Type getComponentById(Long id);
+    void updateComponent(Type component);
+    void deleteComponent(Type component);
+    void updateComponentPrices(Type component);
 
-    List<Accessory> getAccessoryList();
-    void addAccessory(String name);
-    void updateAccessory(Accessory accessory);
-    void updateAccessoryPrices(Accessory accessory);
-//    void deleteAccessory();
-
-    List<Processing> getProcessingList();
-    void addProcessing(String name, String symbol);
-    Processing getProcessingById(Long id);
-    void updateProcessing(Processing processing);
-    void updateProcessingPrices(Processing processing);
-//    void deleteProcessing();
-
-
-
+    boolean canHandle(ComponentTypes componentTypes);
+    Type getEmptyComponent();
+    DefaultComponent extractComponentFromRequest(Map<String, String> params) throws ComponentExtractionException;
 }

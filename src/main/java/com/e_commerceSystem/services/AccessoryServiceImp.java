@@ -3,14 +3,10 @@ package com.e_commerceSystem.services;
 import com.e_commerceSystem.additional.ComponentTypes;
 import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.components.DefaultComponent;
-import com.e_commerceSystem.entities.glass.GlassType;
-import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.exceptions.ComponentExtractionException;
 import com.e_commerceSystem.repositories.interfaces.ComponentDao;
 import com.e_commerceSystem.services.interfaces.ComponentService;
-import com.e_commerceSystem.services.interfaces.ComponentService_2_0;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +15,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class AccessoryServiceImp implements ComponentService_2_0<Accessory> {
+public class AccessoryServiceImp implements ComponentService<Accessory> {
 
     @Autowired
     ComponentDao componentDao;

@@ -1,7 +1,5 @@
 package com.e_commerceSystem.additional;
 
-import com.e_commerceSystem.services.interfaces.ComponentService_2_0;
-
 public enum ComponentTypes {
 
     GLASS_TYPE("glassType", "Glass type"),
