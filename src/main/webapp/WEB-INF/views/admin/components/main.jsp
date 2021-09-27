@@ -15,14 +15,14 @@
     <!-- Nucleo Icons -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/nucleo-icons.css"/>
     <!-- CSS Files -->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/custom/custom.css"/>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/resources/css/black-dashboard.css?v=1.0.0"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/custom/custom.css"/>
 </head>
 <body class="">
 <div class="wrapper">
     <div id="sidebar"></div>
-    <div class="main-panel" data="green">
+    <div class="bg-image-main main-panel" data="green">
         <div id="navbar"></div>
 
         <div class="content">

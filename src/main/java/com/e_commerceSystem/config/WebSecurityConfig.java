@@ -39,12 +39,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/login**", "/registrationPage**", "/register").not().authenticated()
-                    .antMatchers("/order/", "/profile/**").authenticated()
-                    .antMatchers("/priceList/**", "/order/**", "/catalog/settings", "/customer/add").hasRole("ADMIN")
-                    .antMatchers("/cart/**").hasRole("USER")
-                    .anyRequest().permitAll()
-                    .and()
+                .antMatchers("/login**", "/registrationPage**", "/register").not().authenticated()
+                .antMatchers("/order/", "/profile/**").authenticated()
+                .antMatchers("/priceList/**", "/order/**", "/catalog/settings",
+                        "/customer/add", "/component/").hasRole("ADMIN")
+                .antMatchers("/cart/**").hasRole("USER")
+                .anyRequest().permitAll()
+                .and()
                 .formLogin().loginPage("/login").successHandler(loginSuccessHandler) //return loginForm
                 .and()
                 .logout().logoutSuccessUrl("/main").permitAll()

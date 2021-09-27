@@ -17,6 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/accessDenied").setViewName("accessDenied");
+        registry.addViewController("contacts").setViewName("user/contacts");
     }
 
     @Override

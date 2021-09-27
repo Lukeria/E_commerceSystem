@@ -15,14 +15,14 @@
     <!-- Nucleo Icons -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/nucleo-icons.css"/>
     <!-- CSS Files -->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/custom/custom.css"/>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/resources/css/black-dashboard.css?v=1.0.0"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/custom/custom.css"/>
 </head>
 <body class="">
 <div class="wrapper">
     <div id="sidebar"></div>
-    <div class="main-panel" data="green">
+    <div class="bg-image-main main-panel" data="green">
         <div id="navbar"></div>
 
         <div class="content">
@@ -265,9 +265,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/core/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<!--  Google Maps Plugin    -->
-<!-- Place this tag in your head or just before your close body tag. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 <!-- Chart JS -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/chartjs.min.js"></script>
 <!--  Notifications Plugin    -->

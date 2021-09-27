@@ -25,7 +25,7 @@ public class CalculatorController {
     @GetMapping("/")
     public ModelAndView calculator() {
 
-        ModelAndView modelAndView = new ModelAndView("calculator");
+        ModelAndView modelAndView = new ModelAndView("general/calculator");
 
         Order order = new Order();
         List<Glass> glassList = new ArrayList<Glass>();

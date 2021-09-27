@@ -46,7 +46,7 @@
                             <button type="submit" class="btn btn-primary">Submit</button>
                             <div class="form-group row">
                                 <p class="form-text">Don’t have an account?
-                                    <a href="/signUp" class="btn btn-warning btn-link">Sign up</a></p>
+                                    <a href="/signUp" class="btn btn-warning btn-link animation-on-hover">Sign up</a></p>
                             </div>
                         </form>
                     </div>
@@ -61,9 +61,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/core/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<!--  Google Maps Plugin    -->
-<!-- Place this tag in your head or just before your close body tag. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 <!-- Chart JS -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/chartjs.min.js"></script>
 <!--  Notifications Plugin    -->

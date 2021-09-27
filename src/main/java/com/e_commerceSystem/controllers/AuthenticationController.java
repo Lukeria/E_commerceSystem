@@ -1,7 +1,5 @@
 package com.e_commerceSystem.controllers;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,12 +10,12 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public ModelAndView loginPage(){
-        return new ModelAndView("login");
+        return new ModelAndView("general/login");
     }
 
     @GetMapping("/signUp")
     public ModelAndView registrationPage(){
-        return new ModelAndView("registration");
+        return new ModelAndView("general/registration");
     }
 
 //    @PostMapping("/loginAction")
@@ -29,7 +27,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ModelAndView register(){
 
-        return new ModelAndView("login");
+        return new ModelAndView("general/login");
     }
 
 //    @PostMapping("/logout")

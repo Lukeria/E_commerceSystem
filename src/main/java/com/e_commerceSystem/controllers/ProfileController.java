@@ -11,12 +11,12 @@ public class ProfileController {
 
     @GetMapping("/")
     public ModelAndView profile(){
-        return new ModelAndView("profile");
+        return new ModelAndView("general/profile");
     }
 
     @GetMapping("/save")
     public ModelAndView saveProfile(){
-        return new ModelAndView("profile");
+        return new ModelAndView("general/profile");
     }
 
 }
