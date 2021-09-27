@@ -22,18 +22,27 @@
 <body class="">
 <div class="wrapper">
     <div id="sidebar"></div>
-    <div class="bg-image-main main-panel" data="green">
+    <div class="bg-image-main main-panel">
         <div id="navbar"></div>
 
         <div class="content">
             <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Components</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-4 col-md-6">
                     <div class="card">
-                        <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/glassType.jpg" alt="Card image cap">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/glassType1.jpg" alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title">Glass types</h4>
                             <p class="card-text">Add, delete, update glass types</p>
-                            <a href="/component/glassType/all" class="btn btn-success">Open</a>
+                            <a href="/component/glassType/all" class="btn btn-primary animation-on-hover">Open</a>
                         </div>
                     </div>
                 </div>
@@ -43,21 +52,22 @@
                         <div class="card-body">
                             <h4 class="card-title">Processing</h4>
                             <p class="card-text">Add, delete, update processing</p>
-                            <a href="/component/processing/all" class="btn btn-success">Open</a>
+                            <a href="/component/processing/all" class="btn btn-primary animation-on-hover">Open</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="card">
-                        <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/accessory.jpg" alt="Card image cap">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/accessory1.jpg" alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title">Accessory</h4>
                             <p class="card-text">Add, delete, update accessory</p>
-                            <a href="/component/accessory/all" class="btn btn-success">Open</a>
+                            <a href="/component/accessory/all" class="btn btn-primary animation-on-hover">Open</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <div id="footerGroup"></div>
         </div>
     </div>
 </div>
@@ -80,13 +90,14 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/htmlToLoad/admin.html #sidebarAdmin", function () {
+        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
             $("#componentSection").addClass("active");
         });
-        $("#navbar").load("/resources/htmlToLoad/admin.html #navbarAdmin", function () {
+        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
             $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
         });
+        $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
 </script>
 </body>

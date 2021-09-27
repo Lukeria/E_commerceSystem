@@ -8,10 +8,10 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <%--    <link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/img/apple-icon.png">--%>
-    <%--    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/favicon.png">--%>
+    <link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/favicon.png">
     <title>
-        Contacts
+        STEKLO.BY
     </title>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800"/>
@@ -29,107 +29,21 @@
 <body>
 <div class="wrapper">
     <div class="main-panel bg-image-main">
-        <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">STEKLO.BY</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-bar navbar-kebab"></span>
-                    <span class="navbar-toggler-bar navbar-kebab"></span>
-                    <span class="navbar-toggler-bar navbar-kebab"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navigation">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <ul class="navbar-nav">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="/main">Home<span class="sr-only">(current)</span></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/calculator/">Calculate order</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/catalog/">Catalog</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/contacts">Contacts</a>
-                                </li>
-                                <security:authorize access="hasRole('USER')">
-                                    <li class="nav-item">
-                                        <a href="/cart/"
-                                           class="btn btn-primary btn-fab btn-icon btn-round animation-on-hover">
-                                            <i class="tim-icons icon-cart"></i>
-                                        </a>
-                                    </li>
-                                </security:authorize>
-                            </ul>
-                        </li>
-                        <li class="dropdown nav-item">
-                            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                                <i class="tim-icons icon-world"></i>
-                                <p class="d-lg-none">
-                                    Language
-                                </p>
-                            </a>
-                            <ul class="dropdown-menu dropdown-navbar">
-                                <li class="nav-link">
-                                    <a href="javascript:void(0)" class="nav-item dropdown-item">
-                                        <div class="photo">
-                                            <img src="${pageContext.request.contextPath}/resources/img/united-kingdom.png"
-                                                 alt="En" id="englishIcon">
-                                        </div>
-                                        English
-                                    </a>
-                                </li>
-                                <li class="nav-link">
-                                    <a href="javascript:void(0)" class="nav-item dropdown-item">
-                                        <div class="photo">
-                                            <img src="${pageContext.request.contextPath}/resources/img/russia.png"
-                                                 alt="Ru" id="russianIcon">
-                                        </div>
-                                        Russian
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/main/#questionForm" class="btn btn-info btn-simple">Сall request</a>
-                        </li>
-                        <security:authorize access="!isAuthenticated()">
-                            <li class="nav-item">
-                                <a href="/login" class="btn btn-primary btn-simple">Log in</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/signUp" class="btn btn-warning btn-simple">Sign up</a>
-                            </li>
-                        </security:authorize>
-                        <security:authorize access="isAuthenticated()">
-                            <li class="dropdown nav-item">
-                                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                                    <i class="tim-icons icon-single-02"></i>
-                                    <p class="d-lg-none">
-                                        Log out
-                                    </p>
-                                </a>
-                                <ul class="dropdown-menu dropdown-navbar">
-                                    <li class="nav-link"><a href="/profile/"
-                                                            class="nav-item dropdown-item">Profile</a></li>
-                                    <li class="nav-link"><a href="javascript:void(0)"
-                                                            class="nav-item dropdown-item">Settings</a>
-                                    </li>
-                                    <li class="dropdown-divider"></li>
-                                    <li class="nav-link"><a href="/logout" class="nav-item dropdown-item">Log
-                                        out</a></li>
-                                </ul>
-                            </li>
-                        </security:authorize>
-                        <li class="separator d-lg-none"></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/userHeader.jsp"/>
         <div class="content-user">
-            <div class="row align-items-center">
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Contacts</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+            <div class="row">
                 <div class="col-lg-2">
                 </div>
                 <div class="col-lg-4 col-md-6">
@@ -158,6 +72,8 @@
                 <div class="col-lg-2">
                 </div>
             </div>
+            <div id="footerGroup">
+            </div>
         </div>
     </div>
 </div>
@@ -175,10 +91,12 @@
 <!-- Black Dashboard DEMO methods, don't include it in your project! -->
 <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 <!-- Bootstrap -->
-<script src="${pageContext.request.contextPath}/resources/js/custom/bootstrap.js"/>
+<script src="${pageContext.request.contextPath}/resources/js/custom/bootstrap.js"></script>
 
 <script type="text/javascript">
-
+    $(document).ready(function () {
+        $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
+    });
 </script>
 
 </body>

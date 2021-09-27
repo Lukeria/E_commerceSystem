@@ -43,10 +43,11 @@
                                 <input type="password" id="password" name="password" class="form-control"
                                        placeholder="Enter password">
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary animation-on-hover">Submit</button>
                             <div class="form-group row">
                                 <p class="form-text">Don’t have an account?
-                                    <a href="/signUp" class="btn btn-warning btn-link animation-on-hover">Sign up</a></p>
+                                    <a href="/signUp" class="btn btn-warning btn-link animation-on-hover">Sign up</a>
+                                </p>
                             </div>
                         </form>
                     </div>
@@ -70,9 +71,11 @@
 <!-- Black Dashboard DEMO methods, don't include it in your project! -->
 <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 <script type="text/javascript">
-    $("#navbar").load("/resources/htmlToLoad/login.html #navbarLogin", function () {
-        $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-        $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
+    $(document).ready(function () {
+        $("#navbar").load("/resources/pagesToLoad/login.html #navbarLogin", function () {
+            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
+            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
+        });
     });
 </script>
 </body>

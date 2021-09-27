@@ -9,6 +9,8 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/favicon.png">
     <title>Component</title>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800"/>
@@ -23,7 +25,7 @@
 <body>
 <div class="wrapper">
     <div id="sidebar"></div>
-    <div class="bg-image-main main-panel" data="green">
+    <div class="bg-image-main main-panel">
         <div id="navbar"></div>
 
         <div class="content">
@@ -66,21 +68,11 @@
                                             placeholder="Enter name"/>
                             </div>
                         </c:if>
-                        <%--                        <div class="form-group">--%>
-                        <%--                            <label for="email">Email address:</label>--%>
-                        <%--                            <form:input path="email" type="email" class="form-control" id="email"--%>
-                        <%--                                        aria-describedby="emailHelp" placeholder="Enter email"/>--%>
-                        <%--                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with--%>
-                        <%--                                anyone else.</small>--%>
-                        <%--                        </div>--%>
-                        <%--                        <div class="form-group">--%>
-                        <%--                            <label for="phone">Phone:</label>--%>
-                        <%--                            <form:input path="phone" type="phone" class="form-control" id="phone"--%>
-                        <%--                                        placeholder="Enter phone number"/>--%>
-                        <%--                        </div>--%>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary animation-on-hover">Save</button>
                     </form:form>
                 </div>
+            </div>
+            <div id="footerGroup">
             </div>
         </div>
     </div>
@@ -104,13 +96,14 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/htmlToLoad/admin.html #sidebarAdmin", function () {
+        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
             $("#componentSection").addClass("active");
         });
-        $("#navbar").load("/resources/htmlToLoad/admin.html #navbarAdmin", function () {
+        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
             $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
         });
+        $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
 
     function post(path, params, method) {

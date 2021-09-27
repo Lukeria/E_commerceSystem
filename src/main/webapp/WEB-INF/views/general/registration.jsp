@@ -78,9 +78,11 @@
 <!-- Black Dashboard DEMO methods, don't include it in your project! -->
 <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 <script type="text/javascript">
-    $("#navbar").load("/resources/htmlToLoad/login.html #navbarLogin", function () {
-        $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-        $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
+    $(document).ready(function () {
+        $("#navbar").load("/resources/pagesToLoad/login.html #navbarLogin", function () {
+            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
+            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
+        });
     });
 </script>
 </body>

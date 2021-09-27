@@ -159,6 +159,7 @@
                     </div>
                 </div>
             </c:if>
+            <div id="footerGroup"></div>
         </div>
     </div>
 </div>
@@ -181,12 +182,14 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/htmlToLoad/admin.html #sidebarAdmin");
-        $("#navbar").load("/resources/htmlToLoad/admin.html #navbarAdmin");
-
-        $("#sidebar").ready(function () {
-            $("#priceList").addClass("active");
+        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
+            $("#orderSection").addClass("active");
         });
+        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function (){
+            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
+            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
+        });
+        $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
 </script>
 </body>

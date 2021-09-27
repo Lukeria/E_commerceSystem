@@ -29,6 +29,9 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Price lists</h3>
+                        </div>
                         <div class="card-body">
                             <form id="priceListForm">
                                 <div class="form-group col-lg-6 col-md-12">
@@ -59,9 +62,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="button" id="updatePrices" class="btn btn-primary">Update prices
+                                    <button type="button" id="updatePrices" class="btn btn-primary animation-on-hover">Update prices
                                     </button>
-                                    <button type="submit" class="btn btn-success">Save</button>
+                                    <button type="submit" class="btn btn-success animation-on-hover">Save</button>
                                 </div>
                             </form>
                         </div>
@@ -257,6 +260,7 @@
             </div>
 
             <div><p id="successMessage"></p></div>
+            <div id="footerGroup"></div>
         </div>
     </div>
 </div>
@@ -277,13 +281,14 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/htmlToLoad/admin.html #sidebarAdmin", function () {
+        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
             $("#priceListSection").addClass("active");
         });
-        $("#navbar").load("/resources/htmlToLoad/admin.html #navbarAdmin", function () {
+        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
             $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
         });
+        $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
 </script>
 </body>

@@ -30,7 +30,6 @@
 
 .content-user{
     padding-top: 78px;
-    padding-bottom: 78px;
     min-height: calc(100vh - 70px);
 }
 
@@ -103,6 +102,10 @@ table{
     background:rgba(0,0,0,.7);
 }
 
+.footer{
+    padding: 24px 0px 24px 24px;
+}
+
 
 /*
 */
@@ -154,4 +157,13 @@ table{
 .btn-one:hover::after {
     opacity: 0;
     transform: scale(0.1, 1);
+}
+
+.sidebar{
+    background: linear-gradient(
+            0deg, #00f2c3 0%, #ba54f5 100%);
+}
+
+.btn span{
+    display: inline-block;
 }

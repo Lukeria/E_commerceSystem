@@ -23,7 +23,7 @@
 <body class="">
 <div class="wrapper">
     <div id="sidebar"></div>
-    <div class="bg-image-main main-panel" data="green">
+    <div class="bg-image-main main-panel">
         <div id="navbar"></div>
 
         <div class="content">
@@ -36,8 +36,7 @@
                         <div class="card-body">
                             <div>
                                 <spring:url value="/component/${componentType.name}/add" var="componentAddUrl" />
-<%--                                <spring:url value="/component/add" var="componentAddUrl" />--%>
-                                <a href="${componentAddUrl}" class="btn btn-success">Add</a>
+                                <a href="${componentAddUrl}" class="btn btn-primary animation-on-hover">Add</a>
                             </div>
                             <div class="table-full-width ps ps--active-y ps--scrolling-y">
                                 <table class="table tablesorter">
@@ -92,6 +91,8 @@
                     </div>
                 </div>
             </div>
+            <div id="footerGroup">
+            </div>
         </div>
     </div>
 </div>
@@ -114,13 +115,14 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/htmlToLoad/admin.html #sidebarAdmin", function () {
+        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
             $("#componentSection").addClass("active");
         });
-        $("#navbar").load("/resources/htmlToLoad/admin.html #navbarAdmin", function () {
+        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
             $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
         });
+        $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
 
     function post(path, params, method) {

@@ -79,8 +79,12 @@
 <script src="${pageContext.request.contextPath}/resources/js/custom/calculator.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/htmlToLoad/admin.html #sidebarAdmin");
-        $("#navbar").load("/resources/htmlToLoad/admin.html #navbarAdmin");
+        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin",function () {
+            $("#orderSection").addClass("active");
+        });
+        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin");
+        $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
+
     });
 </script>
 </body>

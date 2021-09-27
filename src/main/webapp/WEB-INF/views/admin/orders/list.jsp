@@ -1,15 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="spring"  uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<%--    <link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/img/apple-icon.png">--%>
-<%--    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/favicon.png">--%>
+    <%--    <link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/img/apple-icon.png">--%>
+    <%--    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/favicon.png">--%>
     <title>
         Orders
     </title>
@@ -26,7 +26,7 @@
 <body class="">
 <div class="wrapper">
     <div id="sidebar"></div>
-    <div class="main-panel bg-image-main" data="green">
+    <div class="main-panel bg-image-main">
         <div id="navbar"></div>
 
         <div class="content">
@@ -40,14 +40,65 @@
                 </div>
             </c:if>
             <div class="row">
-                <div class="col-lg-8 col-md-12">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Orders</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 col-md-12 text-left">
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <p class="card-text" style="display: inline-block; margin-right: 15px;">
+                                                Status: </p>
+                                            <div class="form-check form-check-radio form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="exampleRadios"
+                                                           id="exampleRadios1" value="active" checked>
+                                                    Active
+                                                    <span class="form-check-sign"></span>
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-radio form-check-inline">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="radio" name="exampleRadios"
+                                                           id="exampleRadios2" value="closed">
+                                                    Closed
+                                                    <span class="form-check-sign"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-12 text-lg-right text-md-left">
+                                    <button type="button" class="btn btn-success btn-simple">
+                                    <span>
+                                    <i class="tim-icons icon-chart-pie-36"></i> Active orders <span
+                                            class="badge badge-success">4</span>
+                                    </span>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-simple">
+                                    <span>
+                                    <i class="tim-icons icon-button-power"></i> Closed orders <span
+                                            class="badge badge-primary">4</span>
+                                    </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title"> Active orders</h4>
                         </div>
                         <div class="card-body">
                             <div>
-                                <a href="/order/add" class="btn btn-success">Add order</a>
+                                <a href="/order/add" class="btn btn-primary animation-on-hover">Add</a>
                             </div>
                             <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
                                 <table class="table tablesorter">
@@ -63,34 +114,34 @@
                                     </thead>
                                     <tbody>
                                     <c:forEach var="order" items="${activeOrders}" varStatus="status">
-                                    <tr>
-                                        <td class="text-center">${status.count}</td>
-                                        <td>${order.customer.name}</td>
-                                        <td>${order.productType}</td>
-                                        <td>${order.creationDateFormat}</td>
-                                        <td class="text-right">${order.cost}</td>
-                                        <td class="td-actions text-right">
-                                            <spring:url value="/order/${order.id}" var="orderUrl" />
-                                            <spring:url value="/order/${order.id}/delete" var="deleteUrl" />
-                                            <spring:url value="/order/${order.id}/update" var="updateUrl" />
+                                        <tr>
+                                            <td class="text-center">${status.count}</td>
+                                            <td>${order.customer.name}</td>
+                                            <td>${order.productType}</td>
+                                            <td>${order.creationDateFormat}</td>
+                                            <td class="text-right">${order.cost}</td>
+                                            <td class="td-actions text-right">
+                                                <spring:url value="/order/${order.id}" var="orderUrl"/>
+                                                <spring:url value="/order/${order.id}/delete" var="deleteUrl"/>
+                                                <spring:url value="/order/${order.id}/update" var="updateUrl"/>
 
-                                            <button type="button" rel="tooltip"
-                                                    class="btn btn-link btn-success btn-sm btn-icon"
-                                                    onclick="location.href='${orderUrl}'">
-                                                <i class="tim-icons icon-tap-02"></i>
-                                            </button>
-                                            <button type="button" rel="tooltip"
-                                                    class="btn btn-link btn-success btn-sm btn-icon"
-                                                    onclick="location.href='${updateUrl}'">
-                                                <i class="tim-icons icon-pencil"></i>
-                                            </button>
-                                            <button type="button" rel="tooltip"
-                                                    class="btn btn-link btn-danger btn-sm btn-icon"
-                                                    onclick="post('${deleteUrl}')">
-                                                <i class="tim-icons icon-simple-remove"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                                <button type="button" rel="tooltip"
+                                                        class="btn btn-link btn-primary btn-sm btn-icon"
+                                                        onclick="location.href='${orderUrl}'">
+                                                    <i class="tim-icons icon-tap-02"></i>
+                                                </button>
+                                                <button type="button" rel="tooltip"
+                                                        class="btn btn-link btn-success btn-sm btn-icon"
+                                                        onclick="location.href='${updateUrl}'">
+                                                    <i class="tim-icons icon-pencil"></i>
+                                                </button>
+                                                <button type="button" rel="tooltip"
+                                                        class="btn btn-link btn-danger btn-sm btn-icon"
+                                                        onclick="post('${deleteUrl}')">
+                                                    <i class="tim-icons icon-simple-remove"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
                                     </c:forEach>
                                     </tbody>
                                 </table>
@@ -122,7 +173,7 @@
                                             <td>${order.productType}</td>
                                             <td class="text-right">${order.cost}</td>
                                             <td class="td-actions text-right">
-                                                <spring:url value="/order/${order.id}" var="orderUrlClosed" />
+                                                <spring:url value="/order/${order.id}" var="orderUrlClosed"/>
                                                 <button type="button" rel="tooltip"
                                                         class="btn btn-link btn-primary btn-sm btn-icon"
                                                         onclick="location.href='${orderUrlClosed}'">
@@ -139,13 +190,9 @@
                 </div>
 
             </div>
+            <div id="footerGroup"></div>
         </div>
-        <footer class="footer">
-            <div class="container-fluid">
-                <ul class="nav">
-                </ul>
-            </div>
-        </footer>
+
     </div>
 </div>
 <div class="fixed-plugin">
@@ -155,16 +202,16 @@
         </a>
         <ul class="dropdown-menu">
             <li class="header-title"> Sidebar Background</li>
-<%--            <li class="adjustments-line">--%>
-<%--                <a href="javascript:void(0)" class="switch-trigger background-color">--%>
-<%--                    <div class="badge-colors text-center">--%>
-<%--                        <span class="badge filter badge-primary active" data-color="primary"></span>--%>
-<%--                        <span class="badge filter badge-info" data-color="blue"></span>--%>
-<%--                        <span class="badge filter badge-success" data-color="green"></span>--%>
-<%--                    </div>--%>
-<%--                    <div class="clearfix"></div>--%>
-<%--                </a>--%>
-<%--            </li>--%>
+            <%--            <li class="adjustments-line">--%>
+            <%--                <a href="javascript:void(0)" class="switch-trigger background-color">--%>
+            <%--                    <div class="badge-colors text-center">--%>
+            <%--                        <span class="badge filter badge-primary active" data-color="primary"></span>--%>
+            <%--                        <span class="badge filter badge-info" data-color="blue"></span>--%>
+            <%--                        <span class="badge filter badge-success" data-color="green"></span>--%>
+            <%--                    </div>--%>
+            <%--                    <div class="clearfix"></div>--%>
+            <%--                </a>--%>
+            <%--            </li>--%>
             <li class="adjustments-line text-center color-change">
                 <span class="color-label">LIGHT MODE</span>
                 <span class="badge light-badge mr-2"></span>
@@ -189,15 +236,17 @@
 <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $( "#sidebar" ).load( "/resources/htmlToLoad/admin.html #sidebarAdmin", function () {
+        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
             $("#orderSection").addClass("active");
         });
-        $( "#navbar" ).load( "/resources/htmlToLoad/admin.html #navbarAdmin", function (){
+        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
             $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
         });
+        $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
 
-        $().ready(function() {
+
+        $().ready(function () {
             $sidebar = $('.sidebar');
             $navbar = $('.navbar');
             $main_panel = $('.main-panel');
@@ -213,7 +262,7 @@
             fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
 
-            $('.fixed-plugin a').click(function(event) {
+            $('.fixed-plugin a').click(function (event) {
                 if ($(this).hasClass('switch-trigger')) {
                     if (event.stopPropagation) {
                         event.stopPropagation();
@@ -223,7 +272,7 @@
                 }
             });
 
-            $('.fixed-plugin .background-color span').click(function() {
+            $('.fixed-plugin .background-color span').click(function () {
                 $(this).siblings().removeClass('active');
                 $(this).addClass('active');
 
@@ -246,7 +295,7 @@
                 }
             });
 
-            $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
+            $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function () {
                 var $btn = $(this);
 
                 if (sidebar_mini_active == true) {
@@ -260,23 +309,23 @@
                 }
 
                 // we simulate the window Resize so the charts will get updated in realtime.
-                var simulateWindowResize = setInterval(function() {
+                var simulateWindowResize = setInterval(function () {
                     window.dispatchEvent(new Event('resize'));
                 }, 180);
 
                 // we stop the simulation of Window Resize after the animations are completed
-                setTimeout(function() {
+                setTimeout(function () {
                     clearInterval(simulateWindowResize);
                 }, 1000);
             });
 
-            $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
+            $('.switch-change-color input').on("switchChange.bootstrapSwitch", function () {
                 var $btn = $(this);
 
                 if (white_color == true) {
 
                     $('body').addClass('change-background');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $('body').removeClass('change-background');
                         $('body').removeClass('white-content');
                     }, 900);
@@ -284,7 +333,7 @@
                 } else {
 
                     $('body').addClass('change-background');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $('body').removeClass('change-background');
                         $('body').addClass('white-content');
                     }, 900);
@@ -295,11 +344,11 @@
 
             });
 
-            $('.light-badge').click(function() {
+            $('.light-badge').click(function () {
                 $('body').addClass('white-content');
             });
 
-            $('.dark-badge').click(function() {
+            $('.dark-badge').click(function () {
                 $('body').removeClass('white-content');
             });
         });
@@ -312,7 +361,7 @@
         form.setAttribute("method", method);
         form.setAttribute("action", path);
 
-        for ( var key in params) {
+        for (var key in params) {
             if (params.hasOwnProperty(key)) {
                 var hiddenField = document.createElement("input");
                 hiddenField.setAttribute("type", "hidden");
