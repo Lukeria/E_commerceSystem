@@ -1,7 +1,7 @@
 package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.additional.ComponentViews;
-import com.e_commerceSystem.additional.JsonResponse;
+import com.e_commerceSystem.additional.enums.JsonResponse;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.interfaces.CalculatorService;

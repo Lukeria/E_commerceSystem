@@ -1,9 +1,7 @@
 package com.e_commerceSystem.services.interfaces;
 
-import com.e_commerceSystem.additional.ComponentTypes;
-import com.e_commerceSystem.entities.components.Component;
+import com.e_commerceSystem.additional.enums.ComponentTypes;
 import com.e_commerceSystem.entities.components.DefaultComponent;
-import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.exceptions.ComponentExtractionException;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.e_commerceSystem.additional;
+package com.e_commerceSystem.additional.converters;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

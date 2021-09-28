@@ -1,8 +1,8 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.additional.ComponentTypes;
-import com.e_commerceSystem.additional.JsonResponse;
-import com.e_commerceSystem.additional.ProcessingType;
+import com.e_commerceSystem.additional.enums.ComponentTypes;
+import com.e_commerceSystem.additional.enums.JsonResponse;
+import com.e_commerceSystem.additional.enums.ProcessingType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;

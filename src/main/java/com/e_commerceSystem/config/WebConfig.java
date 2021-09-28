@@ -1,6 +1,6 @@
 package com.e_commerceSystem.config;
 
-import com.e_commerceSystem.additional.StringToEnumConverter;
+import com.e_commerceSystem.additional.converters.ComponentTypeStringToEnumConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +40,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
 //        WebMvcConfigurer.super.addFormatters(registry);
-        registry.addConverter(new StringToEnumConverter());
+        registry.addConverter(new ComponentTypeStringToEnumConverter());
     }
 }

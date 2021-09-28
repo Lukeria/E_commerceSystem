@@ -1,6 +1,6 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.additional.ComponentTypes;
+import com.e_commerceSystem.additional.enums.ComponentTypes;
 import com.e_commerceSystem.services.interfaces.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

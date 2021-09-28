@@ -69,6 +69,7 @@ public class ComponentDaoImp implements ComponentDao {
                 .map(value -> (Accessory)value)
                 .collect(Collectors.toList());
         return accessoryList;
+
     }
 
     @Override

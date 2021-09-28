@@ -1,5 +1,6 @@
-package com.e_commerceSystem.additional;
+package com.e_commerceSystem.additional.enums;
 
+import com.e_commerceSystem.additional.ComponentViews;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class JsonResponse {

@@ -1,7 +1,7 @@
 package com.e_commerceSystem.entities.glass;
 
 import com.e_commerceSystem.additional.ComponentViews;
-import com.e_commerceSystem.additional.ProcessingType;
+import com.e_commerceSystem.additional.enums.ProcessingType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -18,7 +18,6 @@ public class Processing implements Serializable, DefaultComponent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @TableGenerator(table = "sequence", name = "IdGenerator")
     @JsonView(ComponentViews.Normal.class)
     private Long id;
 
