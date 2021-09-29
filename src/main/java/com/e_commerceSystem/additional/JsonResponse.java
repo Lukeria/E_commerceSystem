@@ -1,4 +1,4 @@
-package com.e_commerceSystem.additional.enums;
+package com.e_commerceSystem.additional;
 
 import com.e_commerceSystem.additional.ComponentViews;
 import com.fasterxml.jackson.annotation.JsonView;

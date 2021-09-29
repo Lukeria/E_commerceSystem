@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Order</title>
+    <title>Catalog settings</title>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
@@ -19,67 +19,30 @@
           href="${pageContext.request.contextPath}/resources/css/black-dashboard.css?v=1.0.0"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/custom/custom.css"/>
 </head>
-<body class="">
+<body>
 <div class="wrapper">
     <div id="sidebar"></div>
-    <div class="main-panel bg-image-main">
+    <div class="bg-image-main main-panel">
         <div id="navbar"></div>
 
         <div class="content">
-            <c:if test="${not empty msg}">
-                <div class="alert alert-${css} alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <strong>${msg}</strong>
-                </div>
-            </c:if>
             <div class="row">
-                <div class="col-lg-8 col-md-12">
-                    <div class="card card-plain">
+                <div class="col-lg-8 col-md-6">
+                    <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Order #${order.id}
-                                <c:choose>
-                                    <c:when test="${order.status.equals('Active')}">
-                                        <span class="badge badge-pill badge-info">${order.status}</span>
-                                    </c:when>
-                                    <c:when test="${order.status.equals('Closed')}">
-                                        <span class="badge badge-pill badge-danger">${order.status}</span>
-                                    </c:when>
-                                </c:choose>
+                            <h4 class="card-title">Card information
                             </h4>
                         </div>
                         <div class="card-body">
-                            <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                <table class="table tablesorter">
-                                    <tbody>
-                                    <tr>
-                                        <td><label>Creation date:</label></td>
-                                        <td class="text-left">${order.creationDateFormat}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Deadline:</label></td>
-                                        <td class="text-left">${order.deadlineFormat}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Product type:</label></td>
-                                        <td class="text-left">${order.productType}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><label class="text-primary">Cost:</label></td>
-                                        <td class="text-left t"><span class="text-primary">${order.cost}</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Glass</h4>
-                        </div>
-                        <div class="card-body">
+                            <label for="productType">Product type</label>
+                            <select type="text" id="productType" class="form-control" name="productType">
+                                <c:forEach var="type" items="${productTypes}">
+                                    <option value="${type.name}">${type.representation}</option>
+                                </c:forEach>
+                            </select>
+                            <h4 class="card-title" style="margin-top: 2.75rem">Glass
+                            </h4>
+                            <a href="/calculator/" class="btn btn-success btn-simple">Edit</a>
                             <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
                                 <table class="table tablesorter">
                                     <thead>
@@ -113,53 +76,31 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <button class="btn btn-success animation-on-hover" id="save">Save</button>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12">
+                <div class="col-lg-4 col-md-6">
                     <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">
-                                <i class="tim-icons icon-single-02 text-success"></i>
-                                Customer contacts</h4>
-                        </div>
+                        <img class="card-img-top"
+                             src="${pageContext.request.contextPath}/resources/img/empty_photo.jpg"
+                             alt="Card image cap" id="my_image">
                         <div class="card-body">
-                            <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                <table class="table tablesorter">
-                                    <tbody>
-                                    <tr>
-                                        <td><label>Name:</label></td>
-                                        <td>${order.customer.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Phone:</label></td>
-                                        <td>${order.customer.phone}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>Email:</label></td>
-                                        <td>${order.customer.email}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                            <div class="file-input-custom">
+                                <div class="form-group">
+                                    <label class="label">
+                                            <span><i class="tim-icons icon-attach-87"></i>
+                                        <span class="title">Добавить файл</span>
+                                        <input type="file" name="file" id="file_upload">
+                                        </span>
+                                    </label>
+                                </div>
                             </div>
+                            <p class="card-text" id="file_upload_name"></p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-8 col-md-12">
-
-                </div>
-            </div>
-            <c:if test="${!order.status.equals('Closed')}">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <a href="/order/${order.id}/update" class="btn btn-success">Update</a>
-                        <a href="/order/${order.id}/close" class="btn btn-primary" id="closeOrder">Mark as closed</a>
-                    </div>
-                </div>
-            </c:if>
-            <div id="footerGroup"></div>
         </div>
     </div>
 </div>
@@ -178,14 +119,13 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-
+<script src="${pageContext.request.contextPath}/resources/js/custom/catalog.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
-            $("#orderSection").addClass("active");
+            $("#catalogSection").addClass("active");
         });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function (){
+        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
             $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
         });

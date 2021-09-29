@@ -93,8 +93,17 @@ table {
     border: 0.0625rem solid rgba(255, 255, 255, .1);
 }
 
-.list-group-border{
+.list-group-border {
     border-bottom: 0.0625rem;
+}
+
+.nav-tabs {
+    border-bottom: 0.0625rem solid rgba(255, 255, 255, .1);
+}
+
+.nav-tabs .nav-link {
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 /*Button style*/
@@ -148,12 +157,65 @@ table {
     transform: scale(0.1, 1);
 }
 
-.btn-white:hover{
+.btn-white:hover {
     color: #ff8d72;
 }
 
-.btn-white:active{
+.btn-white:active {
     color: #ff8d72;
 }
 
-/*Tnd button style*/
+/*End button style*/
+
+/*File input style*/
+
+.file-input-custom .form-group {
+    padding: 1em;
+    margin: 1em
+}
+
+.file-input-custom input[type=file] {
+    outline: 0;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none
+}
+
+.file-input-custom .label {
+    border: 2px dashed #e14eca;
+    border-radius: 5px;
+    display: block;
+    padding: 1em;
+    transition: border 300ms ease;
+    cursor: pointer;
+    text-align: center
+}
+
+.file-input-custom .label i {
+    display: block;
+    font-size: 0.75rem;
+    /*padding-bottom: 16px*/
+}
+
+.file-input-custom .label i, .file-input-custom .label .title {
+    color: #e14eca;
+    transition: 200ms color
+}
+
+.file-input-custom .label:hover {
+    border: 2px solid white
+}
+
+.file-input-custom .label:hover i, .file-input-custom .label:hover .title {
+    color: white
+}
+
+.file-input-custom .label span{
+    display: inline-block;
+}
+
+/*End file input style*/
+
+a, .btn{
+    cursor: pointer;
+}

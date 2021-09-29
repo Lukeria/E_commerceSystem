@@ -1,11 +1,15 @@
 package com.e_commerceSystem.config;
 
 import com.e_commerceSystem.additional.converters.ComponentTypeStringToEnumConverter;
+import com.e_commerceSystem.additional.converters.ProductTypeStringToEnumConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
@@ -39,7 +43,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-//        WebMvcConfigurer.super.addFormatters(registry);
+
         registry.addConverter(new ComponentTypeStringToEnumConverter());
+        registry.addConverter(new ProductTypeStringToEnumConverter());
+    }
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 }

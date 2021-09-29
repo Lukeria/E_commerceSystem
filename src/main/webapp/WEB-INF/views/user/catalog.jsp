@@ -35,7 +35,8 @@
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Catalog</li>
+                            <li class="breadcrumb-item" aria-current="page">Catalog</li>
+                            <li class="breadcrumb-item active" aria-current="page">${productType.representation}</li>
                         </ol>
                     </nav>
                 </div>
@@ -46,21 +47,48 @@
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Зеркала</h3>
+                            <h3 class="card-title">${productType.representation}</h3>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-9 col-md-8">
                                     <p class="card-text">
-                                        Зеркала – многофункциональные элементы интерьера. Они сочетают две основные
-                                        функции: практическую и декоративную. С их помощью можно преобразить помещение,
-                                        добиться интересных оптических эффектов. Сделать заказ можно по телефону или
-                                        посредством онлайн-формы.
+                                        <c:choose>
+                                            <c:when test="${productType.name.equals('mirror')}">
+                                                Зеркала – многофункциональные элементы интерьера. Они сочетают две основные
+                                                функции: практическую и декоративную. С их помощью можно преобразить помещение,
+                                                добиться интересных оптических эффектов. Сделать заказ можно по телефону или
+                                                посредством онлайн-формы.
+                                            </c:when>
+                                            <c:when test="${productType.name.equals('partition')}">
+                                                Стеклянные перегородки – это не только способ зонирования пространства,
+                                                но и элемент декора. Они могут визуально расширить помещение и увеличить
+                                                световой поток. Сделать заказ можно по телефону или посредством онлайн-формы.
+                                            </c:when>
+                                            <c:when test="${productType.name.equals('shower')}">
+                                                Душевые кабины из стекла прекрасно решают вопросы, связанные с качеством,
+                                                удобством, функциональностью ванной комнаты. Они позволяют устранить тесноту,
+                                                однообразие, реализовать самые интересные дизайнерские задумки в интерьере комнаты.
+                                                Сделать заказ можно по телефону или посредством онлайн-формы.
+                                            </c:when>
+                                            <c:when test="${productType.name.equals('apron')}">
+                                                Появление скинали позволило пересмотреть подходы к оформлению кухонного интерьера.
+                                                Фартук для кухни из стекла не просто стал популярным интерьерным решением.
+                                                Сделать заказ можно по телефону или посредством онлайн-формы.
+                                            </c:when>
+                                            <c:otherwise>
+                                                Undefined
+                                            </c:otherwise>
+                                        </c:choose>
                                     </p>
                                 </div>
                                 <div class="col-lg-3 col-md-4 text-center">
+                                    <spring:url
+                                            value="${pageContext.request.contextPath}/calculator/?productType=${productType.name}"
+                                            var="calculatorUrl">
+                                    </spring:url>
                                     <a class="btn btn-primary animation-on-hover"
-                                       href="/calculator/">Calculate order
+                                       href="${calculatorUrl}">Calculate order
                                     </a>
                                 </div>
                             </div>
@@ -80,16 +108,16 @@
                         <div class="collapse show" id="collapseExample">
                             <div class="card-body">
                                 <ul class="list-group list-group-flush">
-                                    <a href="#" class="btn btn-simple btn-warning">
+                                    <a href="/catalog/mirror" class="btn btn-simple btn-warning">
                                         Зеркала
                                     </a>
-                                    <a href="#" class="btn btn-simple btn-warning">
+                                    <a href="/catalog/partition" class="btn btn-simple btn-warning">
                                         Перегородки
                                     </a>
-                                    <a href="#" class="btn btn-simple btn-warning">
+                                    <a href="/catalog/shower" class="btn btn-simple btn-warning">
                                         Душевые
                                     </a>
-                                    <a href="#" class="btn btn-simple btn-warning">
+                                    <a href="/catalog/apron" class="btn btn-simple btn-warning">
                                         Кухонные скинали
                                     </a>
                                 </ul>
@@ -106,74 +134,16 @@
                                      alt="Card image cap">
                                 <div class="card-body">
                                     <h4 class="card-title">Caption</h4>
-                                    <a href="#" class="btn btn-simple btn-warning ">
-                                        Button
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="card">
-                                <img class="card-img-top"
-                                     src="${pageContext.request.contextPath}/resources/img/empty_photo.jpg"
-                                     alt="Card image cap">
-                                <div class="card-body">
-                                    <h4 class="card-title">Caption</h4>
-                                    <a href="#" class="btn btn-simple btn-warning ">
-                                        Button
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="card">
-                                <img class="card-img-top"
-                                     src="${pageContext.request.contextPath}/resources/img/empty_photo.jpg"
-                                     alt="Card image cap">
-                                <div class="card-body">
-                                    <h4 class="card-title">Caption</h4>
-                                    <a href="#" class="btn btn-simple btn-warning ">
-                                        Button
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="card">
-                                <img class="card-img-top"
-                                     src="${pageContext.request.contextPath}/resources/img/empty_photo.jpg"
-                                     alt="Card image cap">
-                                <div class="card-body">
-                                    <h4 class="card-title">Caption</h4>
-                                    <a href="#" class="btn btn-simple btn-warning ">
-                                        Button
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="card">
-                                <img class="card-img-top"
-                                     src="${pageContext.request.contextPath}/resources/img/empty_photo.jpg"
-                                     alt="Card image cap">
-                                <div class="card-body">
-                                    <h4 class="card-title">Caption</h4>
-                                    <a href="#" class="btn btn-simple btn-warning ">
-                                        Button
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4">
-                            <div class="card">
-                                <img class="card-img-top"
-                                     src="${pageContext.request.contextPath}/resources/img/empty_photo.jpg"
-                                     alt="Card image cap">
-                                <div class="card-body">
-                                    <h4 class="card-title">Caption</h4>
-                                    <a href="#" class="btn btn-simple btn-warning ">
-                                        Button
-                                    </a>
+                                    <div class="card-text text-right">
+                                        <a href="#" class="btn btn-info btn-fab btn-icon btn-round animation-on-hover">
+                                            <i class="tim-icons icon-tap-02"></i>
+                                        </a>
+
+                                        <a href="${calculatorUrl}"
+                                           class="btn btn-primary btn-fab btn-icon btn-round animation-on-hover">
+                                            <i class="tim-icons icon-cart"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

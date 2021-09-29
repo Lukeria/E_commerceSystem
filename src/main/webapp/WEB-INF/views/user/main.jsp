@@ -50,7 +50,7 @@
                                 <div class="carousel-caption d-none d-md-block">
                                     <h3>Стеклянные двери и перегородки</h3>
                                     <p>Изготовление под заказ, с доставкой и установкой</p>
-                                    <a href="/catalog/" class="btn btn-warning animation-on-hover">Перейти в каталог</a>
+                                    <a href="/catalog/partition" class="btn btn-warning animation-on-hover">Перейти в каталог</a>
                                 </div>
                             </div>
                             <div class="carousel-item">
@@ -59,7 +59,7 @@
                                 <div class="carousel-caption d-none d-md-block">
                                     <h3>Зеркальные композиции и зеркала</h3>
                                     <p>Изготовление под заказ, с доставкой и установкой</p>
-                                    <a href="/catalog/" class="btn btn-warning animation-on-hover">Перейти в каталог</a>
+                                    <a href="/catalog/mirror" class="btn btn-warning animation-on-hover">Перейти в каталог</a>
                                 </div>
                             </div>
                             <div class="carousel-item">
@@ -68,7 +68,7 @@
                                 <div class="carousel-caption d-none d-md-block">
                                     <h3>Душевые кабины из стекла</h3>
                                     <p>Изготовление под заказ, с доставкой и установкой</p>
-                                    <a href="/catalog/" class="btn btn-warning animation-on-hover">Перейти в каталог</a>
+                                    <a href="/catalog/shower" class="btn btn-warning animation-on-hover">Перейти в каталог</a>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                              alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title">Зеркала с подстветкой</h4>
-                            <a href="#" class="btn btn-simple btn-warning btn-one">
+                            <a href="/catalog/mirror" class="btn btn-simple btn-warning btn-one">
                                 <span>Перейти в каталог <i class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
@@ -130,7 +130,7 @@
                              alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title">Перегородки из стекла</h4>
-                            <a href="#" class="btn btn-simple btn-warning btn-one">
+                            <a href="/catalog/partition" class="btn btn-simple btn-warning btn-one">
                                 <span>Перейти в каталог <i class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
@@ -142,7 +142,7 @@
                              alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title">Душевые из стекла</h4>
-                            <a href="#" class="btn btn-simple btn-warning btn-one">
+                            <a href="/catalog/shower" class="btn btn-simple btn-warning btn-one">
                                 <span>Перейти в каталог <i class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
@@ -154,7 +154,7 @@
                              alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title">Кухонные скинали</h4>
-                            <a href="#" class="btn btn-simple btn-warning btn-one">
+                            <a href="/catalog/apron" class="btn btn-simple btn-warning btn-one">
                                 <span>Перейти в каталог <i class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>

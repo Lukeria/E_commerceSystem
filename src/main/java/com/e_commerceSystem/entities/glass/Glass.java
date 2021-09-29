@@ -1,5 +1,6 @@
 package com.e_commerceSystem.entities.glass;
 
+import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Order;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,6 +40,10 @@ public class Glass implements Serializable {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "catalog_id")
+    private Catalog catalog;
 
     public Glass() {
     }
@@ -112,6 +117,14 @@ public class Glass implements Serializable {
 
     public void setProcessingArrayList(List<Processing> processingArrayList) {
         this.processingArrayList = processingArrayList;
+    }
+
+    public Catalog getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(Catalog catalog) {
+        this.catalog = catalog;
     }
 
     @Override

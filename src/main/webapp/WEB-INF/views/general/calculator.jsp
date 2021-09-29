@@ -31,7 +31,7 @@
 <body clas="">
 <div class="wrapper">
     <div id="sidebar"></div>
-    <div class="main-panel bg-image-main" data="green">
+    <div class="main-panel bg-image-main">
         <div id="navbar">
             <security:authorize access="!hasRole('ADMIN')">
                 <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/userHeader.jsp"/>
@@ -110,7 +110,7 @@
                                                 <thead>
                                                 <th>Glass</th>
                                                 <th>
-                                                    <button type="button" class="btn btn-primary btn-simple btn-sm"
+                                                    <button disabled type="button" class="btn btn-primary btn-simple btn-sm"
                                                             id="addRaw">
                                                         Add
                                                     </button>

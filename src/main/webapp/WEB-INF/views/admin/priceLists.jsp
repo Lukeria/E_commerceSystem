@@ -22,7 +22,7 @@
 <body class="">
 <div class="wrapper">
     <div id="sidebar"></div>
-    <div class="bg-image-main main-panel" data="green">
+    <div class="bg-image-main main-panel">
         <div id="navbar"></div>
 
         <div class="content">

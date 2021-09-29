@@ -1,7 +1,8 @@
 package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.additional.ComponentViews;
-import com.e_commerceSystem.additional.enums.JsonResponse;
+import com.e_commerceSystem.additional.JsonResponse;
+import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
@@ -23,7 +24,7 @@ public class CalculatorController {
     private CalculatorService calculatingService;
 
     @GetMapping("/")
-    public ModelAndView calculator() {
+    public ModelAndView calculator(@RequestParam(name = "productType", required = false) ProductType productType) {
 
         ModelAndView modelAndView = new ModelAndView("general/calculator");
 
@@ -31,6 +32,9 @@ public class CalculatorController {
         List<Glass> glassList = new ArrayList<Glass>();
         glassList.add(new Glass());
         order.setGlassList(new HashSet<>(glassList));
+        if (productType != null) {
+            order.setProductType(productType.getRepresentation());
+        }
 
         modelAndView.addObject("order", order);
         return modelAndView;
