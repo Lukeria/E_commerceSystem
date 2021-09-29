@@ -63,6 +63,9 @@
                                 <div class="row">
 
                                     <c:forEach items="${listOfItems}" var="catalogItem">
+                                        <spring:url value="/catalog/settings/${catalogItem.id}" var="updateUrl"/>
+                                        <spring:url value="/catalog/settings/${catalogItem.id}/delete" var="deleteUrl"/>
+
                                         <div class="col-lg-2 col-md-3 col-sm-4">
                                             <div class="card">
                                                 <img class="card-img-top"
@@ -70,17 +73,16 @@
                                                      alt="Card image cap">
                                                 <div class="card-body">
                                                     <div class="card-text text-right">
-                                                        <input type="hidden" value="${catalogItem.id}">
                                                         <span class="badge badge-info"><i
                                                                 class="tim-icons icon-tag"></i></span>
-                                                        <a href="#"
+                                                        <a href="${updateUrl}"
                                                            class="btn btn-success btn-link btn-icon animation-on-hover">
                                                             <i class="tim-icons icon-pencil"></i>
                                                         </a>
-                                                        <a href="#"
+                                                        <button onclick="post('${deleteUrl}')"
                                                            class="btn btn-danger btn-link btn-icon animation-on-hover">
                                                             <i class="tim-icons icon-trash-simple"></i>
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -120,6 +122,7 @@
         });
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
+
 </script>
 </body>
 </html>

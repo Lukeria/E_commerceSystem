@@ -35,24 +35,66 @@
                         </div>
                         <div class="card-body">
                             <input type="hidden" id="catalog_id">
-                            <div class="form-group">
-                                <label for="productType">Product type</label>
-                                <select type="text" id="productType" class="form-control" name="productType">
-                                    <c:forEach var="type" items="${productTypes}">
-                                        <option value="${type.name}">${type.representation}</option>
+                            <label for="productType">Product type</label>
+                            <select  type="text" id="productType" class="form-control" name="productType">
+                                <c:if test="${catalog.productType!=null}">
+                                    <option selected value="${catalog.productType}">${catalog.productType}</option>
+                                </c:if>
+                                <c:forEach var="type" items="${productTypes}">
+                                    <option value="${type.name}">${type.representation}</option>
+                                </c:forEach>
+                            </select>
+                            <h4 class="card-title" style="margin-top: 2.75rem">Glass
+                            </h4>
+                            <c:if test="${catalog.id!=null}">
+                                <spring:url value="/catalog/settings/${catalog.id}/updateGlass" var="editUrl"/>
+                            </c:if>
+                            <a href="${editUrl}" class="btn btn-success btn-simple" id="updateGlass">Edit</a>
+                            <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table tablesorter">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th>Type</th>
+                                        <th>Size</th>
+                                        <th>Processing</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="glass" items="${catalog.glassList}" varStatus="status">
+                                        <tr>
+                                            <td class="text-center">${status.count}</td>
+                                            <td>${glass.glassType.name}-${glass.glassType.thickness}</td>
+                                            <td>${glass.width} x ${glass.height}</td>
+                                            <td>
+                                                <table class="table table-borderless">
+                                                    <tbody>
+                                                    <c:forEach var="processing" items="${glass.processingList}">
+                                                        <tr>
+                                                            <td>${processing.symbol}</td>
+                                                            <td>${processing.quantity}</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
                                     </c:forEach>
-                                </select>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="form-group">
-                                <button class="btn btn-success animation-on-hover" id="save">Save</button>
-                            </div>
+                            <button class="btn btn-success animation-on-hover" id="save">Save</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="card">
-                        <spring:url value="${pageContext.request.contextPath}/resources/img/empty_photo.jpg"
-                                    var="imageUrl"/>
+                        <c:if test="${catalog.id!=null}">
+                            <spring:url value="/catalog/settings/displayImage?id=${catalog.id}" var="imageUrl"/>
+                        </c:if>
+                        <c:if test="${catalog.id==null}">
+                            <spring:url value="${pageContext.request.contextPath}/resources/img/empty_photo.jpg" var="imageUrl"/>
+                        </c:if>
 
                         <img class="card-img-top"
                              src="${imageUrl}"

@@ -3,10 +3,7 @@ package com.e_commerceSystem.entities;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 
 @Entity
 public class Image {
@@ -23,6 +20,9 @@ public class Image {
     @Lob
     @Type(type="org.hibernate.type.ImageType")
     private byte[] data;
+
+    @OneToOne(mappedBy = "image")
+    private Catalog catalog;
 
     public Image() {
     }
@@ -63,5 +63,13 @@ public class Image {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public Catalog getCatalog() {
+        return catalog;
+    }
+
+    public void setCatalog(Catalog catalog) {
+        this.catalog = catalog;
     }
 }

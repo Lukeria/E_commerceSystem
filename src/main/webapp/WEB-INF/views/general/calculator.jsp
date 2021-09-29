@@ -73,36 +73,48 @@
                             <h4 class="card-title">Calculator</h4>
                         </div>
                         <div class="card-body">
-                            <form:form id="calculatorForm" method="post" action="/order/save" modelAttribute="order">
-                                <c:if test="${order.id != null}">
-                                    <div class="form-row">
-                                        <div class="form-group col-lg-6">
-                                            <p class="text-primary">Order #<span id="id">${order.id}</span></p>
-                                            <form:input path="id" type="hidden"/>
-                                        </div>
-                                    </div>
+                            <c:if test="${isForTemplate}">
+                                <spring:url value="/catalog/settings/save" var="formUrl"/>
+                            </c:if>
+                            <c:if test="${!isForTemplate||isForTemplate==null}">
+                                <spring:url value="/order/save" var="formUrl"/>
+                            </c:if>
+                            <form:form id="calculatorForm" method="post" action="${formUrl}" modelAttribute="order">
 
-                                    <div class="form-row">
-                                        <div class="form-group col-lg-6">
-                                            <p class="text-success">Customer: ${order.customer.name}</p>
+                                <c:if test="${!isForTemplate||isForTemplate==null}">
+                                    <c:if test="${order.id != null}">
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <p class="text-primary">Order #<span id="id">${order.id}</span></p>
+                                                <form:input path="id" type="hidden"/>
+                                            </div>
                                         </div>
-                                    </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <p class="text-success">Customer: ${order.customer.name}</p>
+                                            </div>
+                                        </div>
+                                    </c:if>
+
+                                    <spring:bind path="productType">
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6 col-md-12">
+                                                <label for="productType">Product type: </label>
+                                                <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                                    <form:input path="productType" type="text" id="productType"
+                                                                class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                                name="productType"/>
+                                                </div>
+                                                <form:errors path="productType" class="form-text text-danger"/>
+                                            </div>
+                                        </div>
+                                    </spring:bind>
                                 </c:if>
 
-                                <spring:bind path="productType">
-                                    <div class="form-row">
-                                        <div class="form-group col-lg-6 col-md-12">
-                                            <label for="productType">Product type: </label>
-                                            <div class="form-group ${status.error ? 'has-danger' : ''}">
-                                                <form:input path="productType" type="text" id="productType"
-                                                            class="form-control ${status.error ? 'form-control-danger' : ''}"
-                                                            name="productType"/>
-                                            </div>
-                                            <form:errors path="productType" class="form-text text-danger"/>
-                                        </div>
-                                    </div>
-                                </spring:bind>
-
+                                <c:if test="${isForTemplate}">
+                                    <form:input path="id" type="hidden"/>
+                                </c:if>
                                 <div class="form-row">
                                     <div class="form-group col">
                                         <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
@@ -110,7 +122,8 @@
                                                 <thead>
                                                 <th>Glass</th>
                                                 <th>
-                                                    <button disabled type="button" class="btn btn-primary btn-simple btn-sm"
+                                                    <button type="button"
+                                                            class="btn btn-primary btn-simple btn-sm"
                                                             id="addRaw">
                                                         Add
                                                     </button>
@@ -212,35 +225,37 @@
                                     </tbody>
                                 </table>
 
-                                <spring:bind path="cost">
-                                    <div class="form-row">
-                                        <div class="form-group col-lg-4 col-md-6">
-                                            <label for="result">Result:</label>
-                                            <security:authorize access="hasRole('ADMIN')">
-                                                <div class="form-group ${status.error ? 'has-danger' : ''}">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="tim-icons icon-coins text-primary"></i>
+                                <c:if test="${!isForTemplate || isForTemplate==null}">
+                                    <spring:bind path="cost">
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-4 col-md-6">
+                                                <label for="result">Result:</label>
+                                                <security:authorize access="hasRole('ADMIN')">
+                                                    <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">
+                                                                    <i class="tim-icons icon-coins text-primary"></i>
+                                                                </div>
                                                             </div>
+                                                            <form:input path="cost" type="number"
+                                                                        class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                                        id="result"
+                                                                        name="result"/>
                                                         </div>
-                                                        <form:input path="cost" type="number"
-                                                                    class="form-control ${status.error ? 'form-control-danger' : ''}"
-                                                                    id="result"
-                                                                    name="result"/>
+                                                        <form:errors path="cost" class="form-text text-danger"/>
                                                     </div>
-                                                    <form:errors path="cost" class="form-text text-danger"/>
-                                                </div>
-                                            </security:authorize>
-                                            <security:authorize access="!hasRole('ADMIN')">
-                                                <h3>
-                                                    <i class="tim-icons icon-coins text-primary"></i>
-                                                    <span id="resultText"></span>
-                                                </h3>
-                                            </security:authorize>
+                                                </security:authorize>
+                                                <security:authorize access="!hasRole('ADMIN')">
+                                                    <h3>
+                                                        <i class="tim-icons icon-coins text-primary"></i>
+                                                        <span id="resultText"></span>
+                                                    </h3>
+                                                </security:authorize>
+                                            </div>
                                         </div>
-                                    </div>
-                                </spring:bind>
+                                    </spring:bind>
+                                </c:if>
 
                                 <div class="form-row">
                                     <div class="form-group col">
@@ -293,7 +308,7 @@
         $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
             $("#orderSection").addClass("active");
         });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function (){
+        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
             $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
         });

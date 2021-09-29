@@ -10,6 +10,8 @@ public class JsonResponse {
 
     @JsonView({ComponentViews.Normal.class, ComponentViews.PriceList.class})
     private Object result = null;
+    private String redirectUrl;
+    private boolean redirect = false;
 
     public String getStatus() {
         return status;
@@ -22,5 +24,21 @@ public class JsonResponse {
     }
     public void setResult(Object result) {
         this.result = result;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+    public boolean isRedirect() {
+        return redirect;
+    }
+
+    public void setRedirect(boolean redirect) {
+        this.redirect = redirect;
     }
 }

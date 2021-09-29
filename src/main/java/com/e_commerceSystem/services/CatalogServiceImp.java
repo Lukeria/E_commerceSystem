@@ -1,5 +1,6 @@
 package com.e_commerceSystem.services;
 
+import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Image;
 import com.e_commerceSystem.repositories.interfaces.CatalogDao;
@@ -27,12 +28,13 @@ public class CatalogServiceImp implements CatalogService {
     private CatalogDao catalogDao;
 
     @Override
-    public Catalog createItem(MultipartFile file) throws Exception{
+    public Catalog createItem(MultipartFile file, ProductType productType) throws Exception{
 
         try {
             Image image = imageStorageService.getImageFile(file);
             Catalog catalog = new Catalog();
             catalog.setImage(image);
+            catalog.setProductType(productType.toString());
 
             return catalogDao.addItem(catalog);
         } catch (IOException exception){
@@ -41,13 +43,14 @@ public class CatalogServiceImp implements CatalogService {
     }
 
     @Override
-    public void updateItem(Catalog catalog) {
-
+    public Catalog updateItem(Catalog catalog) {
+        catalogDao.updateItem(catalog);
+        return catalog;
     }
 
     @Override
     public void deleteItem(Catalog catalog) {
-
+        catalogDao.deleteItem(catalog);
     }
 
     @Override
