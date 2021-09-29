@@ -40,55 +40,58 @@
                                 <div class="col-lg-10 col-md-9 col-sm-8">
                                     <ul class="nav nav-tabs justify-content-end">
                                         <c:forEach var="type" items="${productTypes}" varStatus="status">
-                                            <c:if test="${status.index==0}">
-                                                <c:set var="active" value="active"/>
+                                            <c:if test="${!type.name.equals('glass')}">
+                                                <c:choose>
+                                                    <c:when test="${type==activeType}">
+                                                        <c:set var="active" value="active"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:set var="active" value=""/>
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                                <li class="nav-item">
+                                                    <a class="nav-link btn-primary btn-link ${active}"
+                                                       href="/catalog/settings?productType=${type.name}">
+                                                            ${type.representation}</a>
+                                                </li>
                                             </c:if>
-                                            <c:if test="${status.index!=0}">
-                                                <c:set var="active" value=""/>
-                                            </c:if>
-                                            <li class="nav-item">
-                                                <a class="nav-link btn-primary btn-link ${active}"
-                                                   href="#collapseExample" data-toggle="collapse" aria-expanded="false"
-                                                   aria-controls="collapseExample">${type.representation}</a>
-                                            </li>
                                         </c:forEach>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="collapse show" id="collapseExample">
-                        <div class="card card-plain">
-                            <div class="card-body">
-                                <div class="row">
+                    <div class="card card-plain">
+                        <div class="card-body">
+                            <div class="row">
 
-                                    <c:forEach items="${listOfItems}" var="catalogItem">
-                                        <spring:url value="/catalog/settings/${catalogItem.id}" var="updateUrl"/>
-                                        <spring:url value="/catalog/settings/${catalogItem.id}/delete" var="deleteUrl"/>
+                                <c:forEach items="${listOfItems}" var="catalogItem">
+                                    <spring:url value="/catalog/settings/${catalogItem.id}" var="updateUrl"/>
+                                    <spring:url value="/catalog/settings/${catalogItem.id}/delete" var="deleteUrl"/>
 
-                                        <div class="col-lg-2 col-md-3 col-sm-4">
-                                            <div class="card">
-                                                <img class="card-img-top"
-                                                     src="/catalog/settings/displayImage?id=${catalogItem.id}"
-                                                     alt="Card image cap">
-                                                <div class="card-body">
-                                                    <div class="card-text text-right">
+                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                        <div class="card">
+                                            <img class="card-img-top"
+                                                 src="/catalog/settings/displayImage?id=${catalogItem.id}"
+                                                 alt="Card image cap">
+                                            <div class="card-body">
+                                                <div class="card-text text-right">
                                                         <span class="badge badge-info"><i
                                                                 class="tim-icons icon-tag"></i></span>
-                                                        <a href="${updateUrl}"
-                                                           class="btn btn-success btn-link btn-icon animation-on-hover">
-                                                            <i class="tim-icons icon-pencil"></i>
-                                                        </a>
-                                                        <button onclick="post('${deleteUrl}')"
-                                                           class="btn btn-danger btn-link btn-icon animation-on-hover">
-                                                            <i class="tim-icons icon-trash-simple"></i>
-                                                        </button>
-                                                    </div>
+                                                    <a href="${updateUrl}"
+                                                       class="btn btn-success btn-link btn-icon animation-on-hover">
+                                                        <i class="tim-icons icon-pencil"></i>
+                                                    </a>
+                                                    <button onclick="post('${deleteUrl}')"
+                                                            class="btn btn-danger btn-link btn-icon animation-on-hover">
+                                                        <i class="tim-icons icon-trash-simple"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </c:forEach>
-                                </div>
+                                    </div>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
@@ -111,6 +114,9 @@
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
+
+<script src="${pageContext.request.contextPath}/resources/js/custom/catalog.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {

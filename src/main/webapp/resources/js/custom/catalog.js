@@ -5,7 +5,7 @@ $(document).ready(function () {
     });
 
     $("#save").click(function () {
-        if($('#file_upload')[0].files.length === 0){
+        if ($('#file_upload')[0].files.length === 0) {
             showNotification("You can't save catalog item with empty image", "warning")
         } else {
             saveCatalogItem();
@@ -34,17 +34,18 @@ function saveCatalogItem() {
         data: dataForm,
         success: function (response) {
             // we have the response
-            if(response.redirect){
+            if (response.redirect) {
                 window.location.replace(response.redirectUrl);
             } else {
-                $("#my_image").attr("src","/catalog/settings/displayImage?id="+response.result);
+                $("#my_image").attr("src", "/catalog/settings/displayImage?id=" + response.result);
                 $('#catalog_id').val(response.result);
-                $("#updateGlass").attr("href","/catalog/settings/"+response.result+"/updateGlass");
+                $("#updateGlass").attr("href", "/catalog/settings/" + response.result + "/updateGlass");
             }
 
         },
         error: function (e) {
-            alert('Error: ' + e);
+
+            showNotification("Cannot upload image", "danger");
         }
     });
 }

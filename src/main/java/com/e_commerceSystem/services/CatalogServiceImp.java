@@ -5,17 +5,14 @@ import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Image;
 import com.e_commerceSystem.repositories.interfaces.CatalogDao;
 import com.e_commerceSystem.services.interfaces.CatalogService;
+import com.sun.javafx.iio.ImageStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Service
@@ -28,17 +25,17 @@ public class CatalogServiceImp implements CatalogService {
     private CatalogDao catalogDao;
 
     @Override
-    public Catalog createItem(MultipartFile file, ProductType productType) throws Exception{
+    public Catalog createItem(MultipartFile file, ProductType productType) throws ImageStorageException {
 
         try {
             Image image = imageStorageService.getImageFile(file);
             Catalog catalog = new Catalog();
             catalog.setImage(image);
-            catalog.setProductType(productType.toString());
+            catalog.setProductType(productType);
 
             return catalogDao.addItem(catalog);
-        } catch (IOException exception){
-            throw new Exception();
+        } catch (IOException exception) {
+            throw new ImageStorageException("Cannot store the image!");
         }
     }
 
@@ -54,7 +51,7 @@ public class CatalogServiceImp implements CatalogService {
     }
 
     @Override
-    public List<Catalog> getItemsByProductType(String productType) {
+    public List<Catalog> getItemsByProductType(ProductType productType) {
         return catalogDao.getItemsByProductType(productType);
     }
 

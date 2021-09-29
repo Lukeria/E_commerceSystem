@@ -1,5 +1,6 @@
 package com.e_commerceSystem.repositories;
 
+import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Image;
 import com.e_commerceSystem.entities.Order;
@@ -47,10 +48,13 @@ public class CatalogDaoImp implements CatalogDao {
     }
 
     @Override
-    public List<Catalog> getItemsByProductType(String productType) {
+    public List<Catalog> getItemsByProductType(ProductType productType) {
 
-        Session session = sessionFactory.getCurrentSession();
-        List<Catalog> catalogList = session.createQuery("from Catalog", Catalog.class).getResultList();
+        List<Catalog> catalogList = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_catalog_by_productType", Catalog.class)
+                .setParameter("product_type", productType.toString())
+                .getResultList();
+
         return catalogList;
     }
 

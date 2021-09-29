@@ -73,48 +73,52 @@
                             <h4 class="card-title">Calculator</h4>
                         </div>
                         <div class="card-body">
-                            <c:if test="${isForTemplate}">
-                                <spring:url value="/catalog/settings/save" var="formUrl"/>
-                            </c:if>
-                            <c:if test="${!isForTemplate||isForTemplate==null}">
-                                <spring:url value="/order/save" var="formUrl"/>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${isForTemplate}">
+                                    <spring:url value="/catalog/settings/save" var="formUrl"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <spring:url value="/order/save" var="formUrl"/>
+                                </c:otherwise>
+                            </c:choose>
                             <form:form id="calculatorForm" method="post" action="${formUrl}" modelAttribute="order">
 
-                                <c:if test="${!isForTemplate||isForTemplate==null}">
-                                    <c:if test="${order.id != null}">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-6">
-                                                <p class="text-primary">Order #<span id="id">${order.id}</span></p>
-                                                <form:input path="id" type="hidden"/>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-6">
-                                                <p class="text-success">Customer: ${order.customer.name}</p>
-                                            </div>
-                                        </div>
-                                    </c:if>
-
-                                    <spring:bind path="productType">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-6 col-md-12">
-                                                <label for="productType">Product type: </label>
-                                                <div class="form-group ${status.error ? 'has-danger' : ''}">
-                                                    <form:input path="productType" type="text" id="productType"
-                                                                class="form-control ${status.error ? 'form-control-danger' : ''}"
-                                                                name="productType"/>
+                                <c:choose>
+                                    <c:when test="${isForTemplate}">
+                                        <form:input path="id" type="hidden"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:if test="${order.id != null}">
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-6">
+                                                    <p class="text-primary">Order #<span id="id">${order.id}</span></p>
+                                                    <form:input path="id" type="hidden"/>
                                                 </div>
-                                                <form:errors path="productType" class="form-text text-danger"/>
                                             </div>
-                                        </div>
-                                    </spring:bind>
-                                </c:if>
 
-                                <c:if test="${isForTemplate}">
-                                    <form:input path="id" type="hidden"/>
-                                </c:if>
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-6">
+                                                    <p class="text-success">Customer: ${order.customer.name}</p>
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                    </c:otherwise>
+                                </c:choose>
+
+                                <spring:bind path="productType">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-6 col-md-12">
+                                            <label for="productType">Product type: </label>
+                                            <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                                <form:input path="productType" type="text" id="productType"
+                                                            class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                            name="productType"/>
+                                            </div>
+                                            <form:errors path="productType" class="form-text text-danger"/>
+                                        </div>
+                                    </div>
+                                </spring:bind>
+
                                 <div class="form-row">
                                     <div class="form-group col">
                                         <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
@@ -259,9 +263,12 @@
 
                                 <div class="form-row">
                                     <div class="form-group col">
-                                        <button type="button" class="btn btn-primary animation-on-hover" id="calculate">
-                                            Calculate
-                                        </button>
+                                        <c:if test="${!isForTemplate || isForTemplate==null}">
+                                            <button type="button" class="btn btn-primary animation-on-hover"
+                                                    id="calculate">
+                                                Calculate
+                                            </button>
+                                        </c:if>
                                         <security:authorize access="!hasRole('ADMIN')">
                                             <button type="button" class="btn btn-success animation-on-hover"
                                                     id="addToCart">Add to cart

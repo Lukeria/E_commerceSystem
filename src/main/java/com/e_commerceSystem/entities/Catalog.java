@@ -1,11 +1,14 @@
 package com.e_commerceSystem.entities;
 
+import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.glass.Glass;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
+
+@NamedQuery(name = "get_catalog_by_productType", query = "from Catalog where product_type=:product_type")
 
 @Entity
 public class Catalog {
@@ -14,8 +17,9 @@ public class Catalog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "product_type")
-    private String productType;
+    private ProductType productType;
 
     @OneToOne
     @JoinColumn(name = "image_id")
@@ -37,11 +41,11 @@ public class Catalog {
         this.id = id;
     }
 
-    public String getProductType() {
+    public ProductType getProductType() {
         return productType;
     }
 
-    public void setProductType(String productType) {
+    public void setProductType(ProductType productType) {
         this.productType = productType;
     }
 

@@ -34,16 +34,9 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <input type="hidden" id="catalog_id">
-                            <label for="productType">Product type</label>
-                            <select  type="text" id="productType" class="form-control" name="productType">
-                                <c:if test="${catalog.productType!=null}">
-                                    <option selected value="${catalog.productType}">${catalog.productType}</option>
-                                </c:if>
-                                <c:forEach var="type" items="${productTypes}">
-                                    <option value="${type.name}">${type.representation}</option>
-                                </c:forEach>
-                            </select>
+                            <input type="hidden" id="catalog_id" value="${catalog.id}">
+                            <p class="text-left"><label>Product type: </label>
+                                <span class="text-primary">${catalog.productType.representation}</span></p>
                             <h4 class="card-title" style="margin-top: 2.75rem">Glass
                             </h4>
                             <c:if test="${catalog.id!=null}">
@@ -83,34 +76,17 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn btn-success animation-on-hover" id="save">Save</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="card">
-                        <c:if test="${catalog.id!=null}">
-                            <spring:url value="/catalog/settings/displayImage?id=${catalog.id}" var="imageUrl"/>
-                        </c:if>
-                        <c:if test="${catalog.id==null}">
-                            <spring:url value="${pageContext.request.contextPath}/resources/img/empty_photo.jpg" var="imageUrl"/>
-                        </c:if>
+                        <spring:url value="/catalog/settings/displayImage?id=${catalog.id}" var="imageUrl"/>
 
                         <img class="card-img-top"
                              src="${imageUrl}"
                              alt="Card image cap" id="my_image">
                         <div class="card-body">
-                            <div class="file-input-custom">
-                                <div class="form-group">
-                                    <label class="label">
-                                            <span><i class="tim-icons icon-attach-87"></i>
-                                        <span class="title">Добавить файл</span>
-                                        <input type="file" name="file" id="file_upload">
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <p class="card-text" id="file_upload_name"></p>
                         </div>
                     </div>
                 </div>
