@@ -42,7 +42,10 @@ $(document).ready(function () {
                 '                    <i class="tim-icons icon-simple-remove"></i>\n' +
                 '                  </button>\n' +
                 '                  <span data-notify="icon" class="tim-icons icon-bell-55"></span>\n' +
-                '                  <span data-notify="message">You need to log in to form order</span>\n' +
+                '                  <span data-notify="message">You need to ' +
+                '                  <a href="/login" class="btn btn-default btn-link">log in</a> to form an order or ' +
+                '                  <a href="#" data-toggle="modal" data-target="#exampleModal"class="btn btn-default btn-link">' +
+                '                   request for call</a></span>\n' +
                 '                </div>')
         })
     });
@@ -71,7 +74,7 @@ function prepareData() {
                     $(this).find('#delete').click(function () {
                         if ($(this).parents("tr")[0].id != "row_1") {
                             $(this).parents("tr").remove();
-                        } else{
+                        } else {
                             showNotification("You can't delete first row", "warning")
                         }
                     });
@@ -246,7 +249,7 @@ function addGlassRow() {
     newRow.find('#delete').click(function () {
         if ($(this).parents("tr")[0].id != "row_1") {
             $(this).parents("tr").remove();
-        } else{
+        } else {
             showNotification("You can't delete first row", "warning")
         }
     });
