@@ -78,7 +78,7 @@
                                             <div class="card-body">
                                                 <div class="card-text text-right">
                                                     <c:if test="${catalogItem.glassList.size()!=0}">
-                                                         <span class="badge badge-info"><i
+                                                         <span class="badge badge-primary"><i
                                                                  class="tim-icons icon-tag"></i></span>
                                                     </c:if>
                                                     <a href="${updateUrl}"

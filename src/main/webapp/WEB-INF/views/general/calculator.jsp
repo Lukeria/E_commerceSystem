@@ -276,7 +276,13 @@
                                                 Calculate
                                             </button>
                                         </c:if>
-                                        <security:authorize access="!hasRole('ADMIN')">
+                                        <security:authorize access="!isAuthenticated()">
+                                            <button type="button" class="btn btn-success animation-on-hover"
+                                                    id="formOrder" data-toggle="modal"
+                                                    data-target="#exampleModal">Form order
+                                            </button>
+                                        </security:authorize>
+                                        <security:authorize access="hasRole('USER')">
                                             <button type="button" class="btn btn-success animation-on-hover"
                                                     id="addToCart">Add to cart
                                             </button>
@@ -286,6 +292,13 @@
                                                     id="addOrder">Save
                                             </button>
                                         </security:authorize>
+                                    </div>
+                                </div>
+                                <div class="form-row align-items-center">
+                                    <div class="form-group col-lg-6 col-md-12">
+                                        <div id="placeholderFormOrder">
+
+                                        </div>
                                     </div>
                                 </div>
                             </form:form>

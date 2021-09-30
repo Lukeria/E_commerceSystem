@@ -35,6 +35,16 @@ $(document).ready(function () {
                 .appendTo('#calculatorForm');
 
         })
+
+        $('#formOrder').click(function () {
+            $('#placeholderFormOrder').append('<div class="alert alert-warning alert-with-icon" data-notify="container">\n' +
+                '                  <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">\n' +
+                '                    <i class="tim-icons icon-simple-remove"></i>\n' +
+                '                  </button>\n' +
+                '                  <span data-notify="icon" class="tim-icons icon-bell-55"></span>\n' +
+                '                  <span data-notify="message">You need to log in to form order</span>\n' +
+                '                </div>')
+        })
     });
 
 });
