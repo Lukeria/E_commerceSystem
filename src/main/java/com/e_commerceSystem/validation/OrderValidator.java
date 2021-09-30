@@ -24,7 +24,7 @@ public class OrderValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cost", "NotEmpty.calculator.cost");
 
         if(order.getCost() <= 0){
-            errors.rejectValue("cost", "NotEmpty.order.cost");
+            errors.rejectValue("cost", "NotEmpty.calculator.cost");
         }
     }
 }

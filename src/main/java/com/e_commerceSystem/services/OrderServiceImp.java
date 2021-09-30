@@ -1,5 +1,6 @@
 package com.e_commerceSystem.services;
 
+import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
@@ -95,5 +96,15 @@ public class OrderServiceImp implements OrderService {
     @Override
     public Order getOrderById(Long id) {
         return orderDao.getOrderById(id);
+    }
+
+    @Override
+    public Order createOrderByCatalog(Catalog catalog) {
+
+        Order order = new Order();
+        order.setProductType(catalog.getProductType().getName());
+        order.setGlassList(catalog.getGlassList());
+
+        return order;
     }
 }

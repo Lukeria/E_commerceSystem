@@ -27,6 +27,24 @@
 <body>
 <div class="wrapper">
     <div class="main-panel bg-image-main">
+        <div class="modal fade modal-black" id="photoShowModal" tabindex="-1" role="dialog"
+             aria-labelledby="photoShowModalLabel" aria-hidden="true" style="z-index: 2000; pointer-events: none">
+            <div class="modal-dialog" role="document" style="transform: none; pointer-events: none">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel">${productType.representation}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="tim-icons icon-simple-remove"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <img class="card-img-top" src="" alt="Card image cap" id="openedPhoto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/userHeader.jsp"/>
         <div class="content-user">
             <div class="row">
@@ -127,26 +145,36 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4">
-                            <div class="card">
-                                <img class="card-img-top"
-                                     src="${pageContext.request.contextPath}/resources/img/empty_photo.jpg"
-                                     alt="Card image cap">
-                                <div class="card-body">
-                                    <h4 class="card-title">Caption</h4>
-                                    <div class="card-text text-right">
-                                        <a href="#" class="btn btn-info btn-fab btn-icon btn-round animation-on-hover">
-                                            <i class="tim-icons icon-tap-02"></i>
-                                        </a>
+                        <c:forEach items="${listOfItems}" var="catalogItem" varStatus="status">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="card">
+                                    <img class="card-img-top"
+                                         src="/catalog/displayImage?id=${catalogItem.id}"
+                                         alt="Card image cap">
+                                    <div class="card-body">
+                                        <div class="card-text text-right">
+                                            <spring:url
+                                                    value="${pageContext.request.contextPath}/calculator/fillByCatalog/${catalogItem.id}"
+                                                    var="fillOrderUrl">
+                                            </spring:url>
 
-                                        <a href="${calculatorUrl}"
-                                           class="btn btn-primary btn-fab btn-icon btn-round animation-on-hover">
-                                            <i class="tim-icons icon-cart"></i>
-                                        </a>
+                                            <a href="#" data-toggle="modal" data-target="#photoShowModal"
+                                               class="btn btn-info btn-fab btn-icon btn-round animation-on-hover"
+                                               onclick="openImage(this)">
+                                                <i class="tim-icons icon-tap-02"></i>
+                                            </a>
+
+                                            <c:if test="${catalogItem.glassList.size()!=0}">
+                                                <a href="${fillOrderUrl}"
+                                                   class="btn btn-primary btn-fab btn-icon btn-round animation-on-hover">
+                                                    <i class="tim-icons icon-cart"></i>
+                                                </a>
+                                            </c:if>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:forEach>
                     </div>
                 </div>
                 <div class="col-lg-2"></div>
@@ -173,7 +201,15 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
+
     });
+
+    function openImage(element) {
+
+        let currentCard = $(element).parents(".card");
+        let imageSrc = $(currentCard).find('img').attr('src');
+        $('#openedPhoto').attr('src', imageSrc);
+    }
 </script>
 </body>
 </html>

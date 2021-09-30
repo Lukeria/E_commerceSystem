@@ -3,11 +3,11 @@ package com.e_commerceSystem.controllers;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
+import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.JsonEditor;
 import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.e_commerceSystem.validation.CatalogValidator;
-import com.e_commerceSystem.validation.OrderValidator;
 import com.sun.javafx.iio.ImageStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,6 +56,7 @@ public class CatalogController {
 
         ModelAndView modelAndView = new ModelAndView("user/catalog");
         modelAndView.addObject("productType", productType);
+        modelAndView.addObject("listOfItems", catalogService.getItemsByProductType(productType));
 
         return modelAndView;
     }
@@ -93,14 +94,10 @@ public class CatalogController {
     }
 
     @PostMapping("/settings/{id}/delete")
-    public ModelAndView catalogDeleteItem(@PathVariable("id") Long id) {
+    @ResponseBody
+    public void catalogDeleteItem(@PathVariable("id") Long id) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/catalog/settings");
-
-        Catalog catalog = catalogService.getItemById(id);
-        catalogService.deleteItem(catalog);
-
-        return modelAndView;
+        catalogService.deleteItem(id);
     }
 
     @GetMapping("/settings/{id}/updateGlass")
@@ -120,7 +117,7 @@ public class CatalogController {
     }
 
     @PostMapping("/settings/save")
-    public ModelAndView catalogSaveItem(@ModelAttribute @Validated Catalog catalog,
+    public ModelAndView catalogSaveItem(@ModelAttribute("order") @Validated Catalog catalog,
                                         BindingResult result,
                                         @RequestParam("tableGlass") String tableGlass) {
 
@@ -131,6 +128,7 @@ public class CatalogController {
 
         if (result.hasErrors()) {
             modelAndView.addObject("order", catalog);
+            modelAndView.addObject("isForTemplate", true);
             modelAndView.setViewName("general/calculator");
             return modelAndView;
         }
@@ -150,13 +148,12 @@ public class CatalogController {
 
         Catalog catalog = catalogService.createItem(file, productType);
         jsonResponse.setResult(catalog.getId());
-        jsonResponse.setRedirect(true);
-        jsonResponse.setRedirectUrl("/catalog/settings/" + catalog.getId());
+        jsonResponse.setStatus("SUCCESS");
 
         return jsonResponse;
     }
 
-    @GetMapping("/settings/displayImage")
+    @GetMapping("/displayImage")
     public void catalogAddItem(@RequestParam Long id, HttpServletResponse response)
             throws IOException {
 

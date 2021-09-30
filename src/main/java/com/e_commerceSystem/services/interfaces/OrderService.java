@@ -1,5 +1,6 @@
 package com.e_commerceSystem.services.interfaces;
 
+import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
@@ -17,5 +18,6 @@ public interface OrderService {
     void updateOrderStatus(Order order);
     void deleteOrder(Order order);
     Order getOrderById(Long id);
+    Order createOrderByCatalog(Catalog catalog);
 
 }

@@ -66,24 +66,26 @@
                         <div class="card-body">
                             <div class="row">
 
-                                <c:forEach items="${listOfItems}" var="catalogItem">
+                                <c:forEach items="${listOfItems}" var="catalogItem" varStatus="status">
                                     <spring:url value="/catalog/settings/${catalogItem.id}" var="updateUrl"/>
                                     <spring:url value="/catalog/settings/${catalogItem.id}/delete" var="deleteUrl"/>
 
-                                    <div class="col-lg-2 col-md-3 col-sm-4">
+                                    <div class="col-lg-2 col-md-3 col-sm-4" id="catalogItem_${status.count}">
                                         <div class="card">
                                             <img class="card-img-top"
-                                                 src="/catalog/settings/displayImage?id=${catalogItem.id}"
+                                                 src="/catalog/displayImage?id=${catalogItem.id}"
                                                  alt="Card image cap">
                                             <div class="card-body">
                                                 <div class="card-text text-right">
-                                                        <span class="badge badge-info"><i
-                                                                class="tim-icons icon-tag"></i></span>
+                                                    <c:if test="${catalogItem.glassList.size()!=0}">
+                                                         <span class="badge badge-info"><i
+                                                                 class="tim-icons icon-tag"></i></span>
+                                                    </c:if>
                                                     <a href="${updateUrl}"
                                                        class="btn btn-success btn-link btn-icon animation-on-hover">
                                                         <i class="tim-icons icon-pencil"></i>
                                                     </a>
-                                                    <button onclick="post('${deleteUrl}')"
+                                                    <button onclick="deleteCatalogItem('${deleteUrl}', this)"
                                                             class="btn btn-danger btn-link btn-icon animation-on-hover">
                                                         <i class="tim-icons icon-trash-simple"></i>
                                                     </button>

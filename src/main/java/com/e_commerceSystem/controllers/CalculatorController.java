@@ -3,9 +3,12 @@ package com.e_commerceSystem.controllers;
 import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.ProductType;
+import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
+import com.e_commerceSystem.services.interfaces.CatalogService;
+import com.e_commerceSystem.services.interfaces.OrderService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,6 +26,10 @@ public class CalculatorController {
 
     @Autowired
     private CalculatorService calculatingService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private CatalogService catalogService;
 
     @GetMapping("/")
     public ModelAndView calculator(@RequestParam(name = "productType", required = false) ProductType productType) {
@@ -53,6 +61,19 @@ public class CalculatorController {
         response.setResult(resultPrice);
 
         return response;
+    }
+
+    @GetMapping("/fillByCatalog/{id}")
+    public ModelAndView createOrderByTemplate(@PathVariable("id") Long id) {
+
+        ModelAndView modelAndView = new ModelAndView("general/calculator");
+
+        Catalog catalog = catalogService.getItemById(id);
+        Order order = orderService.createOrderByCatalog(catalog);
+
+        modelAndView.addObject("order", order);
+
+        return modelAndView;
     }
 
 }

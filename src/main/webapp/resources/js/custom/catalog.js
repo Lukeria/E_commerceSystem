@@ -6,14 +6,12 @@ $(document).ready(function () {
 
     $("#save").click(function () {
         if ($('#file_upload')[0].files.length === 0) {
-            showNotification("You can't save catalog item with empty image", "warning")
+            showNotification("You can't save catalog item with empty image", "warning");
+        } else if (!$('#productType').val()) {
+            showNotification("You can't save catalog item with empty product type", "warning");
         } else {
             saveCatalogItem();
             $('#file_upload_name').text('');
-            // let params = {};
-            // params['file']=$('#file_upload')[0].files[0];
-            // params["productType"]= $('#productType').val();
-            // post("/catalog/settings/upload", params);
         }
     });
 
@@ -33,19 +31,35 @@ function saveCatalogItem() {
         processData: false,
         data: dataForm,
         success: function (response) {
-            // we have the response
-            if (response.redirect) {
-                window.location.replace(response.redirectUrl);
-            } else {
-                $("#my_image").attr("src", "/catalog/settings/displayImage?id=" + response.result);
-                $('#catalog_id').val(response.result);
-                $("#updateGlass").attr("href", "/catalog/settings/" + response.result + "/updateGlass");
+
+            if (response.status=='SUCCESS') {
+
+                showNotification("Catalog item has been added successfully", "success");
+                $("#file_upload").val('');
+                $("#my_image").attr("src", "/catalog/displayImage?id=" + response.result);
             }
 
         },
         error: function (e) {
 
             showNotification("Cannot upload image", "danger");
+        }
+    });
+}
+
+function deleteCatalogItem(url, element) {
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        success: function () {
+
+            $(element).parents("[id*='catalogItem']").remove();
+            showNotification("Catalog item has been deleted", "success");
+        },
+        error: function (e) {
+
+            showNotification("Cannot delete catalog item", "danger");
         }
     });
 }

@@ -81,7 +81,7 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="card">
-                        <spring:url value="/catalog/settings/displayImage?id=${catalog.id}" var="imageUrl"/>
+                        <spring:url value="/catalog/displayImage?id=${catalog.id}" var="imageUrl"/>
 
                         <img class="card-img-top"
                              src="${imageUrl}"

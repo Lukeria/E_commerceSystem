@@ -41,12 +41,15 @@ public class CatalogServiceImp implements CatalogService {
 
     @Override
     public Catalog updateItem(Catalog catalog) {
+
         catalogDao.updateItem(catalog);
         return catalog;
     }
 
     @Override
-    public void deleteItem(Catalog catalog) {
+    public void deleteItem(Long id) {
+
+        Catalog catalog = getItemById(id);
         catalogDao.deleteItem(catalog);
     }
 

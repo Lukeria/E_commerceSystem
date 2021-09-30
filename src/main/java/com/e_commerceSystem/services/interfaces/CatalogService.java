@@ -11,7 +11,7 @@ public interface CatalogService {
 
     Catalog createItem(MultipartFile multipartFile, ProductType productType) throws ImageStorageException;
     Catalog updateItem(Catalog catalog);
-    void deleteItem(Catalog catalog);
+    void deleteItem(Long id);
     List<Catalog> getItemsByProductType(ProductType productType);
     Catalog getItemById(Long id);
 }

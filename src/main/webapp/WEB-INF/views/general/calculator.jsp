@@ -70,7 +70,14 @@
                 <div class="${colSizeLg} col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Calculator</h4>
+                            <c:choose>
+                                <c:when test="${isForTemplate}">
+                                    <h4 class="card-title">Template</h4>
+                                </c:when>
+                                <c:otherwise>
+                                    <h4 class="card-title">Calculator</h4>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="card-body">
                             <c:choose>
