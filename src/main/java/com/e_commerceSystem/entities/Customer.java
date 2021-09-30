@@ -16,8 +16,7 @@ public class Customer {
     private String email;
     private String phone;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "customer")
     private User user;
 
     @OneToMany(mappedBy = "customer")

@@ -107,8 +107,8 @@
                         <security:authorize access="hasRole('USER')">
                             <li class="nav-item">
                                 <a href="/cart/"
-                                   class="btn btn-primary btn-fab btn-icon btn-round animation-on-hover">
-                                    <i class="tim-icons icon-cart"></i>
+                                   class="btn btn-primary btn-round animation-on-hover">
+                                    <i class="tim-icons icon-cart"></i> Cart <span class="badge badge-default">4</span>
                                 </a>
                             </li>
                         </security:authorize>
