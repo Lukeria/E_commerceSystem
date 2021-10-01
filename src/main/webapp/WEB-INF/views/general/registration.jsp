@@ -32,31 +32,84 @@
             <div class="col-lg-6">
                 <div class="card card-login">
                     <div class="card-body">
-                        <form method="post" action="/register">
-                            <div class="form-group">
-                                <label for="login">Login: </label>
-                                <input type="text" id="login" name="login" class="form-control"
-                                       placeholder="Enter login">
+                        <form:form method="post" action="/signUp" modelAttribute="user">
+                            <div class="form-row">
+                                <spring:bind path="customer.name">
+                                    <div class="form-group col-lg-8 col-md-12">
+                                        <label for="login">Name: </label>
+                                        <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                            <form:input path="customer.name" type="text" id="name" name="name"
+                                                        class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                        placeholder="Enter name"/>
+                                        </div>
+                                        <form:errors path="customer.name" class="form-text text-danger"/>
+                                    </div>
+                                </spring:bind>
                             </div>
-                            <div class="form-group">
-                                <label for="password">Password: </label>
-                                <input type="password" id="password" name="password" class="form-control"
-                                       placeholder="Enter password">
+                            <div class="form-row">
+                                <spring:bind path="email">
+                                    <div class="form-group col-lg-6 col-md-12">
+                                        <label for="email">Email: </label>
+                                        <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                            <form:input path="email" type="email" id="email" name="email"
+                                                        class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                        placeholder="Enter email"/>
+                                        </div>
+                                        <small id="help" class="form-text text-muted">We'll never share your data with
+                                            anyone else.</small>
+                                        <form:errors path="email" class="form-text text-danger"/>
+                                    </div>
+                                </spring:bind>
+                                <spring:bind path="customer.phone">
+                                    <div class="form-group col-lg-6 col-md-12">
+                                        <label for="phone">Phone: </label>
+                                        <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                            <form:input path="customer.phone" type="phone" id="phone" name="phone"
+                                                        class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                        placeholder="Enter phone" aria-describedby="help"/>
+                                            <form:errors path="customer.phone" class="form-text text-danger"/>
+                                        </div>
+                                    </div>
+                                </spring:bind>
                             </div>
-                            <div class="form-group">
-                                <label for="passwordRepeat">Confirm password: </label>
-                                <input type="password" id="passwordRepeat" name="passwordRepeat" class="form-control"
-                                       placeholder="Confirm password">
+                            <div class="form-row">
+                                <spring:bind path="username">
+                                    <div class="form-group col-lg-8 col-md-12">
+                                        <label for="login">Login: </label>
+                                        <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                            <form:input path="username" type="text" id="login" name="login"
+                                                        class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                        placeholder="Enter login"/>
+                                        </div>
+                                        <form:errors path="username" class="form-text text-danger"/>
+                                    </div>
+                                </spring:bind>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Email: </label>
-                                <input type="email" id="email" name="email" class="form-control"
-                                       placeholder="Enter email" aria-describedby="emailHelp">
-                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with
-                                    anyone else.</small>
+                            <div class="form-row">
+                                <spring:bind path="password">
+                                    <div class="form-group col">
+                                        <label for="password">Password: </label>
+                                        <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                            <form:input path="password" type="password" id="password" name="password"
+                                                        class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                        placeholder="Enter password"/>
+                                        </div>
+                                        <form:errors path="password" class="form-text text-danger"/>
+                                    </div>
+                                </spring:bind>
+                                <spring:bind path="confirmPassword">
+                                    <div class="form-group col">
+                                        <label for="confirmPassword">Confirm password: </label>
+                                        <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                            <form:input path="confirmPassword" type="password" id="confirmPassword"
+                                                        class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                        placeholder="Confirm password"/>
+                                        </div>
+                                    </div>
+                                </spring:bind>
                             </div>
                             <button type="submit" class="btn btn-warning animation-on-hover">Submit</button>
-                        </form>
+                        </form:form>
                     </div>
                 </div>
             </div>

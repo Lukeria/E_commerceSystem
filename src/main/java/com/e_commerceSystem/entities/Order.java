@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @NamedQuery(name = "get_order_by_status", query = "from orders where order_status=:order_status")
+@NamedQuery(name = "get_order_by_status_and_customer_id",
+        query = "from orders where customer_id=:customer_id and order_status=:order_status")
 
 @Entity(name = "orders")
 public class Order {

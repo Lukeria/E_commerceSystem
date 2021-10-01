@@ -13,18 +13,18 @@ public class OrderValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-       return Order.class.equals(aClass);
+        return Order.class.equals(aClass);
     }
 
     @Override
     public void validate(Object object, Errors errors) {
 
         Order order = (Order) object;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "productType", "NotEmpty.calculator.productType");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cost", "NotEmpty.calculator.cost");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "productType", "message.notEmpty.calculator.productType");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cost", "message.notEmpty.calculator.cost");
 
-        if(order.getCost() <= 0){
-            errors.rejectValue("cost", "NotEmpty.calculator.cost");
+        if (order.getCost() != null && order.getCost() <= 0) {
+            errors.rejectValue("cost", "message.notEmpty.calculator.cost");
         }
     }
 }

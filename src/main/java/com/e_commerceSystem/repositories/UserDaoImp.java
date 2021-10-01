@@ -1,6 +1,8 @@
 package com.e_commerceSystem.repositories;
 
-import com.e_commerceSystem.repositories.interfaces.UserDetailsDao;
+import com.e_commerceSystem.entities.Order;
+import com.e_commerceSystem.entities.Role;
+import com.e_commerceSystem.repositories.interfaces.UserDao;
 import com.e_commerceSystem.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,9 +14,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class UserDetailsDaoImp implements UserDetailsDao {
+public class UserDaoImp implements UserDao {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -39,5 +42,33 @@ public class UserDetailsDaoImp implements UserDetailsDao {
         }
 
         return user;
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+
+        Optional<User> user = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_user_by_email", User.class)
+                .setParameter("email", email)
+                .getResultList()
+                .stream().findFirst();
+        return user;
+    }
+
+    @Override
+    public void saveUser(User user) {
+        sessionFactory.getCurrentSession().save(user);
+    }
+
+    @Override
+    public Role getUserRole() {
+
+        Optional<Role> role = sessionFactory.getCurrentSession()
+                .createQuery("from Role where role=:role")
+                .setParameter("role", "ROLE_USER")
+                .getResultList()
+                .stream().findFirst();
+
+        return role.get();
     }
 }

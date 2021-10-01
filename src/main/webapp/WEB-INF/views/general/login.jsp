@@ -34,16 +34,31 @@
                     <div class="card-body">
                         <form method="post" action="/login" id="loginForm">
                             <div class="form-group">
+                                ${requestScope.userPrincipal}
                                 <label for="username">Login: </label>
-                                <input type="text" id="username" name="username" class="form-control"
-                                       placeholder="Enter login">
+                                <div class="form-group ${param.error ? 'has-danger' : ''}">
+                                    <input type="text" id="username" name="username" class="form-control ${param.error ? 'form-control-danger' : ''}"
+                                           value="${username}" placeholder="Enter login">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="password">Password: </label>
-                                <input type="password" id="password" name="password" class="form-control"
-                                       placeholder="Enter password">
+                                <div class="form-group ${param.error ? 'has-danger' : ''}">
+                                    <input type="password" id="password" name="password" class="form-control ${param.error ? 'form-control-danger' : ''}"
+                                           value="${password}" placeholder="Enter password">
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary animation-on-hover">Submit</button>
+                            <c:if test="${param.error}">
+                                <div id="error" class="form-group">
+                                    <div class="form-text text-danger">
+                                        <spring:message code="message.badCredentials">
+                                        </spring:message>
+                                    </div>
+                                </div>
+                            </c:if>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary animation-on-hover">Submit</button>
+                            </div>
                             <div class="form-group row">
                                 <p class="form-text">Don’t have an account?
                                     <a href="/signUp" class="btn btn-warning btn-link animation-on-hover">Sign up</a>
@@ -72,11 +87,13 @@
 <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+
         $("#navbar").load("/resources/pagesToLoad/login.html #navbarLogin", function () {
             $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
             $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
         });
     });
+
 </script>
 </body>
 </html>

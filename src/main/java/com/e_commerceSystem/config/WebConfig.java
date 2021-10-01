@@ -2,15 +2,19 @@ package com.e_commerceSystem.config;
 
 import com.e_commerceSystem.additional.converters.ComponentTypeStringToEnumConverter;
 import com.e_commerceSystem.additional.converters.ProductTypeStringToEnumConverter;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 @EnableWebMvc
@@ -21,7 +25,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/accessDenied").setViewName("accessDenied");
-        registry.addViewController("contacts").setViewName("user/contacts");
+        registry.addViewController("/contacts").setViewName("user/contacts");
+        registry.addViewController("/main").setViewName("user/main");
     }
 
     @Override
@@ -34,10 +39,13 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
+
+    /////Validation
     @Bean
-    public ResourceBundleMessageSource messageSource() {
+    public ResourceBundleMessageSource validationMessageSource() {
         ResourceBundleMessageSource rb = new ResourceBundleMessageSource();
-        rb.setBasenames(new String[] { "messages/validation" });
+        rb.setBasenames(new String[] { "classpath:messages/messages" });
+        rb.setDefaultEncoding("UTF-8");
         return rb;
     }
 
@@ -51,5 +59,22 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
+    }
+
+
+    ///////////i18n
+    @Bean("messageSource")
+    public MessageSource messageSource(){
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:messages/messages");
+        messageSource.setDefaultEncoding("UTF-8");
+
+        return messageSource;
+    }
+
+    @Bean
+    public LocaleResolver localeResolver(){
+        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        return localeResolver;
     }
 }

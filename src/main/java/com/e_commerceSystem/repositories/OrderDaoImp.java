@@ -31,7 +31,13 @@ public class OrderDaoImp implements OrderDao {
 
     @Override
     public List<Order> getOrdersByStatusAndCustomer(String status, Customer customer) {
-        return null;
+
+        List<Order> orderList = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_order_by_status_and_customer_id", Order.class)
+                .setParameter("order_status", status)
+                .setParameter("customer_id", customer.getId())
+                .getResultList();
+        return orderList;
     }
 
     @Override

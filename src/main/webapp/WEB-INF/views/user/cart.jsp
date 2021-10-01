@@ -34,7 +34,7 @@
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                            <li class="breadcrumb-item active" aria-current="page">Cart - <fmt:message key="enum.orderStatus.CART"></fmt:message> </li>
                         </ol>
                     </nav>
                 </div>
