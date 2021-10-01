@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="frmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,39 +49,45 @@
                                 <img src="${pageContext.request.contextPath}/resources/img/main_wall.jpg"
                                      class="d-block w-100" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3>Стеклянные двери и перегородки</h3>
-                                    <p>Изготовление под заказ, с доставкой и установкой</p>
-                                    <a href="/catalog/partition" class="btn btn-warning animation-on-hover">Перейти в каталог</a>
+                                    <h3><fmt:message key="message.main.headingCarousel.partition"/></h3>
+                                    <p><fmt:message key="message.main.textCarousel"/></p>
+                                    <a href="${pageContext.request.contextPath}/catalog/partition"
+                                       class="btn btn-warning animation-on-hover"><fmt:message
+                                            key="message.main.button.goToCatalog"/></a>
                                 </div>
                             </div>
                             <div class="carousel-item">
                                 <img src="${pageContext.request.contextPath}/resources/img/main_mirror.jpg"
                                      class="d-block w-100" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3>Зеркальные композиции и зеркала</h3>
-                                    <p>Изготовление под заказ, с доставкой и установкой</p>
-                                    <a href="/catalog/mirror" class="btn btn-warning animation-on-hover">Перейти в каталог</a>
+                                    <h3><fmt:message key="message.main.headingCarousel.mirror"/></h3>
+                                    <p><fmt:message key="message.main.textCarousel"/></p>
+                                    <a href="${pageContext.request.contextPath}/catalog/mirror"
+                                       class="btn btn-warning animation-on-hover"><fmt:message
+                                            key="message.main.button.goToCatalog"/></a>
                                 </div>
                             </div>
                             <div class="carousel-item">
                                 <img src="${pageContext.request.contextPath}/resources/img/main_shower.jpg"
                                      class="d-block w-100" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3>Душевые кабины из стекла</h3>
-                                    <p>Изготовление под заказ, с доставкой и установкой</p>
-                                    <a href="/catalog/shower" class="btn btn-warning animation-on-hover">Перейти в каталог</a>
+                                    <h3><fmt:message key="message.main.headingCarousel.shower"/></h3>
+                                    <p><fmt:message key="message.main.textCarousel"/></p>
+                                    <a href="${pageContext.request.contextPath}/catalog/shower"
+                                       class="btn btn-warning animation-on-hover"><fmt:message
+                                            key="message.main.button.goToCatalog"/></a>
                                 </div>
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
                                 data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Предыдущий</span>
+                            <span class="visually-hidden"><fmt:message key="message.main.carousel.prev"/></span>
                         </button>
                         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
                                 data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Следующий</span>
+                            <span class="visually-hidden"><fmt:message key="message.main.carousel.next"/></span>
                         </button>
                     </div>
                 </div>
@@ -91,20 +98,13 @@
                 <div class="col-lg-8">
                     <div class="card" style="margin-top: 2rem">
                         <div class="card-header">
-                            <h1 class="card-title text-center">Glass Изделия из стекла</h1>
+                            <h1 class="card-title text-center"><fmt:message key="message.main.header"/></h1>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Большой ассортимент зеркал, мебели, другой продукции из стекла на
-                                заказ, которые придадут
-                                оригинальность, неповторимость интерьеру!</p>
-                            <p class="card-text">У нас особый подход к клиенту: любое изделие, которое Вы увидите на
-                                нашем сайте, может быть
-                                изготовлено в соответствии с Вашими пожеланиями.</p>
-                            <p class="card-text">Предлагаем оригинальные решения из стекла: полки, стеклянные
-                                перегородки, зеркала любой формы.</p>
-                            <p class="card-text">Скинали и стеклянные панно органично вписываются в кухню, матовая
-                                душевая кабина — в ванную комнату, а гостиную можно украсить зеркалами с необычным
-                                дизайном, а в спальню впишется шкаф-купе с узорчатой зеркальной поверхностью.</p>
+                            <p class="card-text"><fmt:message key="message.main.headerParagraph1"/></p>
+                            <p class="card-text"><fmt:message key="message.main.headerParagraph2"/></p>
+                            <p class="card-text"><fmt:message key="message.main.headerParagraph3"/></p>
+                            <p class="card-text"><fmt:message key="message.main.headerParagraph4"/></p>
                         </div>
                     </div>
                 </div>
@@ -117,9 +117,11 @@
                         <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/mirror.jpg"
                              alt="Card image cap">
                         <div class="card-body">
-                            <h4 class="card-title">Зеркала с подстветкой</h4>
-                            <a href="/catalog/mirror" class="btn btn-simple btn-warning btn-one">
-                                <span>Перейти в каталог <i class="tim-icons icon-double-right"></i></span>
+                            <h4 class="card-title"><fmt:message key="message.main.catalogSection.mirror"/></h4>
+                            <a href="${pageContext.request.contextPath}/catalog/mirror"
+                               class="btn btn-simple btn-warning btn-one">
+                                <span><fmt:message key="message.main.button.goToCatalog"/> <i
+                                        class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
                     </div>
@@ -129,9 +131,11 @@
                         <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/wall.png"
                              alt="Card image cap">
                         <div class="card-body">
-                            <h4 class="card-title">Перегородки из стекла</h4>
-                            <a href="/catalog/partition" class="btn btn-simple btn-warning btn-one">
-                                <span>Перейти в каталог <i class="tim-icons icon-double-right"></i></span>
+                            <h4 class="card-title"><fmt:message key="message.main.catalogSection.partition"/></h4>
+                            <a href="${pageContext.request.contextPath}/catalog/partition"
+                               class="btn btn-simple btn-warning btn-one">
+                                <span><fmt:message key="message.main.button.goToCatalog"/> <i
+                                        class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
                     </div>
@@ -141,9 +145,11 @@
                         <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/shower.png"
                              alt="Card image cap">
                         <div class="card-body">
-                            <h4 class="card-title">Душевые из стекла</h4>
-                            <a href="/catalog/shower" class="btn btn-simple btn-warning btn-one">
-                                <span>Перейти в каталог <i class="tim-icons icon-double-right"></i></span>
+                            <h4 class="card-title"><fmt:message key="message.main.catalogSection.shower"/></h4>
+                            <a href="${pageContext.request.contextPath}/catalog/shower"
+                               class="btn btn-simple btn-warning btn-one">
+                                <span><fmt:message key="message.main.button.goToCatalog"/> <i
+                                        class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
                     </div>
@@ -153,9 +159,11 @@
                         <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/kitchen.jpg"
                              alt="Card image cap">
                         <div class="card-body">
-                            <h4 class="card-title">Кухонные скинали</h4>
-                            <a href="/catalog/apron" class="btn btn-simple btn-warning btn-one">
-                                <span>Перейти в каталог <i class="tim-icons icon-double-right"></i></span>
+                            <h4 class="card-title"><frmt:message key="message.main.catalogSection.apron"/></h4>
+                            <a href="${pageContext.request.contextPath}/catalog/apron"
+                               class="btn btn-simple btn-warning btn-one">
+                                <span><fmt:message key="message.main.button.goToCatalog"/> <i
+                                        class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
                     </div>
@@ -167,7 +175,7 @@
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title text-center">Наши преимущества</h3>
+                            <h3 class="card-title text-center"><fmt:message key="message.main.advantages.header"/></h3>
                         </div>
                         <div class="card-body">
                             <div class="row align-items-center mb-3">
@@ -179,10 +187,10 @@
                                 </div>
                                 <div class="col-10">
                                     <h6 class="card-text">
-                                        20 лет на рынке
+                                        <fmt:message key="message.main.advantages.line1"/>
                                     </h6>
                                     <p class="card-text">
-                                        Наша компания на рынке около 20 лет
+                                        <fmt:message key="message.main.advantages.line1.description"/>
                                     </p>
                                 </div>
                             </div>
@@ -195,11 +203,10 @@
                                 </div>
                                 <div class="col-10">
                                     <h6 class="card-text">
-                                        Минимальная наценка
+                                        <fmt:message key="message.main.advantages.line2"/>
                                     </h6>
                                     <p class="card-text">
-                                        Мы не имеем диллеров и посредников, поэтому ценна продукции имеет минимальную
-                                        наценку
+                                        <fmt:message key="message.main.advantages.line2.description"/>
                                     </p>
                                 </div>
                             </div>
@@ -212,11 +219,10 @@
                                 </div>
                                 <div class="col-10">
                                     <h6 class="card-text">
-                                        Надежность и долговечность
+                                        <fmt:message key="message.main.advantages.line3"/>
                                     </h6>
                                     <p class="card-text">
-                                        Установку изделий прозводят опытные специалисты, что гарантирует долговечность и
-                                        прочность
+                                        <fmt:message key="message.main.advantages.line3.description"/>
                                     </p>
                                 </div>
                             </div>
@@ -229,10 +235,10 @@
                                 </div>
                                 <div class="col-10">
                                     <h6 class="card-text">
-                                        Качественная фурнитура
+                                        <fmt:message key="message.main.advantages.line4"/>
                                     </h6>
                                     <p class="card-text">
-                                        Используем качественную фурнитуру мировых брендов
+                                        <fmt:message key="message.main.advantages.line4.description"/>
                                     </p>
                                 </div>
                             </div>
@@ -242,23 +248,18 @@
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title text-center">Что мы делаем для своих клиентов</h3>
+                            <h3 class="card-title text-center"><fmt:message key="message.main.acts.header"/></h3>
                         </div>
                         <div class="card-body">
 
                             <ul>
-                                <li>Изготавливаем стеклянные изделия любых форм и размеров, массово или на заказ, по
-                                    особому дизайну.
+                                <li><fmt:message key="message.main.acts.line1"/>
                                 </li>
-                                <li>Большой выбор материалов позволяет реализовать любые проекты.</li>
-                                <li>Мы работаем как с масштабными проектами, так и индивидуальными, единичными
-                                    заказами.
+                                <li><fmt:message key="message.main.acts.line2"/></li>
+                                <li><fmt:message key="message.main.acts.line3"/>
                                 </li>
-                                <li>Каждую вашу заявку мы выполним быстро.</li>
-                                <li>Мы ожем выполнить услуги обработки стеклянных поверхностей: резку, сверление
-                                    отверстий, матирование, закалку и многое другое. Любые работы мы проведем
-                                    быстро, качественно.
-                                </li>
+                                <li><fmt:message key="message.main.acts.line4"/></li>
+                                <li><fmt:message key="message.main.acts.line5"/></li>
                             </ul>
                         </div>
                     </div>
@@ -282,8 +283,8 @@
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
-<!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<%--<!-- Black Dashboard DEMO methods, don't include it in your project! -->--%>
+<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
 <!-- Bootstrap -->
 <script src="${pageContext.request.contextPath}/resources/js/custom/bootstrap.js"></script>
 

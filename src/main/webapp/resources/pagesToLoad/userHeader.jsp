@@ -12,7 +12,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Have any questions?</h4>
+                <h4 class="modal-title" id="exampleModalLabel"><fmt:message key="message.navbar.modal.header"/></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     <i class="tim-icons icon-simple-remove"></i>
                 </button>
@@ -26,8 +26,9 @@
                                     <i class="tim-icons icon-single-02"></i>
                                 </div>
                             </div>
+                            <fmt:message key="message.form.nameModal.placeHolder" var="namePlaceholder"/>
                             <input type="email" class="form-control" id="name"
-                                   placeholder="Introduce yourself">
+                                   placeholder="${namePlaceholder}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -37,8 +38,9 @@
                                     <i class="tim-icons icon-email-85"></i>
                                 </div>
                             </div>
+                            <fmt:message key="message.form.email.placeHolder" var="emailPlaceholder"/>
                             <input type="email" class="form-control" id="email"
-                                   placeholder="Enter email">
+                                   placeholder="${emailPlaceholder}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -48,8 +50,9 @@
                                     <i class="tim-icons icon-mobile"></i>
                                 </div>
                             </div>
-                            <input type="phone" class="form-control" id="phone"
-                                   placeholder="Enter phone number">
+                            <fmt:message key="message.form.phone.placeholder" var="phonePlaceholder"/>
+                            <input type="text" class="form-control" id="phone"
+                                   placeholder="${phonePlaceholder}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -59,19 +62,24 @@
                                     <i class="tim-icons icon-notes"></i>
                                 </div>
                             </div>
+                            <fmt:message key="message.form.topic.placeholder" var="topicPlaceholder"/>
                             <input type="text" class="form-control" id="topic"
-                                   placeholder="Topic">
+                                   placeholder="${topicPlaceholder}">
                         </div>
                     </div>
                     <div class="form-group">
-                                    <textarea class="form-control" id="message" rows="3"
-                                              placeholder="Message"></textarea>
+                        <fmt:message key="message.form.message.placeholder" var="messagePlaceholder"/>
+                        <textarea class="form-control" id="message" rows="3"
+                                  placeholder="${messagePlaceholder}"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary animation-on-hover" data-dismiss="modal"
-                        aria-hidden="true" onclick="showNotification('Your reqest has been sent successfully', 'success')">Send
+                        aria-hidden="true"
+                        <fmt:message key="message.notification.modalSend.success" var="modalNotification"/>
+                        onclick="showNotification('${modalNotification}', 'success')"><fmt:message
+                        key="message.navbar.modal.button.send"/>
                 </button>
             </div>
         </div>
@@ -79,7 +87,7 @@
 </div>
 <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/main">STEKLO.BY</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/main">STEKLO.BY</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -91,24 +99,28 @@
                 <li class="nav-item">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/main">Home<span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/main"><fmt:message
+                                    key="message.navbar.section.home"/><span class="sr-only">(current)</span></a>
                         </li>
                         <security:authorize access="!hasRole('ADMIN')">
                             <li class="nav-item">
-                                <a class="nav-link" href="/calculator/">Calculate order</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/calculator/"><fmt:message
+                                        key="message.navbar.section.calculator"/></a>
                             </li>
                         </security:authorize>
                         <li class="nav-item">
-                            <a class="nav-link" href="/catalog/">Catalog</a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/catalog/"><fmt:message
+                                    key="message.navbar.section.catalog"/></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/contacts">Contacts</a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/contacts"><fmt:message
+                                    key="message.navbar.section.contacts"/></a>
                         </li>
                         <security:authorize access="hasRole('USER')">
                             <li class="nav-item">
-                                <a href="/cart/"
+                                <a href="${pageContext.request.contextPath}/cart/"
                                    class="btn btn-primary btn-round animation-on-hover">
-                                    <i class="tim-icons icon-cart"></i> Cart
+                                    <i class="tim-icons icon-cart"></i> <fmt:message key="message.navbar.button.cart"/>
                                 </a>
                             </li>
                         </security:authorize>
@@ -118,42 +130,45 @@
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <i class="tim-icons icon-world"></i>
                         <p class="d-lg-none">
-                            Language
+                            <fmt:message key="message.navbar.lang.heading"/>
                         </p>
                     </a>
                     <ul class="dropdown-menu dropdown-navbar">
                         <li class="nav-link">
-                            <a href="javascript:void(0)" class="nav-item dropdown-item">
+                            <a href="?lang=en" class="nav-item dropdown-item">
                                 <div class="photo">
                                     <img src="${pageContext.request.contextPath}/resources/img/united-kingdom.png"
                                          alt="En" id="englishIcon">
                                 </div>
-                                English
+                                <fmt:message key="message.navbar.lang.en"/>
                             </a>
                         </li>
                         <li class="nav-link">
-                            <a href="javascript:void(0)" class="nav-item dropdown-item">
+                            <a href="?lang=ru" class="nav-item dropdown-item">
                                 <div class="photo">
                                     <img src="${pageContext.request.contextPath}/resources/img/russia.png"
                                          alt="Ru" id="russianIcon">
                                 </div>
-                                Russian
+                                <fmt:message key="message.navbar.lang.ru"/>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <security:authorize access="!hasRole('ADMIN')">
                     <li class="nav-item">
-                        <a href="/main/#questionForm" class="btn btn-info btn-simple" data-toggle="modal"
-                           data-target="#exampleModal">Call request</a>
+                        <a href="${pageContext.request.contextPath}/main/#questionForm" class="btn btn-info btn-simple"
+                           data-toggle="modal"
+                           data-target="#exampleModal"><fmt:message key="message.navbar.button.callRequest"/></a>
                     </li>
                 </security:authorize>
                 <security:authorize access="!isAuthenticated()">
                     <li class="nav-item">
-                        <a href="/login" class="btn btn-primary btn-simple">Log in</a>
+                        <a href="${pageContext.request.contextPath}/login"
+                           class="btn btn-primary btn-simple"><fmt:message key="message.navbar.button.logIn"/></a>
                     </li>
                     <li class="nav-item">
-                        <a href="/signUp" class="btn btn-warning btn-simple">Sign up</a>
+                        <a href="${pageContext.request.contextPath}/signUp"
+                           class="btn btn-warning btn-simple"><fmt:message key="message.navbar.button.signUp"/></a>
                     </li>
                 </security:authorize>
                 <security:authorize access="isAuthenticated()">
@@ -161,20 +176,23 @@
                         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                             <i class="tim-icons icon-single-02"></i>
                             <p class="d-lg-none">
-                                Log out
+                                <fmt:message key="message.navbar.button.user"/>
                             </p>
                         </a>
                         <ul class="dropdown-menu dropdown-navbar">
-                            <li class="nav-link"><a href="/profile/"
-                                                    class="nav-item dropdown-item">Profile</a></li>
+                            <li class="nav-link"><a href="${pageContext.request.contextPath}/profile/"
+                                                    class="nav-item dropdown-item"><fmt:message
+                                    key="message.navbar.button.profile"/></a></li>
                             <security:authorize access="hasRole('ADMIN')">
-                                <li class="nav-link"><a href="/order/all"
-                                                        class="nav-item dropdown-item">Admin dashboard</a>
+                                <li class="nav-link"><a href="${pageContext.request.contextPath}/order/all"
+                                                        class="nav-item dropdown-item"><fmt:message
+                                        key="message.navbar.button.adminDashboard"/></a>
                                 </li>
                             </security:authorize>
                             <li class="dropdown-divider"></li>
-                            <li class="nav-link"><a href="/logout" class="nav-item dropdown-item">Log
-                                out</a></li>
+                            <li class="nav-link"><a href="${pageContext.request.contextPath}/logout"
+                                                    class="nav-item dropdown-item"> <fmt:message
+                                    key="message.navbar.button.logOut"/></a></li>
                         </ul>
                     </li>
                 </security:authorize>
@@ -183,22 +201,6 @@
         </div>
     </div>
 </nav>
-<script type="text/javascript">
-
-    function showNotification(text, color) {
-        $.notify({
-            icon: "tim-icons icon-bell-55",
-            message: text
-
-        }, {
-            type: color,
-            timer: 8000,
-            placement: {
-                from: 'bottom',
-                align: 'center'
-            }
-        });
-    }
-</script>
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 </body>
 </html>
