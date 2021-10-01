@@ -34,7 +34,7 @@
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Cart - <fmt:message key="enum.orderStatus.CART"></fmt:message> </li>
+                            <li class="breadcrumb-item active" aria-current="page">Cart</li>
                         </ol>
                     </nav>
                 </div>
@@ -53,7 +53,8 @@
                                     <thead>
                                     <tr>
                                         <th>
-                                            <button type="button" class="btn btn-primary btn-simple btn-sm">
+                                            <button type="button" class="btn btn-primary btn-simple btn-sm"
+                                                    id="order_selectAll">
                                                 Select all
                                             </button>
                                         </th>
@@ -62,51 +63,68 @@
                                         <th></th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="checkbox"
-                                                           id="selected_${counter.count}">
-                                                    <span class="form-check-sign"><span
-                                                            class="check"></span></span>
-                                                </label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <table class="table table-borderless">
-                                                <tr>
+                                    <tbody id="order">
+                                    <c:forEach var="order" items="${orders}" varStatus="counter">
+                                        <tr>
+                                            <input type="hidden" id="id_${counter.count}" value="${order.id}">
+                                            <td>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               id="selected_${counter.count}" onclick="calculateCost(this)">
+                                                        <span class="form-check-sign"><span
+                                                                class="check"></span></span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <table class="table table-borderless">
+                                                    <tr>
+                                                            ${order.productType}
+                                                    </tr>
+                                                    <c:forEach var="glass" items="${order.glassList}">
+                                                        <tr>
+                                                            <td>${glass.glassType.name}-${glass.glassType.thickness}</td>
+                                                            <td>
+                                                                <table class="table table-borderless">
+                                                                    <c:forEach var="processing"
+                                                                               items="${glass.processingList}">
+                                                                        <tr>
+                                                                                ${processing.name}
+                                                                        </tr>
+                                                                    </c:forEach>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </table>
+                                            </td>
+                                            <td id="cost_${counter.count}">
+                                                    ${order.cost}
+                                            </td>
+                                            <td class="td-actions text-right">
+                                                <spring:url value="/cart/${order.id}/delete" var="deleteUrl"/>
 
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td></td>
-                                        <td class="td-actions text-right">
-                                            <spring:url value="/order/${order.id}/delete" var="deleteUrl"/>
-
-                                            <button type="button" rel="tooltip"
-                                                    class="btn btn-link btn-danger btn-sm btn-icon"
-                                                    onclick="post('${deleteUrl}')">
-                                                <i class="tim-icons icon-simple-remove"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                                <button type="button" rel="tooltip"
+                                                        class="btn btn-link btn-danger btn-sm btn-icon"
+                                                        onclick="deleteCartOrder('${deleteUrl}',this)">
+                                                    <i class="tim-icons icon-simple-remove"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="#" class="btn btn-success">Form order</a>
+                            <button class="btn btn-success" id="formOrder">Form order</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title"><i class="text-info tim-icons icon-money-coins"></i> Total</h4>
+                            <h4 class="card-title"><i class="text-info tim-icons icon-money-coins"></i> Total <h5
+                                    id="total"></h5></h4>
                         </div>
                     </div>
                     <div class="card">
@@ -187,6 +205,8 @@
 <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 <!-- Bootstrap -->
 <script src="${pageContext.request.contextPath}/resources/js/custom/bootstrap.js"></script>
+
+<script src="${pageContext.request.contextPath}/resources/js/custom/cart.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {

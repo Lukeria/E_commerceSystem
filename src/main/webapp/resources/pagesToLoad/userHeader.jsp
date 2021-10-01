@@ -108,7 +108,7 @@
                             <li class="nav-item">
                                 <a href="/cart/"
                                    class="btn btn-primary btn-round animation-on-hover">
-                                    <i class="tim-icons icon-cart"></i> Cart <span class="badge badge-default">4</span>
+                                    <i class="tim-icons icon-cart"></i> Cart
                                 </a>
                             </li>
                         </security:authorize>

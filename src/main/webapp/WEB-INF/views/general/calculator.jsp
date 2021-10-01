@@ -85,32 +85,40 @@
                                     <spring:url value="/catalog/settings/save" var="formUrl"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <spring:url value="/order/save" var="formUrl"/>
+                                    <security:authorize access="hasRole('ADMIN')">
+                                        <spring:url value="/order/save" var="formUrl"/>
+                                    </security:authorize>
+                                    <security:authorize access="hasRole('USER')">
+                                        <spring:url value="/cart/add" var="formUrl"/>
+                                    </security:authorize>
                                 </c:otherwise>
                             </c:choose>
                             <form:form id="calculatorForm" method="post" action="${formUrl}" modelAttribute="order">
 
-                                <c:choose>
-                                    <c:when test="${isForTemplate}">
-                                        <form:input path="id" type="hidden"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:if test="${order.id != null}">
-                                            <div class="form-row">
-                                                <div class="form-group col-lg-6">
-                                                    <p class="text-primary">Order #<span id="id">${order.id}</span></p>
-                                                    <form:input path="id" type="hidden"/>
+                                <security:authorize access="hasRole('ADMIN')">
+                                    <c:choose>
+                                        <c:when test="${isForTemplate}">
+                                            <form:input path="id" type="hidden"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:if test="${order.id != null}">
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-6">
+                                                        <p class="text-primary">Order #<span id="id">${order.id}</span>
+                                                        </p>
+                                                        <form:input path="id" type="hidden"/>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <div class="form-row">
-                                                <div class="form-group col-lg-6">
-                                                    <p class="text-success">Customer: ${order.customer.name}</p>
+                                                <div class="form-row">
+                                                    <div class="form-group col-lg-6">
+                                                        <p class="text-success">Customer: ${order.customer.name}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </c:if>
-                                    </c:otherwise>
-                                </c:choose>
+                                            </c:if>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </security:authorize>
 
                                 <spring:bind path="productType">
                                     <div class="form-row">
@@ -237,11 +245,11 @@
                                 </table>
 
                                 <c:if test="${!isForTemplate || isForTemplate==null}">
-                                    <spring:bind path="cost">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-4 col-md-6">
-                                                <label for="result">Result:</label>
-                                                <security:authorize access="hasRole('ADMIN')">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-4 col-md-6">
+                                            <label for="result">Result:</label>
+                                            <security:authorize access="hasRole('ADMIN')">
+                                                <spring:bind path="cost">
                                                     <div class="form-group ${status.error ? 'has-danger' : ''}">
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
@@ -252,20 +260,20 @@
                                                             <form:input path="cost" type="number"
                                                                         class="form-control ${status.error ? 'form-control-danger' : ''}"
                                                                         id="result"
-                                                                        name="result"/>
+                                                                        name="cost"/>
                                                         </div>
                                                         <form:errors path="cost" class="form-text text-danger"/>
                                                     </div>
-                                                </security:authorize>
-                                                <security:authorize access="!hasRole('ADMIN')">
-                                                    <h3>
-                                                        <i class="tim-icons icon-coins text-primary"></i>
-                                                        <span id="resultText"></span>
-                                                    </h3>
-                                                </security:authorize>
-                                            </div>
+                                                </spring:bind>
+                                            </security:authorize>
+                                            <security:authorize access="!hasRole('ADMIN')">
+                                                <h3>
+                                                    <i class="tim-icons icon-coins text-primary"></i>
+                                                    <span id="resultText">${order.cost}</span>
+                                                </h3>
+                                            </security:authorize>
                                         </div>
-                                    </spring:bind>
+                                    </div>
                                 </c:if>
 
                                 <div class="form-row">
@@ -282,7 +290,7 @@
                                             </button>
                                         </security:authorize>
                                         <security:authorize access="hasRole('USER')">
-                                            <button type="button" class="btn btn-success animation-on-hover"
+                                            <button type="submit" class="btn btn-success animation-on-hover"
                                                     id="addToCart">Add to cart
                                             </button>
                                         </security:authorize>
@@ -339,6 +347,11 @@
         });
         </security:authorize>
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
+
+        <c:if test="${not empty message}">
+        let message = "<fmt:message key="message.order.${message}"/>";
+            showNotification(message, 'success');
+        </c:if>
     });
 </script>
 </body>

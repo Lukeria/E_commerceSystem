@@ -14,10 +14,6 @@ $(document).ready(function () {
             addGlassRow();
         });
 
-        $("#addToCart").click(function (event) {
-            doAjaxAddToCartPost();
-        });
-
         $("#calculate").click(function (event) {
             doAjaxCalculatePost();
         });
