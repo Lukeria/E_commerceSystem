@@ -1,5 +1,6 @@
 package com.e_commerceSystem.services;
 
+import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
@@ -25,17 +26,17 @@ public class OrderServiceImp implements OrderService {
     private OrderDao orderDao;
 
     @Override
-    public List<Order> getOrdersByStatus(String status) {
+    public List<Order> getOrdersByStatus(OrderStatus status) {
         return orderDao.getOrdersByStatus(status);
     }
 
     @Override
-    public List<Order> getOrdersByStatusAndCustomer(String status, Customer customer) {
+    public List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer) {
         return orderDao.getOrdersByStatusAndCustomer(status, customer);
     }
 
     @Override
-    public Order addOrder(String status, String productType, Float cost, String glassListJson) {
+    public Order addOrder(OrderStatus status, String productType, Float cost, String glassListJson) {
 
         ObjectMapper objectMapper = new ObjectMapper();
 

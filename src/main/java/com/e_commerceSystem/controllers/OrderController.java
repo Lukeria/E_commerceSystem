@@ -1,5 +1,6 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.JsonEditor;
@@ -45,8 +46,8 @@ public class OrderController {
 
         ModelAndView modelAndView = new ModelAndView("/admin/orders/list");
 
-        modelAndView.addObject("activeOrders", orderService.getOrdersByStatus("Active"));
-        modelAndView.addObject("closedOrders", orderService.getOrdersByStatus("Closed"));
+        modelAndView.addObject("activeOrders", orderService.getOrdersByStatus(OrderStatus.ACTIVE));
+        modelAndView.addObject("closedOrders", orderService.getOrdersByStatus(OrderStatus.CLOSED));
 
         return modelAndView;
     }
@@ -90,7 +91,7 @@ public class OrderController {
 //            redirectAttributes.addAttribute("css", "danger");
 //            redirectAttributes.addAttribute("msg", "Error while closing order");
         } else {
-            order.setStatus("Closed");
+            order.setStatus(OrderStatus.CLOSED);
             orderService.updateOrderStatus(order);
 //
 //            redirectAttributes.addAttribute("css", "success");
@@ -146,7 +147,7 @@ public class OrderController {
             return modelAndView;
         }
 
-        order.setStatus("Active");
+        order.setStatus(OrderStatus.ACTIVE);
 
         if (order.isNew()) {
             orderService.addOrder(order);

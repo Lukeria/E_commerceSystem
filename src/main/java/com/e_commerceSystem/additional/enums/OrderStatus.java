@@ -2,8 +2,18 @@ package com.e_commerceSystem.additional.enums;
 
 public enum OrderStatus {
 
-    ACTIVE,
-    PAID,
-    CLOSED,
-    CART
+    ACTIVE("active"),
+    PAID("paid"),
+    CLOSED("closed"),
+    CART("cart");
+
+    private String name;
+
+    OrderStatus(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

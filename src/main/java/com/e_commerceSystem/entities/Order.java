@@ -1,5 +1,6 @@
 package com.e_commerceSystem.entities;
 
+import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.glass.Glass;
 import org.hibernate.annotations.Cascade;
 
@@ -29,8 +30,9 @@ public class Order {
     @Column(name = "product_type")
     private String productType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
-    private String status;
+    private OrderStatus status;
 
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
@@ -59,11 +61,11 @@ public class Order {
         this.id = id;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 

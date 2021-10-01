@@ -41,11 +41,11 @@
                         <div class="card-header">
                             <h4 class="card-title">Order #${order.id}
                                 <c:choose>
-                                    <c:when test="${order.status.equals('Active')}">
-                                        <span class="badge badge-pill badge-info">${order.status}</span>
+                                    <c:when test="${order.status.name.equals('active')}">
+                                        <span class="badge badge-pill badge-info">${order.status.name}</span>
                                     </c:when>
-                                    <c:when test="${order.status.equals('Closed')}">
-                                        <span class="badge badge-pill badge-danger">${order.status}</span>
+                                    <c:when test="${order.status.name.equals('closed')}">
+                                        <span class="badge badge-pill badge-danger">${order.status.name}</span>
                                     </c:when>
                                 </c:choose>
                             </h4>
@@ -151,7 +151,7 @@
 
                 </div>
             </div>
-            <c:if test="${!order.status.equals('Closed')}">
+            <c:if test="${!order.status.name.equals('closed')}">
                 <div class="row">
                     <div class="col-lg-12">
                         <a href="/order/${order.id}/update" class="btn btn-success">Update</a>

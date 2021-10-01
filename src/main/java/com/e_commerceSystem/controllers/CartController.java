@@ -29,7 +29,7 @@ public class CartController {
         User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         ModelAndView modelAndView = new ModelAndView("/user/cart");
         modelAndView.addObject("cartOrders",
-                orderService.getOrdersByStatusAndCustomer("Cart", currentUser.getCustomer()));
+                orderService.getOrdersByStatusAndCustomer(OrderStatus.CART, currentUser.getCustomer()));
         modelAndView.addObject("orderStatus", OrderStatus.CART.toString());
 
         return modelAndView;

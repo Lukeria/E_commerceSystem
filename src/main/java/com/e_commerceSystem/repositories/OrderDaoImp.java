@@ -1,5 +1,6 @@
 package com.e_commerceSystem.repositories;
 
+import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.components.Accessory;
@@ -20,21 +21,21 @@ public class OrderDaoImp implements OrderDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<Order> getOrdersByStatus(String status) {
+    public List<Order> getOrdersByStatus(OrderStatus status) {
 
         List<Order> orderList = sessionFactory.getCurrentSession()
                 .createNamedQuery("get_order_by_status", Order.class)
-                .setParameter("order_status", status)
+                .setParameter("order_status", status.toString())
                 .getResultList();
         return orderList;
     }
 
     @Override
-    public List<Order> getOrdersByStatusAndCustomer(String status, Customer customer) {
+    public List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer) {
 
         List<Order> orderList = sessionFactory.getCurrentSession()
                 .createNamedQuery("get_order_by_status_and_customer_id", Order.class)
-                .setParameter("order_status", status)
+                .setParameter("order_status", status.toString())
                 .setParameter("customer_id", customer.getId())
                 .getResultList();
         return orderList;

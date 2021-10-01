@@ -1,5 +1,6 @@
 package com.e_commerceSystem.services.interfaces;
 
+import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
@@ -9,9 +10,9 @@ import java.util.List;
 
 public interface OrderService {
 
-    List<Order> getOrdersByStatus(String status);
-    List<Order> getOrdersByStatusAndCustomer(String status, Customer customer);
-    Order addOrder(String status, String productType, Float cost, String glassListJson);
+    List<Order> getOrdersByStatus(OrderStatus status);
+    List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer);
+    Order addOrder(OrderStatus status, String productType, Float cost, String glassListJson);
     void addOrder(Order order);
     void updateOrder(Order order);
     void updateOrderCustomer(Order order);
