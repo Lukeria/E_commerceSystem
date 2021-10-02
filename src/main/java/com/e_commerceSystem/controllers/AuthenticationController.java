@@ -6,11 +6,14 @@ import com.e_commerceSystem.services.UserServiceImp;
 import com.e_commerceSystem.services.interfaces.UserService;
 import com.e_commerceSystem.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -71,4 +74,19 @@ public class AuthenticationController {
         return modelAndView;
     }
 
+
+    @GetMapping("/sendTg")
+    @ResponseBody
+    public void sendMessage(){
+        RestTemplate restTemplate = new RestTemplate();
+        String fooResourceUrl
+                = "https://api.telegram.org/bot1968871201:AAEHY-8GIZwcIf4604SRyW29yhUmcCJamTk/sendMessage?chat_id=-1001572595899&text=Hello";
+        ResponseEntity<String> response
+                = restTemplate.getForEntity(fooResourceUrl, String.class);
+
+        if(response.getStatusCode() == HttpStatus.OK){
+
+        }
+
+    }
 }
