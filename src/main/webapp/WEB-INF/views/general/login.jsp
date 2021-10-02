@@ -11,7 +11,7 @@
     <%--    <link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/img/apple-icon.png">--%>
     <%--    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/img/favicon.png">--%>
     <title>
-        Login
+        Log in
     </title>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800"/>
@@ -26,7 +26,9 @@
 <body class="" style="">
 <div class="wrapper">
     <div class="main-panel bg-image">
-        <div id="navbar"></div>
+        <div id="navbar">
+            <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/loginHeader.jsp"/>
+        </div>
         <div class="row align-items-center" style="height: 100vh">
             <div class="col-lg-3"></div>
             <div class="col-lg-6">
@@ -35,17 +37,17 @@
                         <form method="post" action="/login" id="loginForm">
                             <div class="form-group">
                                 ${requestScope.userPrincipal}
-                                <label for="username">Login: </label>
+                                <label for="username"><spring:message code="message.form.login.label"/></label>
                                 <div class="form-group ${param.error ? 'has-danger' : ''}">
                                     <input type="text" id="username" name="username" class="form-control ${param.error ? 'form-control-danger' : ''}"
-                                           value="${username}" placeholder="Enter login">
+                                           value="${username}" placeholder="<spring:message code="message.form.login.placeHolder"/>">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="password">Password: </label>
+                                <label for="password"><spring:message code="message.form.password.label"/></label>
                                 <div class="form-group ${param.error ? 'has-danger' : ''}">
                                     <input type="password" id="password" name="password" class="form-control ${param.error ? 'form-control-danger' : ''}"
-                                           value="${password}" placeholder="Enter password">
+                                           value="${password}" placeholder="<spring:message code="message.form.password.placeHolder"/>">
                                 </div>
                             </div>
                             <c:if test="${param.error}">
@@ -57,11 +59,11 @@
                                 </div>
                             </c:if>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary animation-on-hover">Submit</button>
+                                <button type="submit" class="btn btn-primary animation-on-hover"><spring:message code="message.form.button.submitLogin"/></button>
                             </div>
                             <div class="form-group row">
-                                <p class="form-text">Don’t have an account?
-                                    <a href="/signUp" class="btn btn-warning btn-link animation-on-hover">Sign up</a>
+                                <p class="form-text"><spring:message code="message.form.text.signUp"/>
+                                    <a href="/signUp" class="btn btn-warning btn-link animation-on-hover"><spring:message code="message.navbar.button.signUp"/></a>
                                 </p>
                             </div>
                         </form>
@@ -84,16 +86,6 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        $("#navbar").load("/resources/pagesToLoad/login.html #navbarLogin", function () {
-            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        });
-    });
-
-</script>
+<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
 </body>
 </html>

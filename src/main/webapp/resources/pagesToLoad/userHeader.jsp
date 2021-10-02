@@ -12,7 +12,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel"><fmt:message key="message.navbar.modal.header"/></h4>
+                <h4 class="modal-title" id="exampleModalLabel"><spring:message code="message.navbar.modal.header"/></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     <i class="tim-icons icon-simple-remove"></i>
                 </button>
@@ -26,9 +26,8 @@
                                     <i class="tim-icons icon-single-02"></i>
                                 </div>
                             </div>
-                            <fmt:message key="message.form.nameModal.placeHolder" var="namePlaceholder"/>
                             <input type="email" class="form-control" id="name"
-                                   placeholder="${namePlaceholder}">
+                                   placeholder="<spring:message code="message.form.nameModal.placeHolder"/>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -38,9 +37,8 @@
                                     <i class="tim-icons icon-email-85"></i>
                                 </div>
                             </div>
-                            <fmt:message key="message.form.email.placeHolder" var="emailPlaceholder"/>
                             <input type="email" class="form-control" id="email"
-                                   placeholder="${emailPlaceholder}">
+                                   placeholder="<spring:message code="message.form.email.placeHolder"/>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -50,9 +48,8 @@
                                     <i class="tim-icons icon-mobile"></i>
                                 </div>
                             </div>
-                            <fmt:message key="message.form.phone.placeholder" var="phonePlaceholder"/>
                             <input type="text" class="form-control" id="phone"
-                                   placeholder="${phonePlaceholder}">
+                                   placeholder=" <spring:message code="message.form.phone.placeholder"/>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -62,24 +59,22 @@
                                     <i class="tim-icons icon-notes"></i>
                                 </div>
                             </div>
-                            <fmt:message key="message.form.topic.placeholder" var="topicPlaceholder"/>
+
                             <input type="text" class="form-control" id="topic"
-                                   placeholder="${topicPlaceholder}">
+                                   placeholder=" <spring:message code="message.form.topic.placeholder"/>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <fmt:message key="message.form.message.placeholder" var="messagePlaceholder"/>
                         <textarea class="form-control" id="message" rows="3"
-                                  placeholder="${messagePlaceholder}"></textarea>
+                                  placeholder="<spring:message code="message.form.message.placeholder"/>"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary animation-on-hover" data-dismiss="modal"
                         aria-hidden="true"
-                        <fmt:message key="message.notification.modalSend.success" var="modalNotification"/>
-                        onclick="showNotification('${modalNotification}', 'success')"><fmt:message
-                        key="message.navbar.modal.button.send"/>
+                        onclick="sendMessage()"><spring:message
+                        code="message.navbar.modal.button.send"/>
                 </button>
             </div>
         </div>
@@ -99,28 +94,28 @@
                 <li class="nav-item">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/main"><fmt:message
-                                    key="message.navbar.section.home"/><span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/main"><spring:message
+                                    code="message.navbar.section.home"/><span class="sr-only">(current)</span></a>
                         </li>
                         <security:authorize access="!hasRole('ADMIN')">
                             <li class="nav-item">
-                                <a class="nav-link" href="${pageContext.request.contextPath}/calculator/"><fmt:message
-                                        key="message.navbar.section.calculator"/></a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/calculator/"><spring:message
+                                        code="message.navbar.section.calculator"/></a>
                             </li>
                         </security:authorize>
                         <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/catalog/"><fmt:message
-                                    key="message.navbar.section.catalog"/></a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/catalog/"><spring:message
+                                    code="message.navbar.section.catalog"/></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/contacts"><fmt:message
-                                    key="message.navbar.section.contacts"/></a>
+                            <a class="nav-link" href="${pageContext.request.contextPath}/contacts"><spring:message
+                                    code="message.navbar.section.contacts"/></a>
                         </li>
                         <security:authorize access="hasRole('USER')">
                             <li class="nav-item">
                                 <a href="${pageContext.request.contextPath}/cart/"
                                    class="btn btn-primary btn-round animation-on-hover">
-                                    <i class="tim-icons icon-cart"></i> <fmt:message key="message.navbar.button.cart"/>
+                                    <i class="tim-icons icon-cart"></i> <spring:message code="message.navbar.button.cart"/>
                                 </a>
                             </li>
                         </security:authorize>
@@ -130,7 +125,7 @@
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <i class="tim-icons icon-world"></i>
                         <p class="d-lg-none">
-                            <fmt:message key="message.navbar.lang.heading"/>
+                            <spring:message code="message.navbar.lang.heading"/>
                         </p>
                     </a>
                     <ul class="dropdown-menu dropdown-navbar">
@@ -140,7 +135,7 @@
                                     <img src="${pageContext.request.contextPath}/resources/img/united-kingdom.png"
                                          alt="En" id="englishIcon">
                                 </div>
-                                <fmt:message key="message.navbar.lang.en"/>
+                                <spring:message code="message.navbar.lang.en"/>
                             </a>
                         </li>
                         <li class="nav-link">
@@ -149,7 +144,7 @@
                                     <img src="${pageContext.request.contextPath}/resources/img/russia.png"
                                          alt="Ru" id="russianIcon">
                                 </div>
-                                <fmt:message key="message.navbar.lang.ru"/>
+                                <spring:message code="message.navbar.lang.ru"/>
                             </a>
                         </li>
                     </ul>
@@ -158,17 +153,17 @@
                     <li class="nav-item">
                         <a href="${pageContext.request.contextPath}/main/#questionForm" class="btn btn-info btn-simple"
                            data-toggle="modal"
-                           data-target="#exampleModal"><fmt:message key="message.navbar.button.callRequest"/></a>
+                           data-target="#exampleModal"><spring:message code="message.navbar.button.callRequest"/></a>
                     </li>
                 </security:authorize>
                 <security:authorize access="!isAuthenticated()">
                     <li class="nav-item">
                         <a href="${pageContext.request.contextPath}/login"
-                           class="btn btn-primary btn-simple"><fmt:message key="message.navbar.button.logIn"/></a>
+                           class="btn btn-primary btn-simple"><spring:message code="message.navbar.button.logIn"/></a>
                     </li>
                     <li class="nav-item">
                         <a href="${pageContext.request.contextPath}/signUp"
-                           class="btn btn-warning btn-simple"><fmt:message key="message.navbar.button.signUp"/></a>
+                           class="btn btn-warning btn-simple"><spring:message code="message.navbar.button.signUp"/></a>
                     </li>
                 </security:authorize>
                 <security:authorize access="isAuthenticated()">
@@ -176,23 +171,23 @@
                         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                             <i class="tim-icons icon-single-02"></i>
                             <p class="d-lg-none">
-                                <fmt:message key="message.navbar.button.user"/>
+                                <spring:message code="message.navbar.button.user"/>
                             </p>
                         </a>
                         <ul class="dropdown-menu dropdown-navbar">
                             <li class="nav-link"><a href="${pageContext.request.contextPath}/profile/"
-                                                    class="nav-item dropdown-item"><fmt:message
-                                    key="message.navbar.button.profile"/></a></li>
+                                                    class="nav-item dropdown-item"><spring:message
+                                    code="message.navbar.button.profile"/></a></li>
                             <security:authorize access="hasRole('ADMIN')">
                                 <li class="nav-link"><a href="${pageContext.request.contextPath}/order/all"
-                                                        class="nav-item dropdown-item"><fmt:message
-                                        key="message.navbar.button.adminDashboard"/></a>
+                                                        class="nav-item dropdown-item"><spring:message
+                                        code="message.navbar.button.adminDashboard"/></a>
                                 </li>
                             </security:authorize>
                             <li class="dropdown-divider"></li>
                             <li class="nav-link"><a href="${pageContext.request.contextPath}/logout"
-                                                    class="nav-item dropdown-item"> <fmt:message
-                                    key="message.navbar.button.logOut"/></a></li>
+                                                    class="nav-item dropdown-item"> <spring:message
+                                    code="message.navbar.button.logOut"/></a></li>
                         </ul>
                     </li>
                 </security:authorize>
@@ -201,6 +196,7 @@
         </div>
     </div>
 </nav>
+<script src="${pageContext.request.contextPath}/resources/js/core/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 </body>
 </html>

@@ -12,3 +12,17 @@ function showNotification(text, color) {
         }
     });
 }
+
+function sendMessage() {
+    $.ajax({
+        type: "GET",
+        url: "/sendTg",
+        success: function (response) {
+
+            alert("Success");
+        },
+        error: function (e) {
+            alert('Error: ' + e + '. Cannot load data');
+        }
+    });
+}

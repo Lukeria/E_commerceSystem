@@ -49,45 +49,45 @@
                                 <img src="${pageContext.request.contextPath}/resources/img/main_wall.jpg"
                                      class="d-block w-100" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3><fmt:message key="message.main.headingCarousel.partition"/></h3>
-                                    <p><fmt:message key="message.main.textCarousel"/></p>
+                                    <h3><spring:message code="message.main.headingCarousel.partition"/></h3>
+                                    <p><spring:message code="message.main.textCarousel"/></p>
                                     <a href="${pageContext.request.contextPath}/catalog/partition"
-                                       class="btn btn-warning animation-on-hover"><fmt:message
-                                            key="message.main.button.goToCatalog"/></a>
+                                       class="btn btn-warning animation-on-hover"><spring:message
+                                            code="message.main.button.goToCatalog"/></a>
                                 </div>
                             </div>
                             <div class="carousel-item">
                                 <img src="${pageContext.request.contextPath}/resources/img/main_mirror.jpg"
                                      class="d-block w-100" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3><fmt:message key="message.main.headingCarousel.mirror"/></h3>
-                                    <p><fmt:message key="message.main.textCarousel"/></p>
+                                    <h3><spring:message code="message.main.headingCarousel.mirror"/></h3>
+                                    <p><spring:message code="message.main.textCarousel"/></p>
                                     <a href="${pageContext.request.contextPath}/catalog/mirror"
-                                       class="btn btn-warning animation-on-hover"><fmt:message
-                                            key="message.main.button.goToCatalog"/></a>
+                                       class="btn btn-warning animation-on-hover"><spring:message
+                                            code="message.main.button.goToCatalog"/></a>
                                 </div>
                             </div>
                             <div class="carousel-item">
                                 <img src="${pageContext.request.contextPath}/resources/img/main_shower.jpg"
                                      class="d-block w-100" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h3><fmt:message key="message.main.headingCarousel.shower"/></h3>
-                                    <p><fmt:message key="message.main.textCarousel"/></p>
+                                    <h3><spring:message code="message.main.headingCarousel.shower"/></h3>
+                                    <p><spring:message code="message.main.textCarousel"/></p>
                                     <a href="${pageContext.request.contextPath}/catalog/shower"
-                                       class="btn btn-warning animation-on-hover"><fmt:message
-                                            key="message.main.button.goToCatalog"/></a>
+                                       class="btn btn-warning animation-on-hover"><spring:message
+                                            code="message.main.button.goToCatalog"/></a>
                                 </div>
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
                                 data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden"><fmt:message key="message.main.carousel.prev"/></span>
+                            <span class="visually-hidden"><spring:message code="message.main.carousel.prev"/></span>
                         </button>
                         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
                                 data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden"><fmt:message key="message.main.carousel.next"/></span>
+                            <span class="visually-hidden"><spring:message code="message.main.carousel.next"/></span>
                         </button>
                     </div>
                 </div>
@@ -98,13 +98,13 @@
                 <div class="col-lg-8">
                     <div class="card" style="margin-top: 2rem">
                         <div class="card-header">
-                            <h1 class="card-title text-center"><fmt:message key="message.main.header"/></h1>
+                            <h1 class="card-title text-center"><spring:message code="message.main.header"/></h1>
                         </div>
                         <div class="card-body">
-                            <p class="card-text"><fmt:message key="message.main.headerParagraph1"/></p>
-                            <p class="card-text"><fmt:message key="message.main.headerParagraph2"/></p>
-                            <p class="card-text"><fmt:message key="message.main.headerParagraph3"/></p>
-                            <p class="card-text"><fmt:message key="message.main.headerParagraph4"/></p>
+                            <p class="card-text"><spring:message code="message.main.headerParagraph1"/></p>
+                            <p class="card-text"><spring:message code="message.main.headerParagraph2"/></p>
+                            <p class="card-text"><spring:message code="message.main.headerParagraph3"/></p>
+                            <p class="card-text"><spring:message code="message.main.headerParagraph4"/></p>
                         </div>
                     </div>
                 </div>
@@ -117,10 +117,10 @@
                         <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/mirror.jpg"
                              alt="Card image cap">
                         <div class="card-body">
-                            <h4 class="card-title"><fmt:message key="message.main.catalogSection.mirror"/></h4>
+                            <h4 class="card-title"><spring:message code="message.main.catalogSection.mirror"/></h4>
                             <a href="${pageContext.request.contextPath}/catalog/mirror"
                                class="btn btn-simple btn-warning btn-one">
-                                <span><fmt:message key="message.main.button.goToCatalog"/> <i
+                                <span><spring:message code="message.main.button.goToCatalog"/> <i
                                         class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
@@ -131,10 +131,10 @@
                         <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/wall.png"
                              alt="Card image cap">
                         <div class="card-body">
-                            <h4 class="card-title"><fmt:message key="message.main.catalogSection.partition"/></h4>
+                            <h4 class="card-title"><spring:message code="message.main.catalogSection.partition"/></h4>
                             <a href="${pageContext.request.contextPath}/catalog/partition"
                                class="btn btn-simple btn-warning btn-one">
-                                <span><fmt:message key="message.main.button.goToCatalog"/> <i
+                                <span><spring:message code="message.main.button.goToCatalog"/> <i
                                         class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
@@ -145,10 +145,10 @@
                         <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/shower.png"
                              alt="Card image cap">
                         <div class="card-body">
-                            <h4 class="card-title"><fmt:message key="message.main.catalogSection.shower"/></h4>
+                            <h4 class="card-title"><spring:message code="message.main.catalogSection.shower"/></h4>
                             <a href="${pageContext.request.contextPath}/catalog/shower"
                                class="btn btn-simple btn-warning btn-one">
-                                <span><fmt:message key="message.main.button.goToCatalog"/> <i
+                                <span><spring:message code="message.main.button.goToCatalog"/> <i
                                         class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
@@ -159,10 +159,10 @@
                         <img class="card-img-top" src="${pageContext.request.contextPath}/resources/img/kitchen.jpg"
                              alt="Card image cap">
                         <div class="card-body">
-                            <h4 class="card-title"><frmt:message key="message.main.catalogSection.apron"/></h4>
+                            <h4 class="card-title"><spring:message code="message.main.catalogSection.apron"/></h4>
                             <a href="${pageContext.request.contextPath}/catalog/apron"
                                class="btn btn-simple btn-warning btn-one">
-                                <span><fmt:message key="message.main.button.goToCatalog"/> <i
+                                <span><spring:message code="message.main.button.goToCatalog"/> <i
                                         class="tim-icons icon-double-right"></i></span>
                             </a>
                         </div>
@@ -175,7 +175,7 @@
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title text-center"><fmt:message key="message.main.advantages.header"/></h3>
+                            <h3 class="card-title text-center"><spring:message code="message.main.advantages.header"/></h3>
                         </div>
                         <div class="card-body">
                             <div class="row align-items-center mb-3">
@@ -187,10 +187,10 @@
                                 </div>
                                 <div class="col-10">
                                     <h6 class="card-text">
-                                        <fmt:message key="message.main.advantages.line1"/>
+                                        <spring:message code="message.main.advantages.line1"/>
                                     </h6>
                                     <p class="card-text">
-                                        <fmt:message key="message.main.advantages.line1.description"/>
+                                        <spring:message code="message.main.advantages.line1.description"/>
                                     </p>
                                 </div>
                             </div>
@@ -203,10 +203,10 @@
                                 </div>
                                 <div class="col-10">
                                     <h6 class="card-text">
-                                        <fmt:message key="message.main.advantages.line2"/>
+                                        <spring:message code="message.main.advantages.line2"/>
                                     </h6>
                                     <p class="card-text">
-                                        <fmt:message key="message.main.advantages.line2.description"/>
+                                        <spring:message code="message.main.advantages.line2.description"/>
                                     </p>
                                 </div>
                             </div>
@@ -219,10 +219,10 @@
                                 </div>
                                 <div class="col-10">
                                     <h6 class="card-text">
-                                        <fmt:message key="message.main.advantages.line3"/>
+                                        <spring:message code="message.main.advantages.line3"/>
                                     </h6>
                                     <p class="card-text">
-                                        <fmt:message key="message.main.advantages.line3.description"/>
+                                        <spring:message code="message.main.advantages.line3.description"/>
                                     </p>
                                 </div>
                             </div>
@@ -235,10 +235,10 @@
                                 </div>
                                 <div class="col-10">
                                     <h6 class="card-text">
-                                        <fmt:message key="message.main.advantages.line4"/>
+                                        <spring:message code="message.main.advantages.line4"/>
                                     </h6>
                                     <p class="card-text">
-                                        <fmt:message key="message.main.advantages.line4.description"/>
+                                        <spring:message code="message.main.advantages.line4.description"/>
                                     </p>
                                 </div>
                             </div>
@@ -248,18 +248,18 @@
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title text-center"><fmt:message key="message.main.acts.header"/></h3>
+                            <h3 class="card-title text-center"><spring:message code="message.main.acts.header"/></h3>
                         </div>
                         <div class="card-body">
 
                             <ul>
-                                <li><fmt:message key="message.main.acts.line1"/>
+                                <li><spring:message code="message.main.acts.line1"/>
                                 </li>
-                                <li><fmt:message key="message.main.acts.line2"/></li>
-                                <li><fmt:message key="message.main.acts.line3"/>
+                                <li><spring:message code="message.main.acts.line2"/></li>
+                                <li><spring:message code="message.main.acts.line3"/>
                                 </li>
-                                <li><fmt:message key="message.main.acts.line4"/></li>
-                                <li><fmt:message key="message.main.acts.line5"/></li>
+                                <li><spring:message code="message.main.acts.line4"/></li>
+                                <li><spring:message code="message.main.acts.line5"/></li>
                             </ul>
                         </div>
                     </div>
