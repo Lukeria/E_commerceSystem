@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>403</title>
@@ -101,9 +102,9 @@
 </head>
 <body>
 <h1>403</h1>
-<div><p>> <span>ERROR CODE</span>: "<i>HTTP 403 Forbidden</i>"</p>
-    <p>> <span>ERROR DESCRIPTION</span>: "<i>Access Denied. You Do Not Have The Permission To Access This Page On This Server</i>"</p>
-    <p>> <span>HAVE A NICE DAY </span></p>
+<div><p>> <span><spring:message code="message.accessDenied.code.label"/></span>: "<i><spring:message code="message.accessDenied.code.text"/></i>"</p>
+    <p>> <span><spring:message code="message.accessDenied.description.label"/></span>: "<i><spring:message code="message.accessDenied.description.text"/></i>"</p>
+    <p>> <span><spring:message code="message.accessDenied.footer"/></span></p>
 </div>
 </body>
 </html>
