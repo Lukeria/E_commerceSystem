@@ -11,6 +11,7 @@ public interface OrderDao {
 
     List<Order> getOrdersByStatus(OrderStatus status);
     List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer);
+    List<Order> getOrders();
     void addOrder(Order order);
     void updateOrder(Order order);
     void updateOrderCustomer(Order order);

@@ -36,6 +36,11 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
+    public List<Order> getOrders() {
+        return orderDao.getOrders();
+    }
+
+    @Override
     public Order addOrder(OrderStatus status, String productType, Float cost, String glassListJson) {
 
         ObjectMapper objectMapper = new ObjectMapper();

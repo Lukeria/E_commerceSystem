@@ -42,6 +42,16 @@ public class OrderDaoImp implements OrderDao {
     }
 
     @Override
+    public List<Order> getOrders() {
+
+        List<Order> orderList = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_orders", Order.class)
+                .setParameter("order_status", OrderStatus.CART.toString())
+                .getResultList();
+        return orderList;
+    }
+
+    @Override
     public void addOrder(Order order) {
         sessionFactory.getCurrentSession().save(order);
     }
@@ -52,11 +62,11 @@ public class OrderDaoImp implements OrderDao {
         orderToUpdate.setDeadline(order.getDeadline());
         orderToUpdate.setProductType(order.getProductType());
         orderToUpdate.setCost(order.getCost());
-        for (Glass glass: orderToUpdate.getGlassList()) {
+        for (Glass glass : orderToUpdate.getGlassList()) {
             sessionFactory.getCurrentSession().delete(glass);
         }
         orderToUpdate.setGlassList(order.getGlassList());
-        for(Glass glass: orderToUpdate.getGlassList()){
+        for (Glass glass : orderToUpdate.getGlassList()) {
             glass.setOrder(orderToUpdate);
         }
         sessionFactory.getCurrentSession().update(orderToUpdate);
