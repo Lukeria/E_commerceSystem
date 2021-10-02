@@ -11,6 +11,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/general/calculator.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/general" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/general/login.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/general" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/general/registration.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/general" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/cart.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/catalog.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/contacts.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user/main.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/user" />

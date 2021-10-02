@@ -115,7 +115,7 @@
                             <li class="nav-item">
                                 <a href="${pageContext.request.contextPath}/cart/"
                                    class="btn btn-primary btn-round animation-on-hover">
-                                    <i class="tim-icons icon-cart"></i> <spring:message code="message.navbar.button.cart"/>
+                                    <i class="tim-icons icon-cart"></i> <spring:message code="message.navbar.section.cart"/>
                                 </a>
                             </li>
                         </security:authorize>

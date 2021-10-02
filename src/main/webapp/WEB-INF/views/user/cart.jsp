@@ -33,8 +33,11 @@
                 <div class="col-lg-8">
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                            <li class="breadcrumb-item"><a class="btn-primary btn-link"
+                                                           href="${pageContext.request.contextPath}/main"><spring:message
+                                    code="message.navbar.section.home"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><spring:message
+                                    code="message.navbar.section.cart"/></li>
                         </ol>
                     </nav>
                 </div>
@@ -45,21 +48,22 @@
                 <div class="col-lg-5">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Orders</h4>
+                            <h4 class="card-title"><spring:message code="message.orders.heading"/></h4>
                         </div>
                         <div class="card-body">
                             <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
+                                <button type="button" class="btn btn-primary btn-simple btn-sm"
+                                        id="order_selectAll">
+                                    <spring:message code="message.form.button.selectAll"/>
+                                </button>
                                 <table class="table tablesorter">
                                     <thead>
                                     <tr>
                                         <th>
-                                            <button type="button" class="btn btn-primary btn-simple btn-sm"
-                                                    id="order_selectAll">
-                                                Select all
-                                            </button>
                                         </th>
-                                        <th>Order list</th>
-                                        <th>Cost</th>
+                                        <th class="text-center"><spring:message
+                                                code="message.orders.column.orderList"/></th>
+                                        <th><spring:message code="message.orders.column.cost"/></th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -71,7 +75,8 @@
                                                 <div class="form-check">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox"
-                                                               id="selected_${counter.count}" onclick="calculateCost(this)">
+                                                               id="selected_${counter.count}"
+                                                               onclick="calculateCost(this)">
                                                         <span class="form-check-sign"><span
                                                                 class="check"></span></span>
                                                     </label>
@@ -79,24 +84,27 @@
                                             </td>
                                             <td>
                                                 <table class="table table-borderless">
+                                                    <tbody>
                                                     <tr>
-                                                            ${order.productType}
+                                                        <td style="color:#00f2c3 !important">
+                                                                ${order.productType}
+                                                        </td>
                                                     </tr>
                                                     <c:forEach var="glass" items="${order.glassList}">
                                                         <tr>
-                                                            <td>${glass.glassType.name}-${glass.glassType.thickness}</td>
-                                                            <td>
-                                                                <table class="table table-borderless">
-                                                                    <c:forEach var="processing"
-                                                                               items="${glass.processingList}">
-                                                                        <tr>
-                                                                                ${processing.name}
-                                                                        </tr>
-                                                                    </c:forEach>
-                                                                </table>
+                                                            <td class="text-left" style="width: 8rem">${glass.glassType.name}-${glass.glassType.thickness}</td>
+                                                            <td style="width: 8rem">${glass.width}x${glass.height}</td>
+                                                            <td class="text-left">
+                                                                <c:forEach var="processing"
+                                                                           items="${glass.processingList}"
+                                                                           varStatus="status">
+                                                                    <c:if test="${status.index!=0}">, </c:if>
+                                                                    ${processing.name}
+                                                                </c:forEach>
                                                             </td>
                                                         </tr>
                                                     </c:forEach>
+                                                    </tbody>
                                                 </table>
                                             </td>
                                             <td id="cost_${counter.count}">
@@ -116,72 +124,82 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <button class="btn btn-success" id="formOrder">Form order</button>
+                            <button class="btn btn-success animation-on-hover" id="formOrder"><spring:message
+                                    code="message.orders.button.formOrder"/></button>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title"><i class="text-info tim-icons icon-money-coins"></i> Total <h5
-                                    id="total"></h5></h4>
+                            <h4 class="card-title"><i class="text-info tim-icons icon-money-coins"></i> <spring:message
+                                    code="message.orders.total"/><span id="total"
+                                                                       style="padding-left: 0.7rem; font-size: 1.2rem">0</span>
+                            </h4>
+                            <small class="form-text text-muted"><spring:message
+                                    code="message.orders.total.text"/></small>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Delivery methods</h4>
+                            <h4 class="card-title"><spring:message code="message.orders.deliveryMethod"/></h4>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <div class="form-check form-check-radio form-check-inline">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="delivery"
-                                                   id="delivery1" value="active" checked>
-                                            Delivery
+                                                   value="delivery" checked>
+                                            <spring:message code="message.orders.deliveryMethod.delivery"/>
                                             <span class="form-check-sign"></span>
                                         </label>
                                     </div>
                                     <div class="form-check form-check-radio form-check-inline">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="delivery"
-                                                   id="delivery2" value="closed">
-                                            Pick up
+                                                   value="pickUp">
+                                            <spring:message code="message.orders.deliveryMethod.pickUp"/>
                                             <span class="form-check-sign"></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row" id="deliveryInfo">
                                 <div class="form-group col">
-                                    <label for="address">Address: </label>
-                                    <input type="text" id="address" class="form-control"/>
+                                    <label for="address"><spring:message code="message.form.address.label"/></label>
+                                    <input type="text" id="address" class="form-control"
+                                           placeholder="<spring:message code="message.form.address.placeholder"/>"
+                                           aria-describedby="addressHelp"/>
+                                    <small id="addressHelp" class="form-text text-muted"><spring:message
+                                            code="message.orders.address.text"/></small>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Payment methods</h4>
+                            <h4 class="card-title"><spring:message code="message.orders.paymentMethod"/></h4>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <div class="form-check form-check-radio form-check-inline">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="payment"
-                                                   id="payment1" value="active" checked>
-                                            Cash
+                                                   value="cash" checked>
+                                            <spring:message code="message.orders.paymentMethod.cash"/>
                                             <span class="form-check-sign"></span>
                                         </label>
                                     </div>
                                     <div class="form-check form-check-radio form-check-inline">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="radio" name="payment"
-                                                   id="payment2" value="closed">
-                                            Card
+                                                   value="card">
+                                            <spring:message code="message.orders.paymentMethod.card"/>
                                             <span class="form-check-sign"></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="btn btn-primary">Form and pay for order</a>
+                            <a href="#" class="btn btn-primary animation-on-hover" id="payForOrder" style="display: none"><spring:message
+                                    code="message.orders.button.formAndPayOrder"/></a>
                         </div>
                     </div>
                 </div>

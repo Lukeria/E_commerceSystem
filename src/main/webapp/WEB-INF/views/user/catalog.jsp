@@ -33,7 +33,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="exampleModalLabel"><spring:message
-                                code="message.enum.productType.${productType.name}.plural"/></h4>
+                                code="message.enum.productType.${productType.name}"/></h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             <i class="tim-icons icon-simple-remove"></i>
                         </button>

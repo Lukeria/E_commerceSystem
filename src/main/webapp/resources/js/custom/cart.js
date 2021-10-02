@@ -1,6 +1,7 @@
 let selectedOrders = false;
 
 $(document).ready(function () {
+
     $("#formOrder").click(function (event) {
         submitOrder();
     });
@@ -9,19 +10,49 @@ $(document).ready(function () {
         selectedOrders = !selectedOrders;
     });
 
+    $('input[type=radio][name="delivery"]').change(function () {
+        if(this.value === "delivery"){
+           $('#deliveryInfo').show();
+        } else{
+            $('#deliveryInfo').hide();
+        }
+    });
+
+    $('input[type=radio][name="payment"]').change(function () {
+        if(this.value === "card"){
+            $('#payForOrder').show();
+        } else{
+            $('#payForOrder').hide();
+        }
+    });
+
 });
 
 function selectAll(id, value) {
 
+    $('#total').text(0);
     $('#' + id + '>tr').each(function () {
-        $(this).find('.form-check-label>input[id*="selected_"]').prop('checked', value);
+        let currentSelectPoint = $(this).find('.form-check-label>input[id*="selected_"]');
+        $(currentSelectPoint).prop('checked', value);
+        if(value===false) {
+            $('#total').text(0);
+        }else{
+            calculateCost(currentSelectPoint);
+        }
     });
 }
 
-function calculateCost(element){
+function calculateCost(element) {
 
-    let currentRow = element.parents('tr');
-    let cost = currentRow.find('td[id*="cost_"]').text();
+    let currentRow = $(element).parents('tr');
+    let cost = Number.parseFloat(currentRow.find('td[id*="cost_"]').text()) || 0;
+    let total = Number.parseFloat($('#total').text()) || 0;
+    if ($(element).is(':checked')) {
+        total += cost;
+    } else {
+        total -= cost;
+    }
+    $('#total').text(total);
 
 }
 
@@ -42,7 +73,7 @@ function deleteCartOrder(url, element) {
     });
 }
 
-function submitOrder(){
+function submitOrder() {
 
     let ids = getIdsArray();
     $.ajax({
@@ -52,7 +83,7 @@ function submitOrder(){
         contentType: "application/json",
         success: function (response) {
             // we have the response
-            if (response.status == "SUCCESS") {
+            if (response.status === "SUCCESS") {
                 $('#order>tr').each(function () {
                     if (!$(this).find('.form-check-label>input[id*="selected_"]').is(":checked")) {
                         return true;
@@ -68,7 +99,7 @@ function submitOrder(){
     });
 }
 
-function getIdsArray(){
+function getIdsArray() {
 
     let array = [];
 
