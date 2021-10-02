@@ -46,8 +46,7 @@ public class OrderController {
 
         ModelAndView modelAndView = new ModelAndView("/admin/orders/list");
 
-        modelAndView.addObject("activeOrders", orderService.getOrdersByStatus(OrderStatus.ACTIVE));
-        modelAndView.addObject("closedOrders", orderService.getOrdersByStatus(OrderStatus.CLOSED));
+        modelAndView.addObject("orders", orderService.getOrdersByStatus(OrderStatus.ACTIVE));
 
         return modelAndView;
     }

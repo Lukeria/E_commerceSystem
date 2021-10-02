@@ -99,7 +99,8 @@
                         </li>
                         <security:authorize access="!hasRole('ADMIN')">
                             <li class="nav-item">
-                                <a class="nav-link" href="${pageContext.request.contextPath}/calculator/"><spring:message
+                                <a class="nav-link"
+                                   href="${pageContext.request.contextPath}/calculator/"><spring:message
                                         code="message.navbar.section.calculator"/></a>
                             </li>
                         </security:authorize>
@@ -111,14 +112,6 @@
                             <a class="nav-link" href="${pageContext.request.contextPath}/contacts"><spring:message
                                     code="message.navbar.section.contacts"/></a>
                         </li>
-                        <security:authorize access="hasRole('USER')">
-                            <li class="nav-item">
-                                <a href="${pageContext.request.contextPath}/cart/"
-                                   class="btn btn-primary btn-round animation-on-hover">
-                                    <i class="tim-icons icon-cart"></i> <spring:message code="message.navbar.section.cart"/>
-                                </a>
-                            </li>
-                        </security:authorize>
                     </ul>
                 </li>
                 <li class="dropdown nav-item">
@@ -149,6 +142,14 @@
                         </li>
                     </ul>
                 </li>
+                <security:authorize access="hasRole('USER')">
+                    <li class="nav-item">
+                        <a href="${pageContext.request.contextPath}/cart/"
+                           class="btn btn-primary btn-round animation-on-hover">
+                            <i class="tim-icons icon-cart"></i> <spring:message code="message.navbar.section.cart"/>
+                        </a>
+                    </li>
+                </security:authorize>
                 <security:authorize access="!hasRole('ADMIN')">
                     <li class="nav-item">
                         <a href="${pageContext.request.contextPath}/main/#questionForm" class="btn btn-info btn-simple"
@@ -175,12 +176,14 @@
                             </p>
                         </a>
                         <ul class="dropdown-menu dropdown-navbar">
-                            <li class="nav-link"><a href="${pageContext.request.contextPath}/profile/"
-                                                    class="nav-item dropdown-item"><spring:message
-                                    code="message.navbar.button.profile"/></a></li>
+                            <security:authorize access="hasRole('USER')">
+                                <li class="nav-link"><a href="${pageContext.request.contextPath}/profile/"
+                                                        class="nav-item dropdown-item"><spring:message
+                                        code="message.navbar.button.profile"/></a></li>
+                            </security:authorize>
                             <security:authorize access="hasRole('ADMIN')">
                                 <li class="nav-link"><a href="${pageContext.request.contextPath}/order/all"
-                                                        class="nav-item dropdown-item"><spring:message
+                                                        class="nav-item dropdown-item text-wrap"><spring:message
                                         code="message.navbar.button.adminDashboard"/></a>
                                 </li>
                             </security:authorize>

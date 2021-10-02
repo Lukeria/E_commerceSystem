@@ -79,13 +79,24 @@ table {
 
 
 .sidebar {
-    font-size: 0.75rem;
     background: linear-gradient(
             0deg, #00f2c3 0%, #ba54f5 100%);
 }
 
+.sidebar a p{
+    font-size: 0.7rem;
+}
+
 .btn span {
     display: inline-block;
+}
+
+.badge{
+    font-size: 0.8rem;
+}
+
+.badge-success{
+    background-image: linear-gradient(to bottom left, #0098f0, #00f2ea, #00f2c3);
 }
 
 .dark-list-item {

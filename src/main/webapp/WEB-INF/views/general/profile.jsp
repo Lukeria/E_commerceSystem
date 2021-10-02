@@ -34,51 +34,69 @@
         <div class="content-user">
             <div class="row">
                 <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a class="btn-primary btn-link"
+                                                           href="${pageContext.request.contextPath}/main"><spring:message
+                                    code="message.navbar.section.home"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><spring:message
+                                    code="message.navbar.button.profile"/></li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2"></div>
                 <div class="col-lg-5">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="title">Edit Profile</h4>
+                            <h4 class="title"><spring:message code="message.profile.heading"/></h4>
                         </div>
                         <div class="card-body">
                             <form>
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>Name</label>
-                                            <input type="text" class="form-control" placeholder="Company" value="Mike">
+                                            <label><spring:message code="message.form.name.label"/></label>
+                                            <input type="text" class="form-control" placeholder="<spring:message
+                                                code="message.form.name.placeHolder"/>">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label>Username</label>
-                                            <input type="text" class="form-control" placeholder="Username"
-                                                   value="michael23">
+                                            <label><spring:message code="message.form.username.label"/></label>
+                                            <input type="text" class="form-control"
+                                                   placeholder="<spring:message code="message.form.username.placeHolder"/>">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">Email address</label>
+                                            <label for="exampleInputEmail1"><spring:message
+                                                    code="message.form.email.label"/> </label>
                                             <input type="email" id="exampleInputEmail1" class="form-control"
-                                                   placeholder="mike@email.com">
+                                                   placeholder="<spring:message code="message.form.email.placeHolder"/>">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>Phone</label>
-                                            <input type="phone" class="form-control" placeholder="Phone">
+                                            <label><spring:message code="message.form.phone.label"/></label>
+                                            <input type="phone" class="form-control"
+                                                   placeholder="<spring:message code="message.form.phone.placeholder"/>">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>Address</label>
-                                            <input type="text" class="form-control" placeholder="Home Address"
-                                                   value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                                            <label><spring:message code="message.form.address.label"/></label>
+                                            <input type="text" class="form-control"
+                                                   placeholder="<spring:message code="message.form.address.placeholder"/>">
                                         </div>
                                     </div>
                                 </div>
@@ -86,11 +104,16 @@
                             </form>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-fill btn-success animation-on-hover">Save</button>
+                            <button type="submit" class="btn btn-fill btn-success animation-on-hover"><spring:message code="message.form.button.save"/></button>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3">
+                    <div class="card-plain" style="margin-bottom: 1rem">
+                        <button type="button" class="btn btn-success btn-simple animation-on-hover">
+                            <spring:message code="message.profile.button.ordersHistory"/>
+                        </button>
+                    </div>
                     <div class="card card-user">
                         <div class="card-body">
                             <p class="card-text">
@@ -100,27 +123,12 @@
                                 <div class="block block-two"></div>
                                 <div class="block block-three"></div>
                                 <div class="block block-four"></div>
-                                <a href="javascript:void(0)">
-                                    <img class="avatar"
-                                         src="${pageContext.request.contextPath}/resources/img/default-avatar.png"
-                                         alt="...">
-                                    <h5 class="title">Mike Andrew</h5>
-                                </a>
+                                <img class="avatar"
+                                     src="${pageContext.request.contextPath}/resources/img/default-avatar.png"
+                                     alt="Photo">
+                                <h5 class="title">Mike Andrew</h5>
                             </div>
                             <p></p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="button-container">
-                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-                                    <i class="fab fa-facebook"></i>
-                                </button>
-                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
-                                    <i class="fab fa-twitter"></i>
-                                </button>
-                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
-                                    <i class="fab fa-google-plus"></i>
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -129,14 +137,15 @@
         </div>
     </div>
 </div>
-<!--   Core JS Files   -->
+
+<!-- Core JS Files -->
 <script src="${pageContext.request.contextPath}/resources/js/core/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Chart JS -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/chartjs.min.js"></script>
-<!--  Notifications Plugin    -->
+<!-- Notifications Plugin -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
