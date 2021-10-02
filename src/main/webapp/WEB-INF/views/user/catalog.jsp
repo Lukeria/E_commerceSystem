@@ -32,7 +32,8 @@
             <div class="modal-dialog" role="document" style="transform: none; pointer-events: none">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="exampleModalLabel">${productType.representation}</h4>
+                        <h4 class="modal-title" id="exampleModalLabel"><spring:message
+                                code="message.enum.productType.${productType.name}.plural"/></h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             <i class="tim-icons icon-simple-remove"></i>
                         </button>
@@ -52,9 +53,13 @@
                 <div class="col-lg-8">
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main">Home</a></li>
-                            <li class="breadcrumb-item" aria-current="page">Catalog</li>
-                            <li class="breadcrumb-item active" aria-current="page">${productType.representation}</li>
+                            <li class="breadcrumb-item"><a class="btn-primary btn-link"
+                                                           href="${pageContext.request.contextPath}/main"><spring:message
+                                    code="message.navbar.section.home"/></a></li>
+                            <li class="breadcrumb-item" aria-current="page"><spring:message
+                                    code="message.navbar.section.catalog"/></li>
+                            <li class="breadcrumb-item active" aria-current="page"><spring:message
+                                    code="message.enum.productType.${productType.name}.plural"/></li>
                         </ol>
                     </nav>
                 </div>
@@ -65,39 +70,14 @@
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">${productType.representation}</h3>
+                            <h3 class="card-title"><spring:message
+                                    code="message.enum.productType.${productType.name}.plural"/></h3>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-9 col-md-8">
                                     <p class="card-text">
-                                        <c:choose>
-                                            <c:when test="${productType.name.equals('mirror')}">
-                                                Зеркала – многофункциональные элементы интерьера. Они сочетают две основные
-                                                функции: практическую и декоративную. С их помощью можно преобразить помещение,
-                                                добиться интересных оптических эффектов. Сделать заказ можно по телефону или
-                                                посредством онлайн-формы.
-                                            </c:when>
-                                            <c:when test="${productType.name.equals('partition')}">
-                                                Стеклянные перегородки – это не только способ зонирования пространства,
-                                                но и элемент декора. Они могут визуально расширить помещение и увеличить
-                                                световой поток. Сделать заказ можно по телефону или посредством онлайн-формы.
-                                            </c:when>
-                                            <c:when test="${productType.name.equals('shower')}">
-                                                Душевые кабины из стекла прекрасно решают вопросы, связанные с качеством,
-                                                удобством, функциональностью ванной комнаты. Они позволяют устранить тесноту,
-                                                однообразие, реализовать самые интересные дизайнерские задумки в интерьере комнаты.
-                                                Сделать заказ можно по телефону или посредством онлайн-формы.
-                                            </c:when>
-                                            <c:when test="${productType.name.equals('apron')}">
-                                                Появление скинали позволило пересмотреть подходы к оформлению кухонного интерьера.
-                                                Фартук для кухни из стекла не просто стал популярным интерьерным решением.
-                                                Сделать заказ можно по телефону или посредством онлайн-формы.
-                                            </c:when>
-                                            <c:otherwise>
-                                                Undefined
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <spring:message code="message.catalog.${productType.name}.description"/>
                                     </p>
                                 </div>
                                 <div class="col-lg-3 col-md-4 text-center">
@@ -106,7 +86,8 @@
                                             var="calculatorUrl">
                                     </spring:url>
                                     <a class="btn btn-primary animation-on-hover"
-                                       href="${calculatorUrl}">Calculate order
+                                       href="${calculatorUrl}"><spring:message
+                                            code="message.navbar.section.calculator"/>
                                     </a>
                                 </div>
                             </div>
@@ -121,22 +102,27 @@
                     <div class="card card-nav-tabs">
                         <a class="btn btn-warning animation-on-hover" data-toggle="collapse"
                            href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                            <i class="tim-icons icon-align-center"></i> Catalog
+                            <i class="tim-icons icon-align-center"></i> <spring:message
+                                code="message.navbar.section.catalog"/>
                         </a>
                         <div class="collapse show" id="collapseExample">
                             <div class="card-body">
                                 <ul class="list-group list-group-flush">
-                                    <a href="/catalog/mirror" class="btn btn-simple btn-warning">
-                                        Зеркала
+                                    <a href="${pageContext.request.contextPath}/catalog/mirror"
+                                       class="btn btn-simple btn-warning">
+                                        <spring:message code="message.enum.productType.mirror.plural"/>
                                     </a>
-                                    <a href="/catalog/partition" class="btn btn-simple btn-warning">
-                                        Перегородки
+                                    <a href="${pageContext.request.contextPath}/catalog/partition"
+                                       class="btn btn-simple btn-warning">
+                                        <spring:message code="message.enum.productType.partition.plural"/>
                                     </a>
-                                    <a href="/catalog/shower" class="btn btn-simple btn-warning">
-                                        Душевые
+                                    <a href="${pageContext.request.contextPath}/catalog/shower"
+                                       class="btn btn-simple btn-warning">
+                                        <spring:message code="message.enum.productType.shower.plural"/>
                                     </a>
-                                    <a href="/catalog/apron" class="btn btn-simple btn-warning">
-                                        Кухонные скинали
+                                    <a href="${pageContext.request.contextPath}/catalog/apron"
+                                       class="btn btn-simple btn-warning">
+                                        <spring:message code="message.enum.productType.apron.plural"/>
                                     </a>
                                 </ul>
                             </div>
@@ -149,7 +135,7 @@
                             <div class="col-lg-4 col-md-4">
                                 <div class="card">
                                     <img class="card-img-top"
-                                         src="/catalog/displayImage?id=${catalogItem.id}"
+                                         src="${pageContext.request.contextPath}/catalog/displayImage?id=${catalogItem.id}"
                                          alt="Card image cap">
                                     <div class="card-body">
                                         <div class="card-text text-right">
@@ -184,21 +170,22 @@
         </div>
     </div>
 </div>
-<!--   Core JS Files   -->
+<!-- Core JS Files -->
 <script src="${pageContext.request.contextPath}/resources/js/core/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Chart JS -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/chartjs.min.js"></script>
-<!--  Notifications Plugin    -->
+<!-- Notifications Plugin -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<%--    <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
 
 <script type="text/javascript">
+
     $(document).ready(function () {
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
 
@@ -210,6 +197,7 @@
         let imageSrc = $(currentCard).find('img').attr('src');
         $('#openedPhoto').attr('src', imageSrc);
     }
+
 </script>
 </body>
 </html>
