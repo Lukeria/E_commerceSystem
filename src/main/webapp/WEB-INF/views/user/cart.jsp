@@ -98,7 +98,7 @@
                                                                 <c:forEach var="processing"
                                                                            items="${glass.processingList}"
                                                                            varStatus="status">
-                                                                    <c:if test="${status.index!=0}">, </c:if>
+                                                                    <c:if test="${status.index!=0}">${", "}</c:if>
                                                                     ${processing.name}
                                                                 </c:forEach>
                                                             </td>

@@ -121,7 +121,7 @@
                                                 <c:when test="${order.status.name.equals('paid')}">
                                                     <c:set var="color" value="badge-warning"/>
                                                 </c:when>
-                                                <c:when test="${order.status.name.equals('close')}">
+                                                <c:when test="${order.status.name.equals('closed')}">
                                                     <c:set var="color" value="badge-primary"/>
                                                 </c:when>
                                             </c:choose>
