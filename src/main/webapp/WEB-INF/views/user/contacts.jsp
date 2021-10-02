@@ -36,8 +36,11 @@
                 <div class="col-lg-8">
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Contacts</li>
+                            <li class="breadcrumb-item"><a class="btn-primary btn-link"
+                                                           href="${pageContext.request.contextPath}/main"><spring:message
+                                    code="message.navbar.section.home"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><spring:message
+                                    code="message.navbar.section.contacts"/></li>
                         </ol>
                     </nav>
                 </div>
@@ -49,23 +52,23 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="card">
                         <div class="card-body">
-                                <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A6b0a9c2451ef923858442f47e705a14f0a4ba7bef5952126db1339304821ecf5&amp;source=constructor"
-                                        width="460" height="400" frameborder="0"></iframe>
+                            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A6b0a9c2451ef923858442f47e705a14f0a4ba7bef5952126db1339304821ecf5&amp;source=constructor"
+                                    width="460" height="400" frameborder="0"></iframe>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Our contacts</h4>
+                            <h4 class="card-title"><spring:message code="message.contacts.heading"/></h4>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Время работы: 10:00-17:00</p>
-                            <p class="card-text">Выходные: Понедельник</p>
-                            <p class="card-text">Адрес: г.Минск, ул.Уручская, Строительный рынок "Уручье"</p>
-                            <p class="card-text">Телефоны:</p>
-                            <p class="card-text">A1 +375 (44) 782-50-19</p>
-                            <p class="card-text">MTC +375 (29) 708-76-93</p>
+                            <p class="card-text"><spring:message code="message.contacts.workingHours"/></p>
+                            <p class="card-text"><spring:message code="message.contacts.weekends"/></p>
+                            <p class="card-text"><spring:message code="message.contacts.address"/></p>
+                            <p class="card-text"><spring:message code="message.contacts.phone.heading"/></p>
+                            <p class="card-text"><spring:message code="message.contacts.phone1"/></p>
+                            <p class="card-text"><spring:message code="message.contacts.phone2"/></p>
                         </div>
                     </div>
                 </div>
@@ -77,14 +80,14 @@
         </div>
     </div>
 </div>
-<!--   Core JS Files   -->
+<!-- Core JS Files -->
 <script src="${pageContext.request.contextPath}/resources/js/core/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Chart JS -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/chartjs.min.js"></script>
-<!--  Notifications Plugin    -->
+<!-- Notifications Plugin -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
