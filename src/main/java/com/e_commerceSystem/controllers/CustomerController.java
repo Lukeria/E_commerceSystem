@@ -21,21 +21,22 @@ public class CustomerController {
 
     @GetMapping("/add")
     public ModelAndView addCustomer(@ModelAttribute("customer") Customer customer,
-                                    HttpServletRequest request){
+                                    @ModelAttribute("orderId") Long orderId,
+                                    HttpServletRequest request, RedirectAttributes redirectAttributes){
 
         ModelAndView modelAndView = new ModelAndView("/admin/customers/add");
         modelAndView.addObject("customer", customer);
-        modelAndView.addObject("orderId", request.getAttribute("orderId"));
+        modelAndView.addObject("orderId", orderId);
         return  modelAndView;
 
     }
 
-    @PostMapping("/add")
-    public ModelAndView addCustomerPost(@ModelAttribute("customer") Customer customer,
-                                        HttpServletRequest request){
-
-        return addCustomer(customer, request);
-    }
+//    @PostMapping("/add")
+//    public ModelAndView addCustomerPost(@ModelAttribute("customer") Customer customer,
+//                                        HttpServletRequest request){
+//
+//        return addCustomer(customer, request);
+//    }
 
     @PostMapping("/saveOrderCustomer")
     public ModelAndView saveOrderCustomer(@ModelAttribute("customer") Customer customer,

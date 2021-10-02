@@ -133,7 +133,7 @@ public class OrderController {
     public ModelAndView saveOrder(@ModelAttribute("order") @Validated Order order,
                                   BindingResult result,
                                   @RequestParam("tableGlass") String tableGlass,
-                                  HttpServletRequest request) {
+                                  HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
         ModelAndView modelAndView = new ModelAndView();
 
@@ -150,8 +150,8 @@ public class OrderController {
 
         if (order.isNew()) {
             orderService.addOrder(order);
-            modelAndView.setViewName("forward:/customer/add");
-            request.setAttribute("orderId", order.getId());
+            modelAndView.setViewName("redirect:/customer/add");
+            redirectAttributes.addFlashAttribute("orderId", order.getId());
 //            redirectAttributes.addFlashAttribute("orderId", order.getId());
 //            redirectAttributes.addFlashAttribute("customer", new Customer());
         } else {

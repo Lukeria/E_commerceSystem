@@ -117,7 +117,7 @@
                         <div class="card-header">
                             <h4 class="card-title">
                                 <i class="tim-icons icon-single-02 text-success"></i>
-                                <spring:message code="message.customer.heading"/></h4>
+                                <spring:message code="message.customer.contacts"/></h4>
                         </div>
                         <div class="card-body">
                             <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
@@ -137,7 +137,7 @@
                                     </tr>
                                     <tr>
                                         <td><label><spring:message code="message.form.address.label"/>: </label></td>
-                                        <td></td>
+                                        <td>${order.customer.address}</td>
                                     </tr>
                                     </tbody>
                                 </table>

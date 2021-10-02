@@ -15,6 +15,7 @@ public class Customer {
     private String name;
     private String email;
     private String phone;
+    private String address;
 
     @OneToOne(mappedBy = "customer")
     private User user;
@@ -71,6 +72,14 @@ public class Customer {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
