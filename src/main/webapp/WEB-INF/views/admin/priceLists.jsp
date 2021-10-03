@@ -21,16 +21,20 @@
 </head>
 <body class="">
 <div class="wrapper">
-    <div id="sidebar"></div>
+    <div id="sidebar">
+        <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminSidebar.jsp"/>
+    </div>
     <div class="bg-image-main main-panel">
-        <div id="navbar"></div>
+        <div id="navbar">
+            <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminHeader.jsp"/>
+        </div>
 
         <div class="content">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Price lists</h3>
+                            <h3 class="card-title"><spring:message code="message.navbar.section.priceLists"/></h3>
                         </div>
                         <div class="card-body">
                             <form id="priceListForm">
@@ -43,12 +47,14 @@
                                                 BYN
                                             </span>
                                         </div>
-                                        <input id="currency" type="number" class="form-control" step="0.01">
+                                        <input id="currency" type="number" class="form-control" step="0.01"
+                                               placeholder="<spring:message code="message.form.currency.placeholder"/>">
                                     </div>
                                 </div>
                                 <div class="form-group col-lg-6 col-md-12">
                                     <div class="form-group">
-                                        <label for="increasePercent">Increase per cent: </label>
+                                        <label for="increasePercent"><spring:message
+                                                code="message.form.increasePercent.label"/></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text text-primary"
@@ -57,14 +63,16 @@
                                                 </span>
                                             </div>
                                             <input id="increasePercent" type="number"
+                                                   placeholder="<spring:message code="message.form.increasePercent.placeholder"/>"
                                                    class="form-control" step="0.01">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="button" id="updatePrices" class="btn btn-primary animation-on-hover">Update prices
+                                    <button type="button" id="updatePrices" class="btn btn-primary animation-on-hover">
+                                        <spring:message code="message.form.button.updatePrices"/>
                                     </button>
-                                    <button type="submit" class="btn btn-success animation-on-hover">Save</button>
+                                    <button type="submit" class="btn btn-success animation-on-hover"><spring:message code="message.form.button.save"/></button>
                                 </div>
                             </form>
                         </div>
@@ -78,7 +86,7 @@
                             <div class="card-header" role="tab" id="headingOne">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
                                    aria-expanded="true" aria-controls="collapseOne">
-                                    <h4 class="card-title">Glass types <i class="tim-icons icon-minimal-down"></i></h4>
+                                    <h4 class="card-title"><spring:message code="message.enum.componentType.glassType.plural"/> <i class="tim-icons icon-minimal-down"></i></h4>
                                 </a>
                             </div>
                             <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
@@ -87,14 +95,14 @@
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Thickness</th>
-                                                <th>Price (USD)</th>
-                                                <th>Price (BYN)</th>
+                                                <th><spring:message code="message.component.column.name"/></th>
+                                                <th><spring:message code="message.component.column.thickness"/></th>
+                                                <th><spring:message code="message.component.column.price"/> (USD)</th>
+                                                <th><spring:message code="message.component.column.price"/> (BYN)</th>
                                                 <th>
                                                     <button type="button" class="btn btn-primary btn-simple btn-sm"
                                                             id="glass_selectAll">
-                                                        Select all
+                                                        <spring:message code="message.form.button.selectAll"/>
                                                     </button>
                                                 </th>
                                             </tr>
@@ -107,9 +115,11 @@
                                                     <td id="thickness_${counter.count}">${item.thickness}</td>
                                                     <td><input type="number" value="${item.priceUSD}"
                                                                class="form-control"
-                                                               id="priceUSD_${counter.count}" onchange="setSelect(this.id)"></td>
+                                                               id="priceUSD_${counter.count}"
+                                                               onchange="setSelect(this.id)"></td>
                                                     <td><input type="number" value="${item.price}" class="form-control"
-                                                               id="price_${counter.count}" onchange="setSelect(this.id)"></td>
+                                                               id="price_${counter.count}"
+                                                               onchange="setSelect(this.id)"></td>
                                                     <td>
                                                         <div class="form-check">
                                                             <label class="form-check-label">
@@ -124,12 +134,6 @@
                                             </c:forEach>
                                             </tbody>
                                         </table>
-<%--                                        <div class="ps__rail-x" style="left: 0px; bottom: -59px;">--%>
-<%--                                            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="ps__rail-y" style="top: 59px; height: 410px; right: 0px;">--%>
-<%--                                            <div class="ps__thumb-y" tabindex="0" style="top: 52px; height: 358px;"></div>--%>
-<%--                                        </div>--%>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +142,7 @@
                             <div class="card-header" role="tab" id="headingTwo">
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
                                    aria-expanded="false" aria-controls="collapseTwo">
-                                    <h4 class="card-title">Processing <i class="tim-icons icon-minimal-down"></i></h4>
+                                    <h4 class="card-title"><spring:message code="message.enum.componentType.processing.plural"/> <i class="tim-icons icon-minimal-down"></i></h4>
                                 </a>
                             </div>
                             <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
@@ -147,13 +151,13 @@
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Price (USD)</th>
-                                                <th>Price (BYN)</th>
+                                                <th><spring:message code="message.component.column.name"/></th>
+                                                <th><spring:message code="message.component.column.price"/> (USD)</th>
+                                                <th><spring:message code="message.component.column.price"/> (BYN)</th>
                                                 <th>
                                                     <button type="button" class="btn btn-primary btn-simple btn-sm"
                                                             id="processing_selectAll">
-                                                        Select all
+                                                        <spring:message code="message.form.button.selectAll"/>
                                                     </button>
                                                 </th>
                                             </tr>
@@ -184,13 +188,6 @@
                                             </c:forEach>
                                             </tbody>
                                         </table>
-<%--                                        <div class="ps__rail-x" style="left: 0px; bottom: -59px;">--%>
-<%--                                            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="ps__rail-y" style="top: 59px; height: 410px; right: 0px;">--%>
-<%--                                            <div class="ps__thumb-y" tabindex="0"--%>
-<%--                                                 style="top: 52px; height: 358px;"></div>--%>
-<%--                                        </div>--%>
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +196,7 @@
                             <div class="card-header" role="tab" id="headingThree">
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
                                    href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    <h4 class="card-title">Accessory <i class="tim-icons icon-minimal-down"></i></h4>
+                                    <h4 class="card-title"><spring:message code="message.enum.componentType.accessory.plural"/> <i class="tim-icons icon-minimal-down"></i></h4>
                                 </a>
                             </div>
                             <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
@@ -208,13 +205,13 @@
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Price (USD)</th>
-                                                <th>Price (BYN)</th>
+                                                <th><spring:message code="message.component.column.name"/></th>
+                                                <th><spring:message code="message.component.column.price"/> (USD)</th>
+                                                <th><spring:message code="message.component.column.price"/> (BYN)</th>
                                                 <th>
                                                     <button type="button" class="btn btn-primary btn-simple btn-sm"
                                                             id="accessory_selectAll">
-                                                        Select all
+                                                        <spring:message code="message.form.button.selectAll"/>
                                                     </button>
                                                 </th>
                                             </tr>
@@ -245,12 +242,6 @@
                                             </c:forEach>
                                             </tbody>
                                         </table>
-<%--                                        <div class="ps__rail-x" style="left: 0px; bottom: -59px;">--%>
-<%--                                            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>--%>
-<%--                                        </div>--%>
-<%--                                        <div class="ps__rail-y" style="top: 59px; height: 410px; right: 0px;">--%>
-<%--                                            <div class="ps__thumb-y" tabindex="0" style="top: 52px; height: 358px;"></div>--%>
-<%--                                        </div>--%>
                                     </div>
                                 </div>
                             </div>
@@ -276,18 +267,12 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
 <script src="${pageContext.request.contextPath}/resources/js/custom/priceLists.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
-            $("#priceListSection").addClass("active");
-        });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
-            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        });
+        $("#priceListSection").addClass("active");
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
 </script>
