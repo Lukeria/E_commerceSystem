@@ -21,44 +21,50 @@
 </head>
 <body class="">
 <div class="wrapper">
-    <div id="sidebar"></div>
+    <div id="sidebar">
+        <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminSidebar.jsp"/>
+    </div>
     <div class="bg-image-main main-panel">
-        <div id="navbar"></div>
+        <div id="navbar">
+            <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminHeader.jsp"/>
+        </div>
 
         <div class="content">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">${componentType.representation}</h4>
+                            <h4 class="card-title"><spring:message
+                                    code="message.enum.componentType.${componentType.name}.plural"/></h4>
                         </div>
                         <div class="card-body">
                             <div>
-                                <spring:url value="/component/${componentType.name}/add" var="componentAddUrl" />
-                                <a href="${componentAddUrl}" class="btn btn-primary animation-on-hover">Add</a>
+                                <spring:url value="/component/${componentType.name}/add" var="componentAddUrl"/>
+                                <a href="${componentAddUrl}" class="btn btn-primary animation-on-hover"><spring:message
+                                        code="message.form.button.add"/></a>
                             </div>
                             <div class="table-full-width ps ps--active-y ps--scrolling-y">
                                 <table class="table tablesorter">
                                     <thead>
                                     <tr>
                                         <c:if test="${componentType.name.equals('processing')}">
-                                            <th>Type</th>
+                                            <th><spring:message code="message.component.column.type"/></th>
                                         </c:if>
-                                        <th>Name</th>
+                                        <th><spring:message code="message.component.column.name"/></th>
                                         <c:if test="${componentType.name.equals('glassType')}">
-                                            <th>Thickness</th>
+                                            <th><spring:message code="message.component.column.thickness"/></th>
                                         </c:if>
                                         <c:if test="${componentType.name.equals('processing')}">
-                                            <th>Symbol</th>
+                                            <th><spring:message code="message.component.column.symbol"/></th>
                                         </c:if>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="item" items="${componentList}" varStatus="counter">
+                                    <c:forEach var="item" items="${componentList}" varStatus="counter">
                                         <tr>
                                             <td style="display:none;">${item.id}</td>
                                             <c:if test="${componentType.name.equals('processing')}">
-                                                <td>${item.type}</td>
+                                                <td><spring:message code="message.enum.processingType.${item.type.name}"/></td>
                                             </c:if>
                                             <td>${item.name}</td>
                                             <c:if test="${componentType.name.equals('glassType')}">
@@ -68,8 +74,10 @@
                                                 <td>${item.symbol}</td>
                                             </c:if>
                                             <td class="td-actions text-right">
-                                                <spring:url value="/component/${componentType.name}/${item.id}/delete" var="deleteUrl" />
-                                                <spring:url value="/component/${componentType.name}/${item.id}/update" var="updateUrl" />
+                                                <spring:url value="/component/${componentType.name}/${item.id}/delete"
+                                                            var="deleteUrl"/>
+                                                <spring:url value="/component/${componentType.name}/${item.id}/update"
+                                                            var="updateUrl"/>
                                                 <button type="button" rel="tooltip"
                                                         class="btn btn-link btn-success btn-sm btn-icon"
                                                         onclick="location.href='${updateUrl}'">
@@ -100,9 +108,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/core/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<!--  Google Maps Plugin    -->
-<!-- Place this tag in your head or just before your close body tag. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 <!-- Chart JS -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/chartjs.min.js"></script>
 <!--  Notifications Plugin    -->
@@ -110,17 +115,11 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
-            $("#componentSection").addClass("active");
-        });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
-            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        });
+        $("#componentSection").addClass("active");
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
 
@@ -131,7 +130,7 @@
         form.setAttribute("method", method);
         form.setAttribute("action", path);
 
-        for ( var key in params) {
+        for (var key in params) {
             if (params.hasOwnProperty(key)) {
                 var hiddenField = document.createElement("input");
                 hiddenField.setAttribute("type", "hidden");

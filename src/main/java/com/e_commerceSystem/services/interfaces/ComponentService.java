@@ -1,6 +1,6 @@
 package com.e_commerceSystem.services.interfaces;
 
-import com.e_commerceSystem.additional.enums.ComponentTypes;
+import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.e_commerceSystem.exceptions.ComponentExtractionException;
 
@@ -16,7 +16,7 @@ public interface ComponentService<Type> {
     void deleteComponent(Type component);
     void updateComponentPrices(Type component);
 
-    boolean canHandle(ComponentTypes componentTypes);
+    boolean canHandle(ComponentType componentType);
     Type getEmptyComponent();
     DefaultComponent extractComponentFromRequest(Map<String, String> params) throws ComponentExtractionException;
 }

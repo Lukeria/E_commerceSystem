@@ -1,6 +1,6 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.additional.enums.ComponentTypes;
+import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.components.Accessory;
@@ -36,9 +36,9 @@ public class PriceListController {
 
         ModelAndView modelAndView = new ModelAndView("admin/priceLists");
 
-        List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentTypes.GLASS_TYPE).getComponentList();
-        List<Processing> processingList = componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentList();
-        List<Accessory> accessoryList = componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentList();;
+        List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentType.GLASS_TYPE).getComponentList();
+        List<Processing> processingList = componentServiceFactory.getComponentService(ComponentType.PROCESSING).getComponentList();
+        List<Accessory> accessoryList = componentServiceFactory.getComponentService(ComponentType.PROCESSING).getComponentList();;
 
         modelAndView.addObject("glassTypeList", glassTypeList);
         modelAndView.addObject("processingList", processingList);

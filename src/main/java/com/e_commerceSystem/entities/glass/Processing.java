@@ -22,10 +22,8 @@ public class Processing implements Serializable, DefaultComponent {
     private Long id;
 
     @JsonView(ComponentViews.Normal.class)
-    private String type;
-
-    @Transient
-    private ProcessingType processingType;
+    @Enumerated(EnumType.STRING)
+    private ProcessingType type;
 
     @JsonView(ComponentViews.Normal.class)
     private String name;
@@ -49,11 +47,11 @@ public class Processing implements Serializable, DefaultComponent {
     public Processing() {
     }
 
-    public String getType() {
+    public ProcessingType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ProcessingType type) {
         this.type = type;
     }
 
@@ -111,14 +109,6 @@ public class Processing implements Serializable, DefaultComponent {
 
     public void setPriceUSD(Float priceUSD) {
         this.priceUSD = priceUSD;
-    }
-
-    public ProcessingType getProcessingType() {
-        return processingType;
-    }
-
-    public void setProcessingType(ProcessingType processingType) {
-        this.processingType = processingType;
     }
 
     @Override

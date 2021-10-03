@@ -1,6 +1,6 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.additional.enums.ComponentTypes;
+import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.exceptions.ComponentExtractionException;
@@ -54,8 +54,8 @@ public class GlassTypeServiceImp implements ComponentService<GlassType> {
     }
 
     @Override
-    public boolean canHandle(ComponentTypes componentTypes) {
-        return componentTypes == ComponentTypes.GLASS_TYPE;
+    public boolean canHandle(ComponentType componentType) {
+        return componentType == ComponentType.GLASS_TYPE;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.e_commerceSystem.additional.enums;
 
-public enum ComponentTypes {
+public enum ComponentType {
 
     GLASS_TYPE("glassType", "Glass type"),
     PROCESSING("processing", "Processing"),
@@ -9,14 +9,14 @@ public enum ComponentTypes {
     private String name;
     private String representation;
 
-    ComponentTypes(String name, String representation) {
+    ComponentType(String name, String representation) {
         this.name = name;
         this.representation = representation;
     }
 
-    public static ComponentTypes valueOfName(String name){
+    public static ComponentType valueOfName(String name){
 
-        for (ComponentTypes componentType: values()) {
+        for (ComponentType componentType: values()) {
             if(componentType.getName().equals(name)){
                 return componentType;
             }

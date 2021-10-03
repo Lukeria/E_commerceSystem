@@ -1,6 +1,6 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.additional.enums.ComponentTypes;
+import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.e_commerceSystem.exceptions.ComponentExtractionException;
@@ -55,8 +55,8 @@ public class AccessoryServiceImp implements ComponentService<Accessory> {
     }
 
     @Override
-    public boolean canHandle(ComponentTypes componentTypes) {
-        return componentTypes == ComponentTypes.ACCESSORY;
+    public boolean canHandle(ComponentType componentType) {
+        return componentType == ComponentType.ACCESSORY;
     }
 
     @Override

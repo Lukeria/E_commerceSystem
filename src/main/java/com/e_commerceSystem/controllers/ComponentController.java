@@ -1,6 +1,6 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.additional.enums.ComponentTypes;
+import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.ProcessingType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
@@ -33,7 +33,7 @@ public class ComponentController {
 
 
     @GetMapping("{componentType}/all")
-    public ModelAndView componentList(@PathVariable ComponentTypes componentType) {
+    public ModelAndView componentList(@PathVariable ComponentType componentType) {
 
         ModelAndView modelAndView = new ModelAndView("admin/components/list");
 
@@ -47,7 +47,7 @@ public class ComponentController {
     }
 
     @GetMapping("{componentType}/add")
-    public ModelAndView componentAdd(@PathVariable ComponentTypes componentType) {
+    public ModelAndView componentAdd(@PathVariable ComponentType componentType) {
 
         ModelAndView modelAndView = new ModelAndView("/admin/components/add");
 
@@ -59,7 +59,7 @@ public class ComponentController {
     }
 
     @PostMapping("{componentType}/save")
-    public ModelAndView componentSave(@PathVariable ComponentTypes componentType,
+    public ModelAndView componentSave(@PathVariable ComponentType componentType,
                                       @RequestParam Map<String, String> allParams) {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/component/"+componentType.getName()+"/all");
@@ -76,7 +76,7 @@ public class ComponentController {
     }
 
     @PostMapping("{componentType}/{id}/delete")
-    public ModelAndView componentDelete(@PathVariable ComponentTypes componentType, @PathVariable Long id) {
+    public ModelAndView componentDelete(@PathVariable ComponentType componentType, @PathVariable Long id) {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/component/" + componentType.getName() + "/all");
         ComponentService componentService = componentServiceFactory.getComponentService(componentType);
@@ -87,7 +87,7 @@ public class ComponentController {
     }
 
     @GetMapping("{componentType}/{id}/update")
-    public ModelAndView componentUpdate(@PathVariable ComponentTypes componentType, @PathVariable Long id) {
+    public ModelAndView componentUpdate(@PathVariable ComponentType componentType, @PathVariable Long id) {
 
         ModelAndView modelAndView = new ModelAndView("/admin/components/add");
 
@@ -103,8 +103,8 @@ public class ComponentController {
     @ResponseBody
     public JsonResponse getListData() {
 
-        List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentTypes.GLASS_TYPE).getComponentList();
-        List<Processing> processingList = componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentList();
+        List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentType.GLASS_TYPE).getComponentList();
+        List<Processing> processingList = componentServiceFactory.getComponentService(ComponentType.PROCESSING).getComponentList();
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonGlassTypeList = "";

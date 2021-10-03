@@ -1,6 +1,6 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.additional.enums.ComponentTypes;
+import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.additional.enums.ProcessingType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.e_commerceSystem.entities.glass.Processing;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -55,8 +56,8 @@ public class ProcessingServiceImp implements ComponentService<Processing> {
     }
 
     @Override
-    public boolean canHandle(ComponentTypes componentTypes) {
-        return componentTypes == ComponentTypes.PROCESSING;
+    public boolean canHandle(ComponentType componentType) {
+        return componentType == ComponentType.PROCESSING;
     }
 
     @Override
@@ -75,8 +76,7 @@ public class ProcessingServiceImp implements ComponentService<Processing> {
         } catch (NumberFormatException exception){
             throw new ComponentExtractionException();
         }
-        processing.setType(ProcessingType.valueOf(params.get("type")).getNameRus());
-        processing.setProcessingType(ProcessingType.valueOf(params.get("type")));
+        processing.setType(ProcessingType.valueOf(params.get("type").toUpperCase(Locale.ROOT)));
         processing.setName(params.get("name"));
         processing.setSymbol(params.get("symbol"));
 
