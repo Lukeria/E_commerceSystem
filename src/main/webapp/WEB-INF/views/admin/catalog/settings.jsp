@@ -21,21 +21,27 @@
 </head>
 <body>
 <div class="wrapper">
-    <div id="sidebar"></div>
+    <div id="sidebar">
+        <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminSidebar.jsp"/>
+    </div>
     <div class="bg-image-main main-panel">
-        <div id="navbar"></div>
+        <div id="navbar">
+            <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminHeader.jsp"/>
+        </div>
 
         <div class="content">
             <div class="row">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Catalog settings</h3>
+                            <h3 class="card-title"><spring:message code="message.navbar.section.catalogSettings"/></h3>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-2 col-md-3 col-sm-4">
-                                    <a href="/catalog/settings/add" class="btn btn-success animation-on-hover">Add</a>
+                                    <a href="${pageContext.request.contextPath}/catalog/settings/add"
+                                       class="btn btn-success animation-on-hover"><spring:message
+                                            code="message.form.button.add"/></a>
                                 </div>
                                 <div class="col-lg-10 col-md-9 col-sm-8">
                                     <ul class="nav nav-tabs justify-content-end">
@@ -52,8 +58,9 @@
 
                                                 <li class="nav-item">
                                                     <a class="nav-link btn-primary btn-link ${active}"
-                                                       href="/catalog/settings?productType=${type.name}">
-                                                            ${type.representation}</a>
+                                                       href="${pageContext.request.contextPath}/catalog/settings?productType=${type.name}">
+                                                        <spring:message
+                                                                code="message.enum.productType.${type.name}.plural"/> </a>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
@@ -73,7 +80,7 @@
                                     <div class="col-lg-2 col-md-3 col-sm-4" id="catalogItem_${status.count}">
                                         <div class="card">
                                             <img class="card-img-top"
-                                                 src="/catalog/displayImage?id=${catalogItem.id}"
+                                                 src="${pageContext.request.contextPath}/catalog/displayImage?id=${catalogItem.id}"
                                                  alt="Card image cap">
                                             <div class="card-body">
                                                 <div class="card-text text-right">
@@ -107,27 +114,17 @@
 <script src="${pageContext.request.contextPath}/resources/js/core/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<!--  Google Maps Plugin    -->
-<!-- Place this tag in your head or just before your close body tag. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 <!-- Chart JS -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/chartjs.min.js"></script>
 <!--  Notifications Plugin    -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
-
 <script src="${pageContext.request.contextPath}/resources/js/custom/catalog.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
-            $("#catalogSection").addClass("active");
-        });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
-            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        });
+        $("#catalogSection").addClass("active");
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
 

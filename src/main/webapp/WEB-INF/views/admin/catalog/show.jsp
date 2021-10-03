@@ -21,36 +21,43 @@
 </head>
 <body>
 <div class="wrapper">
-    <div id="sidebar"></div>
+    <div id="sidebar">
+        <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminSidebar.jsp"/>
+    </div>
     <div class="bg-image-main main-panel">
-        <div id="navbar"></div>
-
+        <div id="navbar">
+            <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminHeader.jsp"/>
+        </div>
         <div class="content">
             <div class="row">
                 <div class="col-lg-8 col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Card information
+                            <h4 class="card-title"><spring:message code="message.catalog.settings.heading"/>
                             </h4>
                         </div>
                         <div class="card-body">
                             <input type="hidden" id="catalog_id" value="${catalog.id}">
-                            <p class="text-left"><label>Product type: </label>
-                                <span class="text-primary">${catalog.productType.representation}</span></p>
-                            <h4 class="card-title" style="margin-top: 2.75rem">Glass
+                            <p class="text-left"><label><spring:message code="message.form.productType.label"/>: </label>
+                                <span class="text-primary"><spring:message
+                                        code="message.enum.productType.${catalog.productType.name}"/></span></p>
+                            <h4 class="card-title" style="margin-top: 2.75rem"><spring:message
+                                    code="message.orders.glass.heading"/>
                             </h4>
                             <c:if test="${catalog.id!=null}">
                                 <spring:url value="/catalog/settings/${catalog.id}/updateGlass" var="editUrl"/>
                             </c:if>
-                            <a href="${editUrl}" class="btn btn-success btn-simple" id="updateGlass">Edit</a>
-                            <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                <table class="table tablesorter">
+                            <a href="${editUrl}" class="btn btn-success btn-simple" id="updateGlass"><spring:message
+                                    code="message.form.button.edit"/></a>
+                            <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
+                                <table class="table">
                                     <thead>
                                     <tr>
                                         <th class="text-center">#</th>
-                                        <th>Type</th>
-                                        <th>Size</th>
-                                        <th>Processing</th>
+                                        <th style="width:8rem"><spring:message code="message.glass.column.type"/></th>
+                                        <th style="width:8rem"><spring:message code="message.glass.column.size"/></th>
+                                        <th style="width:8rem"><spring:message code="message.glass.column.amount"/></th>
+                                        <th><spring:message code="message.glass.column.processing"/></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -59,17 +66,14 @@
                                             <td class="text-center">${status.count}</td>
                                             <td>${glass.glassType.name}-${glass.glassType.thickness}</td>
                                             <td>${glass.width} x ${glass.height}</td>
+                                            <td>${glass.amount}</td>
                                             <td>
-                                                <table class="table table-borderless">
-                                                    <tbody>
-                                                    <c:forEach var="processing" items="${glass.processingList}">
-                                                        <tr>
-                                                            <td>${processing.symbol}</td>
-                                                            <td>${processing.quantity}</td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                    </tbody>
-                                                </table>
+                                                <c:forEach var="processing"
+                                                           items="${glass.processingList}"
+                                                           varStatus="status">
+                                                    <c:if test="${status.index!=0}">${", "}</c:if>
+                                                    ${processing.symbol} ${processing.quantity}
+                                                </c:forEach>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -112,15 +116,8 @@
 <script src="${pageContext.request.contextPath}/resources/js/custom/catalog.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
-            $("#catalogSection").addClass("active");
-        });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
-            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        });
+        $("#catalogSection").addClass("active");
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
-    });
 </script>
 </body>
 </html>

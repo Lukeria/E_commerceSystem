@@ -62,7 +62,7 @@ public class CatalogController {
     }
 
     @GetMapping("/settings")
-    public ModelAndView catalogSettings(@RequestParam ProductType productType) {
+    public ModelAndView catalogSettings(@RequestParam(defaultValue = "mirror") ProductType productType) {
 
         ModelAndView modelAndView = new ModelAndView("admin/catalog/settings");
         defineFormData(modelAndView);

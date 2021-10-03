@@ -112,6 +112,10 @@ body .content label{
     font-size: 0.8rem;
 }
 
+body .card label{
+    font-size: 0.8rem;
+}
+
 .nav-tabs {
     border-bottom: 0.0625rem solid rgba(255, 255, 255, .1);
 }

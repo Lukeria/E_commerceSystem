@@ -34,7 +34,7 @@
                 </a>
             </li>
             <li id="catalogSection">
-                <a href="${pageContext.request.contextPath}/catalog/settings?productType=mirror">
+                <a href="${pageContext.request.contextPath}/catalog/settings">
                     <i class="tim-icons icon-puzzle-10"></i>
                     <p><spring:message code="message.navbar.section.catalogSettings"/></p>
                 </a>

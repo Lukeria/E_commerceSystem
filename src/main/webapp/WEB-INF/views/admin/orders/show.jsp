@@ -78,7 +78,7 @@
                             <h4 class="card-title"><spring:message code="message.orders.glass.heading"/></h4>
                         </div>
                         <div class="card-body">
-                            <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                            <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
                                 <table class="table">
                                     <thead>
                                     <tr>
