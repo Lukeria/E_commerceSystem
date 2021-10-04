@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -101,17 +102,14 @@ public class CatalogController {
     }
 
     @GetMapping("/settings/{id}/updateGlass")
-    public ModelAndView updateGlass(@PathVariable("id") Long id) {
+    public ModelAndView updateGlass(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("general/calculator");
+        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
 
         Catalog catalog = catalogService.getItemById(id);
-        if (catalog.getGlassList().isEmpty()) {
-            catalog.setGlassList(new HashSet<>(Arrays.asList(new Glass())));
-        }
 
-        modelAndView.addObject("order", catalog);
-        modelAndView.addObject("isForTemplate", true);
+        redirectAttributes.addFlashAttribute("catalog", catalog);
+        redirectAttributes.addFlashAttribute("isTemplate", true);
 
         return modelAndView;
     }

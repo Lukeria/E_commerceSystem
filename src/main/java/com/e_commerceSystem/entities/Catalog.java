@@ -64,4 +64,8 @@ public class Catalog {
     public void setGlassList(Set<Glass> glassList) {
         this.glassList = glassList;
     }
+
+    public boolean isEmpty(){
+        return glassList.isEmpty();
+    }
 }

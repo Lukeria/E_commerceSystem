@@ -121,10 +121,10 @@ public class OrderController {
     @GetMapping("/{id}/update")
     public ModelAndView updateOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("general/calculator");
+        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
 
         Order order = orderService.getOrderById(id);
-        modelAndView.addObject("order", order);
+        redirectAttributes.addFlashAttribute("order", order);
 
         return modelAndView;
     }

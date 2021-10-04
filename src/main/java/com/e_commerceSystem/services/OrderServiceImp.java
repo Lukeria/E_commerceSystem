@@ -1,6 +1,7 @@
 package com.e_commerceSystem.services;
 
 import com.e_commerceSystem.additional.enums.OrderStatus;
+import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -112,5 +114,18 @@ public class OrderServiceImp implements OrderService {
         order.setGlassList(catalog.getGlassList());
 
         return order;
+    }
+
+    @Override
+    public void prepareForView(Order order, ProductType productType) {
+
+        List<Glass> glassList = new ArrayList<Glass>();
+        glassList.add(new Glass());
+
+        order.setGlassList(new HashSet<>(glassList));
+
+        if (productType != null) {
+            order.setProductType(productType.getRepresentation());
+        }
     }
 }

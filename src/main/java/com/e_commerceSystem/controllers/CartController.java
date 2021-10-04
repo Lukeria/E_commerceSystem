@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -54,9 +55,10 @@ public class CartController {
     public ModelAndView cartAdd(@ModelAttribute("order") Order order,
                                 BindingResult result,
                                 @RequestParam("tableGlass") String tableGlass,
-                                Authentication authentication) {
+                                Authentication authentication,
+                                RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("general/calculator");
+        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
 
         if (order.getProductType().isEmpty()) {
             result.rejectValue("productType", "message.notEmpty.calculator.productType");
@@ -66,10 +68,10 @@ public class CartController {
         order.setGlassList(glassList);
 
         if (result.hasErrors()) {
-            modelAndView.addObject("order", order);
+            redirectAttributes.addFlashAttribute("order", order);
             return modelAndView;
         } else {
-            modelAndView.addObject("message", "successCreation");
+            redirectAttributes.addFlashAttribute("message", "successCreation");
         }
 
         User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();

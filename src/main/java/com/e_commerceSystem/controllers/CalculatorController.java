@@ -12,6 +12,7 @@ import com.e_commerceSystem.services.interfaces.OrderService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,19 +33,23 @@ public class CalculatorController {
     private CatalogService catalogService;
 
     @GetMapping("/")
-    public ModelAndView calculator(@RequestParam(name = "productType", required = false) ProductType productType) {
+    public ModelAndView calculator(@RequestParam(name = "productType", required = false) ProductType productType,
+                                   @ModelAttribute("order") Order order,
+                                   @ModelAttribute("catalog") Catalog catalog,
+                                   @ModelAttribute("isTemplate") Boolean isTemplate,
+                                   @ModelAttribute("message") String message) {
 
         ModelAndView modelAndView = new ModelAndView("general/calculator");
 
-        Order order = new Order();
-        List<Glass> glassList = new ArrayList<Glass>();
-        glassList.add(new Glass());
-        order.setGlassList(new HashSet<>(glassList));
-        if (productType != null) {
-            order.setProductType(productType.getRepresentation());
+        if (isTemplate) {
+            catalogService.prepareForView(catalog, productType);
+            modelAndView.addObject("order", catalog);
+        } else {
+            modelAndView.addObject("order", order);
         }
+        modelAndView.addObject("isForTemplate", isTemplate);
+        modelAndView.addObject("message", message);
 
-        modelAndView.addObject("order", order);
         return modelAndView;
 
     }
@@ -74,6 +79,20 @@ public class CalculatorController {
         modelAndView.addObject("order", order);
 
         return modelAndView;
+    }
+
+    @ModelAttribute("order")
+    public void prepareOrder(Order order, ProductType productType){
+
+        if(order.isNew()){
+            orderService.prepareForView(order, productType);
+        }
+    }
+
+    @ModelAttribute("isTemplate")
+    public void prepareOrder(Model model){
+
+        model.addAttribute("isTemplate", new Boolean(false));
     }
 
 }

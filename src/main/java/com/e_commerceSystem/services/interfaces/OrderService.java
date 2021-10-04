@@ -1,6 +1,7 @@
 package com.e_commerceSystem.services.interfaces;
 
 import com.e_commerceSystem.additional.enums.OrderStatus;
+import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
@@ -21,5 +22,6 @@ public interface OrderService {
     void deleteOrder(Order order);
     Order getOrderById(Long id);
     Order createOrderByCatalog(Catalog catalog);
+    void prepareForView(Order order, ProductType productType);
 
 }

@@ -3,6 +3,7 @@ package com.e_commerceSystem.services;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Image;
+import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.repositories.interfaces.CatalogDao;
 import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.sun.javafx.iio.ImageStorageException;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -61,5 +64,20 @@ public class CatalogServiceImp implements CatalogService {
     @Override
     public Catalog getItemById(Long id) {
         return catalogDao.getItemById(id);
+    }
+
+    @Override
+    public void prepareForView(Catalog catalog, ProductType productType) {
+
+        if(catalog.isEmpty()) {
+            List<Glass> glassList = new ArrayList<Glass>();
+            glassList.add(new Glass());
+
+            catalog.setGlassList(new HashSet<>(glassList));
+
+            if (productType != null) {
+                catalog.setProductType(productType);
+            }
+        }
     }
 }
