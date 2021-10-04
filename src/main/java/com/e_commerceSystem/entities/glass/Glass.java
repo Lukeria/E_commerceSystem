@@ -132,11 +132,11 @@ public class Glass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Glass glass = (Glass) o;
-        return Objects.equals(id, glass.id) && Objects.equals(width, glass.width) && Objects.equals(height, glass.height);
+        return id.equals(glass.id) && Objects.equals(width, glass.width) && Objects.equals(height, glass.height) && Objects.equals(amount, glass.amount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, width, height);
+        return Objects.hash(id, width, height, amount);
     }
 }

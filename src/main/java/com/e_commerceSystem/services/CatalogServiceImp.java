@@ -4,6 +4,7 @@ import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Image;
 import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.exceptions.notFoundExceptions.CatalogNotFoundException;
 import com.e_commerceSystem.repositories.interfaces.CatalogDao;
 import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.sun.javafx.iio.ImageStorageException;
@@ -19,7 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
-@Transactional
 public class CatalogServiceImp implements CatalogService {
 
     @Autowired
@@ -28,6 +28,7 @@ public class CatalogServiceImp implements CatalogService {
     private CatalogDao catalogDao;
 
     @Override
+    @Transactional
     public Catalog createItem(MultipartFile file, ProductType productType) throws ImageStorageException {
 
         try {
@@ -36,20 +37,29 @@ public class CatalogServiceImp implements CatalogService {
             catalog.setImage(image);
             catalog.setProductType(productType);
 
-            return catalogDao.addItem(catalog);
+            catalogDao.saveOrUpdateItem(catalog);
+            return catalog;
         } catch (IOException exception) {
             throw new ImageStorageException("Cannot store the image!");
         }
     }
 
     @Override
-    public Catalog updateItem(Catalog catalog) {
+    @Transactional
+    public void updateItem(Catalog catalog) {
 
-        catalogDao.updateItem(catalog);
-        return catalog;
+        Catalog catalogToUpdate = getItemById(catalog.getId());
+        catalogToUpdate.setGlassList(catalog.getGlassList());
+        catalogToUpdate.setProductType(catalog.getProductType());
+        for(Glass glass: catalogToUpdate.getGlassList()){
+            glass.setCatalog(catalogToUpdate);
+        }
+
+        catalogDao.saveOrUpdateItem(catalogToUpdate);
     }
 
     @Override
+    @Transactional
     public void deleteItem(Long id) {
 
         Catalog catalog = getItemById(id);
@@ -57,19 +67,24 @@ public class CatalogServiceImp implements CatalogService {
     }
 
     @Override
+    @Transactional
     public List<Catalog> getItemsByProductType(ProductType productType) {
+
         return catalogDao.getItemsByProductType(productType);
     }
 
     @Override
+    @Transactional
     public Catalog getItemById(Long id) {
-        return catalogDao.getItemById(id);
+
+        return catalogDao.getItemById(id)
+                .orElseThrow(() -> new CatalogNotFoundException(id));
     }
 
     @Override
     public void prepareForView(Catalog catalog, ProductType productType) {
 
-        if(catalog.isEmpty()) {
+        if (catalog.isEmpty()) {
             List<Glass> glassList = new ArrayList<Glass>();
             glassList.add(new Glass());
 

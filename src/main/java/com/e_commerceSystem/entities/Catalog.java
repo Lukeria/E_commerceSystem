@@ -5,7 +5,9 @@ import com.e_commerceSystem.entities.glass.Glass;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @NamedQuery(name = "get_catalog_by_productType", query = "from Catalog where product_type=:product_type")
@@ -21,14 +23,15 @@ public class Catalog {
     @Column(name = "product_type")
     private ProductType productType;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "image_id")
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private Image image;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalog")
+    @OneToMany(fetch = FetchType.EAGER,
+            mappedBy = "catalog", orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
-    private Set<Glass> glassList;
+    private Set<Glass> glassList = new HashSet<>();
 
     public Catalog() {
     }
@@ -62,10 +65,25 @@ public class Catalog {
     }
 
     public void setGlassList(Set<Glass> glassList) {
-        this.glassList = glassList;
+
+        this.glassList.retainAll(glassList);
+        this.glassList.addAll(glassList);
     }
 
     public boolean isEmpty(){
         return glassList.isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Catalog catalog = (Catalog) o;
+        return id.equals(catalog.id) && productType == catalog.productType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, productType);
     }
 }

@@ -43,8 +43,18 @@
                                 <label for="productType"><spring:message code="message.form.productType.label"/></label>
                                 <select type="text" id="productType" class="form-control" name="productType">
                                     <c:forEach var="type" items="${productTypes}">
-                                        <option value="${type.name}"><spring:message
-                                                code="message.enum.productType.${type.name}"/></option>
+                                        <c:if test="${!type.name.equals('glass')}">
+                                            <c:choose>
+                                                <c:when test=" ${type==activeType}">
+                                                    <c:set value="selected" var="selected"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:set value="" var="selected"/>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <option ${selected} value="${type.name}"><spring:message
+                                                    code="message.enum.productType.${type.name}"/></option>
+                                        </c:if>
                                     </c:forEach>
                                 </select>
                             </div>

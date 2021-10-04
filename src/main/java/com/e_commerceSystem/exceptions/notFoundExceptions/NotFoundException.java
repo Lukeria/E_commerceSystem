@@ -1,4 +1,4 @@
-package com.e_commerceSystem.exceptions;
+package com.e_commerceSystem.exceptions.notFoundExceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

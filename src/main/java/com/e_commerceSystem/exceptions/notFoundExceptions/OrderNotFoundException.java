@@ -1,4 +1,4 @@
-package com.e_commerceSystem.exceptions;
+package com.e_commerceSystem.exceptions.notFoundExceptions;
 
 public class OrderNotFoundException extends NotFoundException {
 

@@ -31,7 +31,8 @@ public class ImageStorageService {
 
         Image image = new Image(fileName, file.getContentType(), fileResized.getBytes());
 
-        return catalogDao.storeImage(image);
+//        return catalogDao.storeImage(image);
+        return image;
     }
 
     private MultipartFile crop(MultipartFile file, int targetWidth, int targetHeight) throws IOException{

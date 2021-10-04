@@ -6,16 +6,13 @@ import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
-import com.e_commerceSystem.exceptions.OrderNotFoundException;
+import com.e_commerceSystem.exceptions.notFoundExceptions.OrderNotFoundException;
 import com.e_commerceSystem.repositories.interfaces.OrderDao;
 import com.e_commerceSystem.services.interfaces.OrderService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -39,7 +39,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-2 col-md-3 col-sm-4">
-                                    <a href="${pageContext.request.contextPath}/catalog/settings/add"
+                                    <a href="${pageContext.request.contextPath}/catalog/settings/add?productType=${activeType.name}"
                                        class="btn btn-success animation-on-hover"><spring:message
                                             code="message.form.button.add"/></a>
                                 </div>

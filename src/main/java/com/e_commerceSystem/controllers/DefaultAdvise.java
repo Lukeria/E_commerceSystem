@@ -1,6 +1,6 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.exceptions.NotFoundException;
+import com.e_commerceSystem.exceptions.notFoundExceptions.NotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;

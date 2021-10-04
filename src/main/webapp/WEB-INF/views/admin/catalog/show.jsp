@@ -34,11 +34,13 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title"><spring:message code="message.catalog.settings.heading"/>
+                                #${catalog.id}
                             </h4>
                         </div>
                         <div class="card-body">
                             <input type="hidden" id="catalog_id" value="${catalog.id}">
-                            <p class="text-left"><label><spring:message code="message.form.productType.label"/>: </label>
+                            <p class="text-left"><label><spring:message
+                                    code="message.form.productType.label"/>: </label>
                                 <span class="text-primary"><spring:message
                                         code="message.enum.productType.${catalog.productType.name}"/></span></p>
                             <h4 class="card-title" style="margin-top: 2.75rem"><spring:message

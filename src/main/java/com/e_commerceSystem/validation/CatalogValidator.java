@@ -1,5 +1,6 @@
 package com.e_commerceSystem.validation;
 
+import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Order;
 import org.springframework.stereotype.Component;
@@ -20,5 +21,9 @@ public class CatalogValidator implements Validator {
 
         Catalog catalog = (Catalog) object;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "productType", "NotEmpty.calculator.productType");
+
+        if(catalog.getProductType() == ProductType.GLASS){
+            errors.rejectValue("productType", "NotEmpty.calculator.productType");
+        }
     }
 }

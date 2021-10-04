@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -41,7 +42,7 @@ public class CatalogController {
     @Autowired
     private CatalogValidator catalogValidator;
 
-    @InitBinder
+    @InitBinder("catalog")
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(catalogValidator);
     }
@@ -56,6 +57,7 @@ public class CatalogController {
     public ModelAndView catalogByProductType(@PathVariable ProductType productType) {
 
         ModelAndView modelAndView = new ModelAndView("user/catalog");
+
         modelAndView.addObject("productType", productType);
         modelAndView.addObject("listOfItems", catalogService.getItemsByProductType(productType));
 
@@ -66,27 +68,28 @@ public class CatalogController {
     public ModelAndView catalogSettings(@RequestParam(defaultValue = "mirror") ProductType productType) {
 
         ModelAndView modelAndView = new ModelAndView("admin/catalog/settings");
-        defineFormData(modelAndView);
 
         modelAndView.addObject("activeType", productType);
         modelAndView.addObject("listOfItems", catalogService.getItemsByProductType(productType));
+        modelAndView.addObject("productTypes", ProductType.values());
 
         return modelAndView;
     }
 
     @GetMapping("/settings/add")
-    public ModelAndView catalogAddItem() {
+    public ModelAndView catalogAddItem(@RequestParam(required = false) ProductType productType) {
 
         ModelAndView modelAndView = new ModelAndView("admin/catalog/add");
-        defineFormData(modelAndView);
+        modelAndView.addObject("activeType", productType);
+        modelAndView.addObject("productTypes", ProductType.values());
+
         return modelAndView;
     }
 
     @GetMapping("/settings/{id}")
-    public ModelAndView catalogUpdateItem(@PathVariable("id") Long id) {
+    public ModelAndView catalogShowItem(@PathVariable("id") Long id) {
 
         ModelAndView modelAndView = new ModelAndView("admin/catalog/show");
-        defineFormData(modelAndView);
 
         Catalog catalog = catalogService.getItemById(id);
         modelAndView.addObject("catalog", catalog);
@@ -115,6 +118,7 @@ public class CatalogController {
     }
 
     @PostMapping("/settings/save")
+//   jquery
     public ModelAndView catalogSaveItem(@ModelAttribute("order") @Validated Catalog catalog,
                                         BindingResult result,
                                         @RequestParam("tableGlass") String tableGlass) {
@@ -162,8 +166,4 @@ public class CatalogController {
         response.getOutputStream().close();
     }
 
-    public void defineFormData(ModelAndView modelAndView) {
-
-        modelAndView.addObject("productTypes", ProductType.values());
-    }
 }
