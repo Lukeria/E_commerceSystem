@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrderDaoImp implements OrderDao {
@@ -34,7 +35,7 @@ public class OrderDaoImp implements OrderDao {
     public List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer) {
 
         List<Order> orderList = sessionFactory.getCurrentSession()
-                .createNamedQuery("get_order_by_status_and_customer_id", Order.class)
+                .createNamedQuery("get_cart_orders", Order.class)
                 .setParameter("order_status", status.toString())
                 .setParameter("customer_id", customer.getId())
                 .getResultList();
@@ -58,7 +59,7 @@ public class OrderDaoImp implements OrderDao {
 
     @Override
     public void updateOrder(Order order) {
-        Order orderToUpdate = getOrderById(order.getId());
+        Order orderToUpdate = getOrderById(order.getId()).get();
         orderToUpdate.setDeadline(order.getDeadline());
         orderToUpdate.setProductType(order.getProductType());
         orderToUpdate.setCost(order.getCost());
@@ -74,15 +75,13 @@ public class OrderDaoImp implements OrderDao {
 
     @Override
     public void updateOrderCustomer(Order order) {
-        Order orderToUpdate = getOrderById(order.getId());
+        Order orderToUpdate = getOrderById(order.getId()).get();
         orderToUpdate.setCustomer(order.getCustomer());
         sessionFactory.getCurrentSession().saveOrUpdate(orderToUpdate);
     }
 
     @Override
-    public void updateOrderStatus(Order order) {
-        Order orderToUpdate = getOrderById(order.getId());
-        orderToUpdate.setStatus(order.getStatus());
+    public void updateOrderStatus(Order orderToUpdate) {
         sessionFactory.getCurrentSession().saveOrUpdate(orderToUpdate);
     }
 
@@ -92,7 +91,14 @@ public class OrderDaoImp implements OrderDao {
     }
 
     @Override
-    public Order getOrderById(Long id) {
-        return sessionFactory.getCurrentSession().get(Order.class, id);
+    public Optional<Order> getOrderById(Long id) {
+
+        List<Order> orderList = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_order_by_id", Order.class)
+                .setParameter("order_status", OrderStatus.CART.toString())
+                .setParameter("id", id)
+                .getResultList();
+        return orderList.stream().findFirst();
+
     }
 }

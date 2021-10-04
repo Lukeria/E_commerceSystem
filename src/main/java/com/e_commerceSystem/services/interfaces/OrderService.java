@@ -14,12 +14,11 @@ public interface OrderService {
     List<Order> getOrdersByStatus(OrderStatus status);
     List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer);
     List<Order> getOrders();
-    Order addOrder(OrderStatus status, String productType, Float cost, String glassListJson);
     void addOrder(Order order);
     void updateOrder(Order order);
     void updateOrderCustomer(Order order);
-    void updateOrderStatus(Order order);
-    void deleteOrder(Order order);
+    void updateOrderStatus(Long id, OrderStatus status);
+    void deleteOrder(Long id);
     Order getOrderById(Long id);
     Order createOrderByCatalog(Catalog catalog);
     void prepareForView(Order order, ProductType productType);

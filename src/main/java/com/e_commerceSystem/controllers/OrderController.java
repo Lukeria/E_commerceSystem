@@ -3,6 +3,7 @@ package com.e_commerceSystem.controllers;
 import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.exceptions.OrderNotFoundException;
 import com.e_commerceSystem.services.JsonEditor;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.services.interfaces.CatalogService;
@@ -26,18 +27,22 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
     @Autowired
     private JsonEditor jsonEditor;
+
     @Autowired
     private OrderValidator orderValidator;
 
-    @InitBinder
+    @InitBinder(value = "order")
     protected void initBinder(WebDataBinder binder) {
+
         binder.setValidator(orderValidator);
     }
 
     @GetMapping("/")
     public ModelAndView order() {
+
         return new ModelAndView("redirect:/order/all");
     }
 
@@ -55,76 +60,69 @@ public class OrderController {
     public ModelAndView orderAdd() {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
+
         return modelAndView;
     }
 
     @GetMapping(value = "/{id}")
-    public ModelAndView showOrder(@PathVariable("id") Long id) {
+    public ModelAndView showOrder(@PathVariable("id") Long id,
+                                  @ModelAttribute("message") String message,
+                                  @ModelAttribute("status") String status) {
+
 
         ModelAndView modelAndView = new ModelAndView("/admin/orders/show");
 
         Order order = orderService.getOrderById(id);
-        if (order == null) {
-//            modelAndView.addObject("css", "danger");
-//            modelAndView.addObject("msg", "Order not found");
-        }
 
         modelAndView.addObject("order", order);
+        modelAndView.addObject("message", message);
+        modelAndView.addObject("status", status);
+
 
         return modelAndView;
-
-    }
-
-    @PostMapping(value = "/{id}")
-    public ModelAndView showOrderPost(@PathVariable("id") Long id) {
-        return showOrder(id);
     }
 
     @GetMapping(value = "/{id}/close")
-    public ModelAndView closeOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
+    //jquery post
+    public ModelAndView closeOrder(@PathVariable("id") Long id) {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/order/" + id);
 
-        Order order = orderService.getOrderById(id);
-        if (order == null) {
-//            redirectAttributes.addAttribute("css", "danger");
-//            redirectAttributes.addAttribute("msg", "Error while closing order");
-        } else {
-            order.setStatus(OrderStatus.CLOSED);
-            orderService.updateOrderStatus(order);
-//
-//            redirectAttributes.addAttribute("css", "success");
-//            redirectAttributes.addAttribute("msg", "Order closed successfully");
-        }
+        orderService.updateOrderStatus(id, OrderStatus.CLOSED);
 
         return modelAndView;
-
     }
 
     @PostMapping("/{id}/delete")
-    public ModelAndView deleteOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
+    //jquery
+    public ModelAndView deleteOrder(@PathVariable("id") Long id) {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/order/all");
 
-        Order order = orderService.getOrderById(id);
-        if (order == null) {
-//            redirectAttributes.addAttribute("css", "danger");
-//            redirectAttributes.addAttribute("msg", "Error while deleting order");
-        } else {
-            orderService.deleteOrder(order);
-//            redirectAttributes.addAttribute("css", "success");
-//            redirectAttributes.addAttribute("msg", "Order deletes successfully");
-        }
+        orderService.deleteOrder(id);
+
         return modelAndView;
     }
 
     @GetMapping("/{id}/update")
-    public ModelAndView updateOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
+    public ModelAndView updateOrder(@PathVariable("id") Long id,
+                                    final RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
+        ModelAndView modelAndView = new ModelAndView();
 
         Order order = orderService.getOrderById(id);
-        redirectAttributes.addFlashAttribute("order", order);
+
+        if (order.getStatus() == OrderStatus.CLOSED) {
+
+            modelAndView.setViewName("redirect:/order/" + id);
+            redirectAttributes.addFlashAttribute("message", "Updating closed orders is not allowed");
+            redirectAttributes.addFlashAttribute("status", "danger");
+
+        } else {
+
+            modelAndView.setViewName("redirect:/calculator/");
+            redirectAttributes.addFlashAttribute("order", order);
+        }
 
         return modelAndView;
     }
@@ -161,5 +159,6 @@ public class OrderController {
 
         return modelAndView;
     }
+
 
 }

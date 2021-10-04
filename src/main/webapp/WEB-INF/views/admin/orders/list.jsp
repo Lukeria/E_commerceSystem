@@ -141,11 +141,13 @@
                                                         onclick="location.href='${orderUrl}'">
                                                     <i class="tim-icons icon-tap-02"></i>
                                                 </button>
-                                                <button type="button" rel="tooltip"
-                                                        class="btn btn-link btn-success btn-sm btn-icon"
-                                                        onclick="location.href='${updateUrl}'">
-                                                    <i class="tim-icons icon-pencil"></i>
-                                                </button>
+<%--                                                <c:if test="${!order.status.name.equals('closed')">--%>
+                                                    <button type="button" rel="tooltip"
+                                                            class="btn btn-link btn-success btn-sm btn-icon"
+                                                            onclick="location.href='${updateUrl}'">
+                                                        <i class="tim-icons icon-pencil"></i>
+                                                    </button>
+<%--                                                </c:if>--%>
                                                 <button type="button" rel="tooltip"
                                                         class="btn btn-link btn-danger btn-sm btn-icon"
                                                         onclick="post('${deleteUrl}')">

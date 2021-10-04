@@ -6,6 +6,7 @@ import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.exceptions.OrderNotFoundException;
 import com.e_commerceSystem.repositories.interfaces.OrderDao;
 import com.e_commerceSystem.services.interfaces.OrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -21,89 +22,78 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
-@Transactional
 public class OrderServiceImp implements OrderService {
 
     @Autowired
     private OrderDao orderDao;
 
     @Override
+    @Transactional
     public List<Order> getOrdersByStatus(OrderStatus status) {
         return orderDao.getOrdersByStatus(status);
     }
 
     @Override
+    @Transactional
     public List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer) {
         return orderDao.getOrdersByStatusAndCustomer(status, customer);
     }
 
     @Override
+    @Transactional
     public List<Order> getOrders() {
         return orderDao.getOrders();
     }
 
     @Override
-    public Order addOrder(OrderStatus status, String productType, Float cost, String glassListJson) {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        List<Glass> table = null;
-        try {
-            table = objectMapper.readValue(glassListJson, new TypeReference<List<Glass>>() {
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Order order = new Order();
-        order.setCost(cost);
-        order.setStatus(status);
-        order.setCreationDate(LocalDateTime.now());
-        order.setProductType(productType);
-
-        for (Glass glass : table) {
-            glass.setOrder(order);
-            glass.setAmount(0);
-            glass.setProcessingList(new HashSet<>(glass.getProcessingArrayList()));
-            order.getGlassList().add(glass);
-        }
-
-        orderDao.addOrder(order);
-        return order;
-    }
-
-    @Override
+    @Transactional
     public void addOrder(Order order) {
+
         order.setCreationDate(LocalDateTime.now());
         for (Glass glass : order.getGlassList()) {
             glass.setOrder(order);
         }
+
         orderDao.addOrder(order);
     }
 
     @Override
+    @Transactional
     public void updateOrder(Order order) {
         orderDao.updateOrder(order);
     }
 
     @Override
+    @Transactional
     public void updateOrderCustomer(Order order) {
         orderDao.updateOrderCustomer(order);
     }
 
     @Override
-    public void updateOrderStatus(Order order) {
+    @Transactional
+    public void updateOrderStatus(Long id, OrderStatus status) {
+
+        Order order = getOrderById(id);
+        order.setStatus(status);
         orderDao.updateOrderStatus(order);
+
     }
 
     @Override
-    public void deleteOrder(Order order) {
+    @Transactional
+    public void deleteOrder(Long id){
+
+        Order order = getOrderById(id);
         orderDao.deleteOrder(order);
+
     }
 
     @Override
-    public Order getOrderById(Long id) {
-        return orderDao.getOrderById(id);
+    @Transactional
+    public Order getOrderById(Long id) throws OrderNotFoundException {
+
+        return orderDao.getOrderById(id)
+                .orElseThrow(() -> new OrderNotFoundException(id));
     }
 
     @Override

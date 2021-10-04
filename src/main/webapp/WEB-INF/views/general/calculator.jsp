@@ -349,7 +349,7 @@
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
 
         <c:if test="${not empty message}">
-        let message = "<fmt:message key="message.order.${message}"/>";
+        let message = "<spring:message code="message.order.${message}" javaScriptEscape="true"/>";
             showNotification(message, 'success');
         </c:if>
     });

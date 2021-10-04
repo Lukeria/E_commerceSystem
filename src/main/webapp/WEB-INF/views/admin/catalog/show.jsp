@@ -118,6 +118,7 @@
     $(document).ready(function () {
         $("#catalogSection").addClass("active");
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
+    });
 </script>
 </body>
 </html>

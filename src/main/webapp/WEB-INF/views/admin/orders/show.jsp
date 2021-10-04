@@ -177,13 +177,18 @@
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
-
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
+<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $("#orderSection").addClass("active");
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
+
+        <c:if test="${not empty message}">
+        let message = "${message}";
+        showNotification(message, 'danger');
+        </c:if>
     });
 </script>
 </body>

@@ -9,11 +9,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@NamedQuery(name = "get_order_by_status", query = "from orders where order_status=:order_status")
-@NamedQuery(name = "get_order_by_status_and_customer_id",
-        query = "from orders where customer_id=:customer_id and order_status=:order_status")
+@NamedQuery(name = "get_orders_by_status",
+        query = "from orders where order_status=:order_status order by creation_date desc")
 @NamedQuery(name = "get_orders",
-        query = "from orders where order_status!=:order_status")
+        query = "from orders where order_status!=:order_status order by creation_date desc")
+@NamedQuery(name = "get_order_by_id",
+        query = "from orders where order_status!=:order_status and id=:id")
+
+@NamedQuery(name = "get_cart_orders",
+        query = "from orders where customer_id=:customer_id and order_status=:order_status order by creation_date desc")
+@NamedQuery(name = "get_cart_order_by_id",
+        query = "from orders where order_status=:order_status and id=:id")
+
 
 @Entity(name = "orders")
 public class Order {

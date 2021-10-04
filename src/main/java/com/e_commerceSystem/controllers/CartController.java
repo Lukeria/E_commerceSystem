@@ -87,7 +87,7 @@ public class CartController {
     @ResponseBody
     public void cartDeleteItem(@PathVariable Long id) {
 
-        orderService.deleteOrder(orderService.getOrderById(id));
+        orderService.deleteOrder(id);
     }
 
     @PostMapping("/submit")
@@ -95,9 +95,7 @@ public class CartController {
     public JsonResponse cartSubmit(@RequestBody List<Long> orderIds) {
 
         for (Long id : orderIds) {
-            Order order = orderService.getOrderById(id);
-            order.setStatus(OrderStatus.ACTIVE);
-            orderService.updateOrderStatus(order);
+            orderService.updateOrderStatus(id, OrderStatus.ACTIVE);
         }
 
         JsonResponse response = new JsonResponse();
