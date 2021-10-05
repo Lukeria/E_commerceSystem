@@ -25,19 +25,8 @@ public class OrderDaoImp implements OrderDao {
     public List<Order> getOrdersByStatus(OrderStatus status) {
 
         List<Order> orderList = sessionFactory.getCurrentSession()
-                .createNamedQuery("get_order_by_status", Order.class)
+                .createNamedQuery("get_orders_by_status", Order.class)
                 .setParameter("order_status", status.toString())
-                .getResultList();
-        return orderList;
-    }
-
-    @Override
-    public List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer) {
-
-        List<Order> orderList = sessionFactory.getCurrentSession()
-                .createNamedQuery("get_cart_orders", Order.class)
-                .setParameter("order_status", status.toString())
-                .setParameter("customer_id", customer.getId())
                 .getResultList();
         return orderList;
     }
@@ -53,44 +42,6 @@ public class OrderDaoImp implements OrderDao {
     }
 
     @Override
-    public void addOrder(Order order) {
-        sessionFactory.getCurrentSession().save(order);
-    }
-
-    @Override
-    public void updateOrder(Order order) {
-        Order orderToUpdate = getOrderById(order.getId()).get();
-        orderToUpdate.setDeadline(order.getDeadline());
-        orderToUpdate.setProductType(order.getProductType());
-        orderToUpdate.setCost(order.getCost());
-        for (Glass glass : orderToUpdate.getGlassList()) {
-            sessionFactory.getCurrentSession().delete(glass);
-        }
-        orderToUpdate.setGlassList(order.getGlassList());
-        for (Glass glass : orderToUpdate.getGlassList()) {
-            glass.setOrder(orderToUpdate);
-        }
-        sessionFactory.getCurrentSession().update(orderToUpdate);
-    }
-
-    @Override
-    public void updateOrderCustomer(Order order) {
-        Order orderToUpdate = getOrderById(order.getId()).get();
-        orderToUpdate.setCustomer(order.getCustomer());
-        sessionFactory.getCurrentSession().saveOrUpdate(orderToUpdate);
-    }
-
-    @Override
-    public void updateOrderStatus(Order orderToUpdate) {
-        sessionFactory.getCurrentSession().saveOrUpdate(orderToUpdate);
-    }
-
-    @Override
-    public void deleteOrder(Order order) {
-        sessionFactory.getCurrentSession().delete(order);
-    }
-
-    @Override
     public Optional<Order> getOrderById(Long id) {
 
         List<Order> orderList = sessionFactory.getCurrentSession()
@@ -101,4 +52,37 @@ public class OrderDaoImp implements OrderDao {
         return orderList.stream().findFirst();
 
     }
+
+    @Override
+    public List<Order> getCartOrders(OrderStatus status, Customer customer) {
+
+        List<Order> orderList = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_cart_orders", Order.class)
+                .setParameter("order_status", status.toString())
+                .setParameter("customer_id", customer.getId())
+                .getResultList();
+        return orderList;
+    }
+
+    @Override
+    public Optional<Order> getCartOrderById(Long id) {
+
+        List<Order> orderList = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_cart_order_by_id", Order.class)
+                .setParameter("order_status", OrderStatus.CART.toString())
+                .setParameter("id", id)
+                .getResultList();
+        return orderList.stream().findFirst();
+    }
+
+    @Override
+    public void saveOrUpdateOrder(Order order) {
+        sessionFactory.getCurrentSession().saveOrUpdate(order);
+    }
+
+    @Override
+    public void deleteOrder(Order order) {
+        sessionFactory.getCurrentSession().delete(order);
+    }
+
 }

@@ -21,7 +21,6 @@ import java.util.*;
 @NamedQuery(name = "get_cart_order_by_id",
         query = "from orders where order_status=:order_status and id=:id")
 
-
 @Entity(name = "orders")
 public class Order {
 
@@ -99,7 +98,11 @@ public class Order {
     }
 
     public String getCreationDateFormat() {
-        return creationDate.format(dateFormat);
+
+        if(creationDate != null) {
+            return creationDate.format(dateFormat);
+        }
+        return "";
     }
 
     public void setCreationDate(LocalDateTime creationDate) {
@@ -111,6 +114,10 @@ public class Order {
     }
 
     public String getDeadlineFormat() {
+
+        if (deadline != null) {
+            return deadline.format(dateFormat);
+        }
         return "";
     }
 
@@ -131,7 +138,9 @@ public class Order {
     }
 
     public void setGlassList(Set<Glass> glassList) {
-        this.glassList = glassList;
+
+        this.glassList.retainAll(glassList);
+        this.glassList.addAll(glassList);
     }
 
     public String getProductType() {

@@ -1,6 +1,5 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.CustomUserDetails;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.OrderStatus;
@@ -9,24 +8,15 @@ import com.e_commerceSystem.entities.User;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.JsonEditor;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
-import com.e_commerceSystem.services.interfaces.CatalogService;
-import com.e_commerceSystem.services.interfaces.OrderService;
-import com.e_commerceSystem.validation.OrderValidator;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.e_commerceSystem.services.interfaces.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.*;
 
 @Controller
@@ -34,7 +24,7 @@ import java.util.*;
 public class CartController {
 
     @Autowired
-    private OrderService orderService;
+    private CartService cartService;
     @Autowired
     private JsonEditor jsonEditor;
     @Autowired
@@ -44,9 +34,10 @@ public class CartController {
     public ModelAndView cart(Authentication authentication) {
 
         User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+
         ModelAndView modelAndView = new ModelAndView("/user/cart");
         modelAndView.addObject("orders",
-                orderService.getOrdersByStatusAndCustomer(OrderStatus.CART, currentUser.getCustomer()));
+                cartService.getOrders(currentUser.getCustomer()));
 
         return modelAndView;
     }
@@ -78,7 +69,7 @@ public class CartController {
         order.setCustomer(currentUser.getCustomer());
         order.setStatus(OrderStatus.CART);
         order.setCost(calculatorService.calculatePrice(new ArrayList<>(glassList)));
-        orderService.addOrder(order);
+        cartService.addOrder(order);
 
         return modelAndView;
     }
@@ -87,7 +78,7 @@ public class CartController {
     @ResponseBody
     public void cartDeleteItem(@PathVariable Long id) {
 
-        orderService.deleteOrder(id);
+        cartService.deleteOrder(id);
     }
 
     @PostMapping("/submit")
@@ -95,7 +86,7 @@ public class CartController {
     public JsonResponse cartSubmit(@RequestBody List<Long> orderIds) {
 
         for (Long id : orderIds) {
-            orderService.updateOrderStatus(id, OrderStatus.ACTIVE);
+            cartService.submitCartOrder(id);
         }
 
         JsonResponse response = new JsonResponse();

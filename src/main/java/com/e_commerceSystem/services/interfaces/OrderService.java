@@ -12,15 +12,14 @@ import java.util.List;
 public interface OrderService {
 
     List<Order> getOrdersByStatus(OrderStatus status);
-    List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer);
     List<Order> getOrders();
     void addOrder(Order order);
+    Order createOrder(Catalog catalog);
     void updateOrder(Order order);
     void updateOrderCustomer(Order order);
     void updateOrderStatus(Long id, OrderStatus status);
     void deleteOrder(Long id);
     Order getOrderById(Long id);
-    Order createOrderByCatalog(Catalog catalog);
     void prepareForView(Order order, ProductType productType);
 
 }

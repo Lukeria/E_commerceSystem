@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,22 +25,20 @@ public class OrderServiceImp implements OrderService {
 
     @Autowired
     private OrderDao orderDao;
+    @Autowired
+    private LocalDateTimeHandler dateTimeHandler;
 
     @Override
     @Transactional
     public List<Order> getOrdersByStatus(OrderStatus status) {
+
         return orderDao.getOrdersByStatus(status);
     }
 
     @Override
     @Transactional
-    public List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer) {
-        return orderDao.getOrdersByStatusAndCustomer(status, customer);
-    }
-
-    @Override
-    @Transactional
     public List<Order> getOrders() {
+
         return orderDao.getOrders();
     }
 
@@ -46,24 +46,42 @@ public class OrderServiceImp implements OrderService {
     @Transactional
     public void addOrder(Order order) {
 
-        order.setCreationDate(LocalDateTime.now());
+        LocalDateTime creationDate = LocalDateTime.now();
+        LocalDateTime deadLine = dateTimeHandler.addWorkDays(creationDate, 7);
+
+        order.setCreationDate(creationDate);
+        order.setDeadline(deadLine);
+
         for (Glass glass : order.getGlassList()) {
             glass.setOrder(order);
         }
 
-        orderDao.addOrder(order);
+        orderDao.saveOrUpdateOrder(order);
     }
 
     @Override
     @Transactional
     public void updateOrder(Order order) {
-        orderDao.updateOrder(order);
+
+        Order orderToUpdate = getOrderById(order.getId());
+        orderToUpdate.setProductType(order.getProductType());
+        orderToUpdate.setCost(order.getCost());
+        orderToUpdate.setGlassList(order.getGlassList());
+        for (Glass glass : orderToUpdate.getGlassList()) {
+            glass.setOrder(orderToUpdate);
+        }
+
+        orderDao.saveOrUpdateOrder(order);
     }
 
     @Override
     @Transactional
     public void updateOrderCustomer(Order order) {
-        orderDao.updateOrderCustomer(order);
+
+        Order orderToUpdate = getOrderById(order.getId());
+        orderToUpdate.setCustomer(order.getCustomer());
+
+        orderDao.saveOrUpdateOrder(order);
     }
 
     @Override
@@ -72,7 +90,7 @@ public class OrderServiceImp implements OrderService {
 
         Order order = getOrderById(id);
         order.setStatus(status);
-        orderDao.updateOrderStatus(order);
+        orderDao.saveOrUpdateOrder(order);
 
     }
 
@@ -94,9 +112,10 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public Order createOrderByCatalog(Catalog catalog) {
+    public Order createOrder(Catalog catalog) {
 
         Order order = new Order();
+
         order.setProductType(catalog.getProductType().getName());
         order.setGlassList(catalog.getGlassList());
 
@@ -112,7 +131,7 @@ public class OrderServiceImp implements OrderService {
         order.setGlassList(new HashSet<>(glassList));
 
         if (productType != null) {
-            order.setProductType(productType.getRepresentation());
+            order.setProductType(productType.getName());
         }
     }
 }

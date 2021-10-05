@@ -74,7 +74,7 @@ public class CalculatorController {
         ModelAndView modelAndView = new ModelAndView("general/calculator");
 
         Catalog catalog = catalogService.getItemById(id);
-        Order order = orderService.createOrderByCatalog(catalog);
+        Order order = orderService.createOrder(catalog);
 
         modelAndView.addObject("order", order);
 
