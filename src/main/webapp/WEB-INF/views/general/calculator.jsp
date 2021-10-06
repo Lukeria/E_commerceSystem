@@ -179,7 +179,7 @@
                                                                 <i class="tim-icons icon-trash-simple"></i>
                                                             </button>
                                                         </td>
-                                                        <td>
+                                                        <td style="width:50%">
                                                             <div class="form-row">
                                                                 <div class="form-group col-lg-8 col-md-12">
                                                                     <select class="form-control" id="glassType">
@@ -214,7 +214,7 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td class="td-action">
+                                                        <td class="td-action" style="width:50%">
                                                             <button type="button" id="addProcessing" type="button"
                                                                     rel="tooltip"
                                                                     class="btn btn-link btn-success btn-sm btn-icon">
@@ -241,7 +241,7 @@
                                                                                         <select class="form-control"
                                                                                                 id="type">
                                                                                             <option selected
-                                                                                                    value="${processing.type.name}">
+                                                                                                    value="${processing.type}">
                                                                                                 <spring:message
                                                                                                         code="message.enum.processingType.${processing.type.name}"/></option>
                                                                                         </select>
@@ -329,7 +329,8 @@
                                         </c:if>
                                         <security:authorize access="!isAuthenticated()">
                                             <button type="button" class="btn btn-success animation-on-hover"
-                                                    id="formOrder"><spring:message
+                                                    id="formOrder"  data-toggle="modal"
+                                                    data-target="#exampleModal"><spring:message
                                                     code="message.orders.button.formOrder"/>
                                             </button>
                                         </security:authorize>
@@ -386,6 +387,8 @@
     messages['processing_processing']="<spring:message code="message.enum.processingType.processing"/>";
     messages['processing_facet']="<spring:message code="message.enum.processingType.facet"/>";
     messages['processing_hole']="<spring:message code="message.enum.processingType.hole"/>";
+    messages["loadingData"]="<spring:message code="message.notification.loadingData.failure"/>";
+    messages["firstRow"]="<spring:message code="message.notification.firstRow"/>";
 
 </script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>

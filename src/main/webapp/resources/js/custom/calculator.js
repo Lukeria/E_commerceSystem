@@ -1,12 +1,12 @@
 let glassTypeList = [];
 let processingList = [];
+let accessoryList = [];
 
 $(document).ready(function () {
 
-    prepareData();
-    // getGlassData();
-    // getProcessingData();
-    // getAccessory();
+    getGlassData();
+    getProcessingData();
+    getAccessory();
 
 
     $().ready(function () {
@@ -36,16 +36,98 @@ $(document).ready(function () {
 
         })
 
-        $('#formOrder').click(function () {
-            showNotification('You need to ' +
-                '                  <a href="/login" class="btn btn-default btn-link" style="padding: 0rem 0rem">log in</a>' +
-                '                   to form an order or ' +
-                '                  <a href="#" data-toggle="modal" data-target="#exampleModal"class="btn btn-default btn-link"' +
-                '                   style="padding: 0rem 0rem"> request for call </a>', 'warning');
-        })
+        // $('#formOrder').click(function () {
+        //     showNotification(messages.authorizeOrCall, 'warning');
+        // })
     });
 
 });
+
+function getGlassData(){
+
+    $.ajax({
+        type: "GET",
+        url: "/component/list?componentType=glassType",
+        success: function (response) {
+            glassTypeList = response;
+            $("#glass>tr").each(function () {
+                let glassTypeSelect = prepareGlassType($(this));
+                prepareThickness(glassTypeSelect);
+                $(this).find('#glassType').change(function () {
+                    prepareThickness($(this));
+                });
+
+                $(this).find('#delete').click(function () {
+                    if ($(this).parents("tr")[0].id != "row_1") {
+                        $(this).parents("tr").remove();
+                    } else {
+                        showNotification(messages.firstRow, "warning")
+                    }
+                });
+
+                $(this).find('#addProcessing').click(function () {
+                    addProcessingRow($(this).parents("tr")[0]);
+                });
+            });
+        },
+        error: function (e) {
+            showNotification(messages['loadingData'], 'danger');
+        }
+    });
+
+}
+
+function getProcessingData(){
+
+    $.ajax({
+        type: "GET",
+        url: "/component/list?componentType=processing",
+        success: function (response) {
+            processingList = response;
+            $("#glass>tr").each(function () {
+                let glassRow = $(this);
+                $(this).find('#processing>tr').each(function () {
+                    let type = prepareProcessingType(glassRow, $(this));
+                    prepareProcessingName(type);
+                    manageProcessingInputsVisibility($(this));
+
+                    $(this).find('#addProcessing').click(function () {
+                        addProcessingRow($(this).parents("tr")[0]);
+                    });
+
+                    $(this).find('#type').change(function () {
+                        prepareProcessingName($(this));
+                        manageProcessingInputsVisibility($(this).parents('#processing>tr')[0]);
+                    });
+
+                    $(this).find('#delete').click(function () {
+                        $(this).parents("#processing>tr").remove();
+                    });
+
+                });
+            });
+        },
+        error: function (e) {
+            showNotification(messages['loadingData'], 'danger');
+        }
+    });
+
+}
+
+function getAccessory(){
+
+    $.ajax({
+        type: "GET",
+        url: "/component/list?componentType=accessory",
+        success: function (response) {
+            accessoryList = response;
+        },
+        error: function (e) {
+            showNotification(messages['loadingData'], 'danger');
+        }
+    });
+
+}
 
 ////Prepare data////
 function prepareData() {
@@ -54,7 +136,7 @@ function prepareData() {
         url: "/component/getData",
         success: function (response) {
             // we have the response
-            if (response.status == "SUCCESS") {
+            if (response.status === "SUCCESS") {
                 let result = JSON.parse(response.result);
                 glassTypeList = result.glassTypeList;
                 processingList = result.processingList;
@@ -70,7 +152,7 @@ function prepareData() {
                         if ($(this).parents("tr")[0].id != "row_1") {
                             $(this).parents("tr").remove();
                         } else {
-                            showNotification("You can't delete first row", "warning")
+                            showNotification(messages.firstRow, "warning")
                         }
                     });
 
@@ -101,7 +183,7 @@ function prepareData() {
             }
         },
         error: function (e) {
-            alert('Error: ' + e);
+            showNotification(messages['loadingData'], 'danger');
         }
     });
 }
@@ -246,7 +328,7 @@ function addGlassRow() {
         if ($(this).parents("tr")[0].id != "row_1") {
             $(this).parents("tr").remove();
         } else {
-            showNotification("You can't delete first row", "warning")
+            showNotification(messages.firstRow, "warning")
         }
     });
 
@@ -399,11 +481,11 @@ function doAjaxCalculatePost() {
                 $('#result').val(response.result);
                 $('#resultText').text(response.result);
             } else {
-                showNotification("An <b>error</b> occurred while processing the request", "danger");
+                showNotification(messages['loadingData'], 'danger');
             }
         },
         error: function (e) {
-            showNotification(e, "danger");
+            showNotification(messages['loadingData'], 'danger');
         }
     });
 }
@@ -430,7 +512,7 @@ function doAjaxSaveOrderPost() {
             location.href = "/customer/add";
         },
         error: function (e) {
-            showNotification(e, "danger");
+            showNotification(messages['loadingData'], 'danger');
         }
     });
 }

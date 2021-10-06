@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login**", "/registrationPage**", "/register").not().authenticated()
                 .antMatchers("/order/", "/profile/**").authenticated()
-                .antMatchers("/component/getData").permitAll()
+                .antMatchers("/component/getData", "/component/list").permitAll()
                 .antMatchers("/priceList/**", "/order/**", "/catalog/settings/**",
                         "/customer/add", "/component/**").hasRole("ADMIN")
                 .antMatchers("/cart/**").hasRole("USER")
