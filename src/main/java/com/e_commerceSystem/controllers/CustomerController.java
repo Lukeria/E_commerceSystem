@@ -31,13 +31,6 @@ public class CustomerController {
 
     }
 
-//    @PostMapping("/add")
-//    public ModelAndView addCustomerPost(@ModelAttribute("customer") Customer customer,
-//                                        HttpServletRequest request){
-//
-//        return addCustomer(customer, request);
-//    }
-
     @PostMapping("/saveOrderCustomer")
     public ModelAndView saveOrderCustomer(@ModelAttribute("customer") Customer customer,
                                           @RequestParam("orderId") Long orderId,

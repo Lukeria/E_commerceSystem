@@ -27,8 +27,6 @@ public class CartController {
     private CartService cartService;
     @Autowired
     private JsonEditor jsonEditor;
-    @Autowired
-    private CalculatorService calculatorService;
 
     @GetMapping("/")
     public ModelAndView cart(Authentication authentication) {
@@ -66,10 +64,7 @@ public class CartController {
         }
 
         User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
-        order.setCustomer(currentUser.getCustomer());
-        order.setStatus(OrderStatus.CART);
-        order.setCost(calculatorService.calculatePrice(new ArrayList<>(glassList)));
-        cartService.addOrder(order);
+        cartService.addOrder(order, currentUser.getCustomer());
 
         return modelAndView;
     }

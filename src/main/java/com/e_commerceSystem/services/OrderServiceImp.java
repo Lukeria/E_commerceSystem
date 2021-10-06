@@ -52,9 +52,9 @@ public class OrderServiceImp implements OrderService {
         order.setCreationDate(creationDate);
         order.setDeadline(deadLine);
 
-        for (Glass glass : order.getGlassList()) {
-            glass.setOrder(order);
-        }
+//        for (Glass glass : order.getGlassList()) {
+//            glass.setOrder(order);
+//        }
 
         orderDao.saveOrUpdateOrder(order);
     }
@@ -67,9 +67,9 @@ public class OrderServiceImp implements OrderService {
         orderToUpdate.setProductType(order.getProductType());
         orderToUpdate.setCost(order.getCost());
         orderToUpdate.setGlassList(order.getGlassList());
-        for (Glass glass : orderToUpdate.getGlassList()) {
-            glass.setOrder(orderToUpdate);
-        }
+//        for (Glass glass : orderToUpdate.getGlassList()) {
+//            glass.setOrder(orderToUpdate);
+//        }
 
         orderDao.saveOrUpdateOrder(order);
     }
@@ -81,7 +81,7 @@ public class OrderServiceImp implements OrderService {
         Order orderToUpdate = getOrderById(order.getId());
         orderToUpdate.setCustomer(order.getCustomer());
 
-        orderDao.saveOrUpdateOrder(order);
+        orderDao.saveOrUpdateOrder(orderToUpdate);
     }
 
     @Override

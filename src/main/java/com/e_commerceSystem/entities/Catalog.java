@@ -68,6 +68,9 @@ public class Catalog {
 
         this.glassList.retainAll(glassList);
         this.glassList.addAll(glassList);
+        for (Glass glass : glassList) {
+            glass.setCatalog(this);
+        }
     }
 
     public boolean isEmpty(){

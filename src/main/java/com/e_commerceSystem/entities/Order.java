@@ -141,6 +141,9 @@ public class Order {
 
         this.glassList.retainAll(glassList);
         this.glassList.addAll(glassList);
+        for (Glass glass : glassList) {
+            glass.setOrder(this);
+        }
     }
 
     public String getProductType() {
