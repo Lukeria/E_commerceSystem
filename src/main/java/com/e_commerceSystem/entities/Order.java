@@ -1,6 +1,7 @@
 package com.e_commerceSystem.entities;
 
 import com.e_commerceSystem.additional.enums.OrderStatus;
+import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.glass.Glass;
 import org.hibernate.annotations.Cascade;
 
@@ -35,8 +36,9 @@ public class Order {
 
     private Float cost;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "product_type")
-    private String productType;
+    private ProductType productType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
@@ -146,11 +148,11 @@ public class Order {
         }
     }
 
-    public String getProductType() {
+    public ProductType getProductType() {
         return productType;
     }
 
-    public void setProductType(String productType) {
+    public void setProductType(ProductType productType) {
         this.productType = productType;
     }
 

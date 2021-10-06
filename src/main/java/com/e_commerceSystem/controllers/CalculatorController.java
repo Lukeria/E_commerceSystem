@@ -49,6 +49,7 @@ public class CalculatorController {
         }
         modelAndView.addObject("isForTemplate", isTemplate);
         modelAndView.addObject("message", message);
+        modelAndView.addObject("productTypes", ProductType.values());
 
         return modelAndView;
 

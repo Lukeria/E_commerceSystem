@@ -71,7 +71,7 @@ public class OrderServiceImp implements OrderService {
 //            glass.setOrder(orderToUpdate);
 //        }
 
-        orderDao.saveOrUpdateOrder(order);
+        orderDao.saveOrUpdateOrder(orderToUpdate);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class OrderServiceImp implements OrderService {
 
         Order order = new Order();
 
-        order.setProductType(catalog.getProductType().getName());
+        order.setProductType(catalog.getProductType());
         order.setGlassList(catalog.getGlassList());
 
         return order;
@@ -131,7 +131,7 @@ public class OrderServiceImp implements OrderService {
         order.setGlassList(new HashSet<>(glassList));
 
         if (productType != null) {
-            order.setProductType(productType.getName());
+            order.setProductType(productType);
         }
     }
 }

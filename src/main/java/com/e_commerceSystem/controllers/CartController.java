@@ -49,9 +49,9 @@ public class CartController {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
 
-        if (order.getProductType().isEmpty()) {
-            result.rejectValue("productType", "message.notEmpty.calculator.productType");
-        }
+//        if (order.getProductType().isEmpty()) {
+//            result.rejectValue("productType", "message.notEmpty.calculator.productType");
+//        }
 
         Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
         order.setGlassList(glassList);

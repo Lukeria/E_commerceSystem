@@ -125,9 +125,13 @@
                                         <div class="form-group col-lg-6 col-md-12">
                                             <label for="productType">Product type: </label>
                                             <div class="form-group ${status.error ? 'has-danger' : ''}">
-                                                <form:input path="productType" type="text" id="productType"
-                                                            class="form-control ${status.error ? 'form-control-danger' : ''}"
-                                                            name="productType"/>
+                                                <form:select path="productType" id="productType"
+                                                             class="form-control ${status.error ? 'form-control-danger' : ''}">
+                                                    <c:forEach items="${productTypes}" var="type">
+                                                        <spring:message code="message.enum.productType.${type.name}" var="typeLabel"/>
+                                                        <form:option value="${type.name}" label="${typeLabel}"/>
+                                                    </c:forEach>
+                                                </form:select>
                                             </div>
                                             <form:errors path="productType" class="form-text text-danger"/>
                                         </div>
@@ -350,7 +354,7 @@
 
         <c:if test="${not empty message}">
         let message = "<spring:message code="message.order.${message}" javaScriptEscape="true"/>";
-            showNotification(message, 'success');
+        showNotification(message, 'success');
         </c:if>
     });
 </script>

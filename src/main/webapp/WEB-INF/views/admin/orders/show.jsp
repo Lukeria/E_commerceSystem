@@ -62,7 +62,7 @@
                                     </tr>
                                     <tr>
                                         <td style="width: 10rem"><label><spring:message code="message.orders.column.product"/>:</label></td>
-                                        <td class="text-left">${order.productType}</td>
+                                        <td class="text-left"><spring:message code="message.enum.productType.${order.productType.name}"/></td>
                                     </tr>
                                     <tr>
                                         <td style="width: 10rem"><label class="text-primary"><spring:message code="message.orders.column.cost"/>:</label></td>
