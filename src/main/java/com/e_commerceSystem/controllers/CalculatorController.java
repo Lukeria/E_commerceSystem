@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.jws.WebParam;
 import java.util.ArrayList;
@@ -71,14 +72,15 @@ public class CalculatorController {
     }
 
     @GetMapping("/fillByCatalog/{id}")
-    public ModelAndView createOrderByTemplate(@PathVariable("id") Long id) {
+    public ModelAndView createOrderByTemplate(@PathVariable("id") Long id,
+                                              RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("general/calculator");
+        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
 
         Catalog catalog = catalogService.getItemById(id);
         Order order = orderService.createOrder(catalog);
 
-        modelAndView.addObject("order", order);
+        redirectAttributes.addFlashAttribute("order", order);
 
         return modelAndView;
     }
