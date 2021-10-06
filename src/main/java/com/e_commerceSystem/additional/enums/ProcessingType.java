@@ -2,8 +2,7 @@ package com.e_commerceSystem.additional.enums;
 
 public enum ProcessingType {
 
-    POLISHING("processing"),
-    GRINDING("grinding"),
+    PROCESSING("processing"),
     FACET("facet"),
     HOLE("hole");
 
