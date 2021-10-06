@@ -4,6 +4,10 @@ let processingList = [];
 $(document).ready(function () {
 
     prepareData();
+    // getGlassData();
+    // getProcessingData();
+    // getAccessory();
+
 
     $().ready(function () {
         // $("#glassType").change(function () {
@@ -183,7 +187,7 @@ function prepareProcessingType(glassRow, currentRow) {
                 selected = "selected";
             }
         }
-        let option = "<option " + selected + " value=" + item + ">" + item + "</option>";
+        let option = "<option " + selected + " value=" + item + ">" + messages['processing_'+item.toLowerCase()] + "</option>";
         select += option;
     });
 
@@ -331,19 +335,12 @@ function createProcessingRow() {
 function manageProcessingInputsVisibility(currentRow) {
 
     let typeValue = $(currentRow).find("#type>option:selected").val();
-    let name = $(currentRow).find("#name");
     let quantity = $(currentRow).find("#quantity");
 
-    if (typeValue === "polishing" || typeValue === "grinding") {
-        name.val($(name).find("option:first").val());
-        name.parents('#processing>tr>td').hide();
-        quantity.parents('#processing>tr>td').hide();
-    } else if (typeValue === "facet") {
-        name.parents('#processing>tr>td').show();
-        quantity.parents('#processing>tr>td').hide();
-    } else {
-        name.parents('#processing>tr>td').show();
-        quantity.parents('#processing>tr>td').show();
+    if(typeValue === 'HOLE'){
+        quantity.show();
+    } else{
+        quantity.hide();
     }
 }
 

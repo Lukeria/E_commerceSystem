@@ -156,7 +156,7 @@
 
                                 <div class="form-row">
                                     <div class="form-group col">
-                                        <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                                        <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
                                             <table class="table">
                                                 <thead>
                                                 <th><spring:message code="message.orders.glass.heading"/></th>
@@ -220,7 +220,7 @@
                                                                     class="btn btn-link btn-success btn-sm btn-icon">
                                                                 <i class="tim-icons icon-simple-add"></i>
                                                             </button>
-                                                            <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                                                            <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
                                                                 <table class="table table-borderless">
                                                                     <tbody id="processing">
                                                                     <c:forEach var="processing"
@@ -383,6 +383,10 @@
 
     messages={};
     messages['placeholderAmount']="<spring:message code="message.form.amount.placeholder"/>";
+    messages['processing_processing']="<spring:message code="message.enum.processingType.processing"/>";
+    messages['processing_facet']="<spring:message code="message.enum.processingType.facet"/>";
+    messages['processing_hole']="<spring:message code="message.enum.processingType.hole"/>";
+
 </script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/calculator.js"></script>
