@@ -208,6 +208,7 @@ function prepareProcessingName(selected) {
 
     let select = "";
     processingSet.forEach(function (item) {
+        let selected = "";
         if (selectedOption.val() !== "") {
             if (item.id === (Number.parseInt(selectedOption.val()) || 0)) {
                 selected = "selected";
