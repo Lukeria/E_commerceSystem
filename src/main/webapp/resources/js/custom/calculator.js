@@ -300,17 +300,29 @@ function createProcessingRow() {
         '<i class="tim-icons icon-trash-simple"></i>\n' +
         '</button>\n' +
         '</td>');
-    currentRow.append('<td>' +
-        '<select class="form-control" id="type">\n' +
-        '</select>' +
-        '</td>');
-    currentRow.append('<td>' +
-        '<select class="form-control" id="name">\n' +
-        '</select>' +
-        '</td>');
-    currentRow.append('<td>' +
-        '<input class="form-control" type="number" id="quantity" placeholder="Quantity">\n' +
-        '</td>')
+    currentRow.append('<td>\n' +
+        '<div class="form-row">\n' +
+        '      <div class="form-group col-lg-6 col-md-12">\n' +
+        '            <select class="form-control"\n' +
+        '                  id="type">\n' +
+        '           </select>\n' +
+        '                   </div>\n' +
+        '                   <div class="form-group col-lg-6 col-md-12">\n' +
+        '                       <select class="form-control"\n' +
+        '                               id="name">\n' +
+        '                       </select>\n' +
+        '                   </div>\n' +
+        '               </div>\n' +
+        '               <div class="form-row">\n' +
+        '                   <div class="form-group col-lg-6 col-md-12">\n' +
+        '                       <input class="form-control"\n' +
+        '                              type="number"\n' +
+        '                              id="quantity"\n' +
+        '                              placeholder="'+messages.placeholderAmount+'"\n' +
+        '                              value="${processing.quantity}">\n' +
+        '                   </div>\n' +
+        '               </div>\n' +
+        '           </td>');
 
     return currentRow;
 }

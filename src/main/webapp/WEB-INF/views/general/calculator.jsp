@@ -167,9 +167,6 @@
                                                         <spring:message code="message.form.button.add"/>
                                                     </button>
                                                 </th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
                                                 <th><spring:message code="message.glass.column.processing"/></th>
                                                 </thead>
                                                 <tbody id="glass">
@@ -183,26 +180,39 @@
                                                             </button>
                                                         </td>
                                                         <td>
-                                                            <select class="form-control" id="glassType">
-                                                                <option selected
-                                                                        value="${glass.glassType.name}">${glass.glassType.name}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <select class="form-control" id="thickness">
-                                                                <option selected
-                                                                        value="${glass.glassType.id}">${glass.glassType.thickness}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" type="number" id="width"
-                                                                   placeholder="<spring:message code="message.form.width.placeholder"/>"
-                                                                   value="${glass.width}">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" type="number" id="height"
-                                                                   placeholder="<spring:message code="message.form.height.placeholder"/>"
-                                                                   value="${glass.height}">
+                                                            <div class="form-row">
+                                                                <div class="form-group col-lg-8 col-md-12">
+                                                                    <select class="form-control" id="glassType">
+                                                                        <option selected
+                                                                                value="${glass.glassType.name}">${glass.glassType.name}</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-4 col-md-12">
+                                                                    <select class="form-control" id="thickness">
+                                                                        <option selected
+                                                                                value="${glass.glassType.id}">${glass.glassType.thickness}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-lg-4 col-md-12">
+                                                                    <input class="form-control" type="number" id="width"
+                                                                           placeholder="<spring:message code="message.form.width.placeholder"/>"
+                                                                           value="${glass.width}">
+                                                                </div>
+                                                                <div class="form-group col-lg-4 col-md-12">
+                                                                    <input class="form-control" type="number"
+                                                                           id="height"
+                                                                           placeholder="<spring:message code="message.form.height.placeholder"/>"
+                                                                           value="${glass.height}">
+                                                                </div>
+                                                                <div class="form-group col-lg-4 col-md-12">
+                                                                    <input class="form-control" type="number"
+                                                                           id="amount"
+                                                                           placeholder="<spring:message code="message.form.amount.placeholder"/>"
+                                                                           value="${glass.amount}">
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                         <td class="td-action">
                                                             <button type="button" id="addProcessing" type="button"
@@ -226,25 +236,33 @@
                                                                                 </button>
                                                                             </td>
                                                                             <td>
-                                                                                <select class="form-control" id="type">
-                                                                                    <option selected
-                                                                                            value="${processing.type.name}">
-                                                                                        <spring:message
-                                                                                                code="message.enum.processingType.${processing.type.name}"/></option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td>
-                                                                                <select class="form-control" id="name">
-                                                                                    <option selected
-                                                                                            value="${processing.id}">${processing.name}</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td>
-                                                                                <input class="form-control"
-                                                                                       type="number"
-                                                                                       id="quantity"
-                                                                                       placeholder="<spring:message code="message.form.amount.placeholder"/>"
-                                                                                       value="${processing.quantity}">
+                                                                                <div class="form-row">
+                                                                                    <div class="form-group col-lg-6 col-md-12">
+                                                                                        <select class="form-control"
+                                                                                                id="type">
+                                                                                            <option selected
+                                                                                                    value="${processing.type.name}">
+                                                                                                <spring:message
+                                                                                                        code="message.enum.processingType.${processing.type.name}"/></option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-6 col-md-12">
+                                                                                        <select class="form-control"
+                                                                                                id="name">
+                                                                                            <option selected
+                                                                                                    value="${processing.id}">${processing.name}</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-row">
+                                                                                    <div class="form-group col-lg-6 col-md-12">
+                                                                                        <input class="form-control"
+                                                                                               type="number"
+                                                                                               id="quantity"
+                                                                                               placeholder="<spring:message code="message.form.amount.placeholder"/>"
+                                                                                               value="${processing.quantity}">
+                                                                                    </div>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </c:forEach>
@@ -361,6 +379,11 @@
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 <!-- Black Dashboard DEMO methods, don't include it in your project! -->
 <%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
+<script type="text/javascript">
+
+    messages={};
+    messages['placeholderAmount']="<spring:message code="message.form.amount.placeholder"/>";
+</script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/calculator.js"></script>
 <script type="text/javascript">
