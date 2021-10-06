@@ -103,7 +103,8 @@ public class OrderController {
 
     @GetMapping("/{id}/update")
     public ModelAndView updateOrder(@PathVariable("id") Long id,
-                                    final RedirectAttributes redirectAttributes) {
+                                    final RedirectAttributes redirectAttributes,
+                                    HttpServletRequest request) {
 
         ModelAndView modelAndView = new ModelAndView();
 

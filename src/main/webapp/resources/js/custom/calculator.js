@@ -33,16 +33,11 @@ $(document).ready(function () {
         })
 
         $('#formOrder').click(function () {
-            $('#placeholderFormOrder').append('<div class="alert alert-warning alert-with-icon" data-notify="container">\n' +
-                '                  <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">\n' +
-                '                    <i class="tim-icons icon-simple-remove"></i>\n' +
-                '                  </button>\n' +
-                '                  <span data-notify="icon" class="tim-icons icon-bell-55"></span>\n' +
-                '                  <span data-notify="message">You need to ' +
-                '                  <a href="/login" class="btn btn-default btn-link">log in</a> to form an order or ' +
-                '                  <a href="#" data-toggle="modal" data-target="#exampleModal"class="btn btn-default btn-link">' +
-                '                   request for call</a></span>\n' +
-                '                </div>')
+            showNotification('You need to ' +
+                '                  <a href="/login" class="btn btn-default btn-link" style="padding: 0rem 0rem">log in</a>' +
+                '                   to form an order or ' +
+                '                  <a href="#" data-toggle="modal" data-target="#exampleModal"class="btn btn-default btn-link"' +
+                '                   style="padding: 0rem 0rem"> request for call </a>', 'warning');
         })
     });
 
@@ -326,11 +321,11 @@ function manageProcessingInputsVisibility(currentRow) {
     let name = $(currentRow).find("#name");
     let quantity = $(currentRow).find("#quantity");
 
-    if (typeValue === "Полировка") {
+    if (typeValue === "polishing" || typeValue === "grinding") {
         name.val($(name).find("option:first").val());
         name.parents('#processing>tr>td').hide();
         quantity.parents('#processing>tr>td').hide();
-    } else if (typeValue === "Фацет") {
+    } else if (typeValue === "facet") {
         name.parents('#processing>tr>td').show();
         quantity.parents('#processing>tr>td').hide();
     } else {
@@ -455,17 +450,17 @@ function doAjaxAddToCartPost() {
 }
 
 /////Вынести в отдельный файл!!!
-function showNotification(text, color) {
-    $.notify({
-        icon: "tim-icons icon-bell-55",
-        message: text
-
-    }, {
-        type: color,
-        timer: 8000,
-        placement: {
-            from: 'bottom',
-            align: 'center'
-        }
-    });
-}
+// function showNotification(text, color) {
+//     $.notify({
+//         icon: "tim-icons icon-bell-55",
+//         message: text
+//
+//     }, {
+//         type: color,
+//         timer: 8000,
+//         placement: {
+//             from: 'bottom',
+//             align: 'center'
+//         }
+//     });
+// }

@@ -30,11 +30,18 @@
 </head>
 <body clas="">
 <div class="wrapper">
-    <div id="sidebar"></div>
+    <div id="sidebar">
+        <security:authorize access="hasRole('ADMIN')">
+            <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminSidebar.jsp"/>
+        </security:authorize>
+    </div>
     <div class="main-panel bg-image-main">
         <div id="navbar">
             <security:authorize access="!hasRole('ADMIN')">
                 <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/userHeader.jsp"/>
+            </security:authorize>
+            <security:authorize access="hasRole('ADMIN')">
+                <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminHeader.jsp"/>
             </security:authorize>
         </div>
         <security:authorize access="!hasRole('ADMIN')">
@@ -50,8 +57,10 @@
                     <div class="col-lg-8">
                         <nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Calculate order</li>
+                                <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main"><spring:message
+                                        code="message.navbar.section.home"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><spring:message
+                                        code="message.navbar.section.calculator"/></li>
                             </ol>
                         </nav>
                     </div>
@@ -72,10 +81,12 @@
                         <div class="card-header">
                             <c:choose>
                                 <c:when test="${isForTemplate}">
-                                    <h4 class="card-title">Template</h4>
+                                    <h4 class="card-title"><spring:message code="message.calculator.template"/>
+                                        #${order.id}</h4>
                                 </c:when>
                                 <c:otherwise>
-                                    <h4 class="card-title">Calculator</h4>
+                                    <h4 class="card-title"><spring:message
+                                            code="message.navbar.section.calculator"/></h4>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -104,7 +115,9 @@
                                             <c:if test="${order.id != null}">
                                                 <div class="form-row">
                                                     <div class="form-group col-lg-6">
-                                                        <p class="text-primary">Order #<span id="id">${order.id}</span>
+                                                        <p class="text-primary"><spring:message
+                                                                code="message.orders.heading.single"/> #<span
+                                                                id="id">${order.id}</span>
                                                         </p>
                                                         <form:input path="id" type="hidden"/>
                                                     </div>
@@ -112,7 +125,8 @@
 
                                                 <div class="form-row">
                                                     <div class="form-group col-lg-6">
-                                                        <p class="text-success">Customer: ${order.customer.name}</p>
+                                                        <p class="text-success"><spring:message
+                                                                code="message.calculator.customer"/>: ${order.customer.name}</p>
                                                     </div>
                                                 </div>
                                             </c:if>
@@ -123,12 +137,14 @@
                                 <spring:bind path="productType">
                                     <div class="form-row">
                                         <div class="form-group col-lg-6 col-md-12">
-                                            <label for="productType">Product type: </label>
+                                            <label for="productType"><spring:message
+                                                    code="message.form.productType.label"/></label>
                                             <div class="form-group ${status.error ? 'has-danger' : ''}">
                                                 <form:select path="productType" id="productType"
                                                              class="form-control ${status.error ? 'form-control-danger' : ''}">
                                                     <c:forEach items="${productTypes}" var="type">
-                                                        <spring:message code="message.enum.productType.${type.name}" var="typeLabel"/>
+                                                        <spring:message code="message.enum.productType.${type.name}"
+                                                                        var="typeLabel"/>
                                                         <form:option value="${type.name}" label="${typeLabel}"/>
                                                     </c:forEach>
                                                 </form:select>
@@ -143,18 +159,18 @@
                                         <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
                                             <table class="table">
                                                 <thead>
-                                                <th>Glass</th>
+                                                <th><spring:message code="message.orders.glass.heading"/></th>
                                                 <th>
                                                     <button type="button"
                                                             class="btn btn-primary btn-simple btn-sm"
                                                             id="addRaw">
-                                                        Add
+                                                        <spring:message code="message.form.button.add"/>
                                                     </button>
                                                 </th>
                                                 <th></th>
                                                 <th></th>
                                                 <th></th>
-                                                <th>Processing</th>
+                                                <th><spring:message code="message.glass.column.processing"/></th>
                                                 </thead>
                                                 <tbody id="glass">
                                                 <c:forEach var="glass" items="${order.glassList}" varStatus="status">
@@ -180,11 +196,13 @@
                                                         </td>
                                                         <td>
                                                             <input class="form-control" type="number" id="width"
-                                                                   placeholder="Width" value="${glass.width}">
+                                                                   placeholder="<spring:message code="message.form.width.placeholder"/>"
+                                                                   value="${glass.width}">
                                                         </td>
                                                         <td>
                                                             <input class="form-control" type="number" id="height"
-                                                                   placeholder="Height" value="${glass.height}">
+                                                                   placeholder="<spring:message code="message.form.height.placeholder"/>"
+                                                                   value="${glass.height}">
                                                         </td>
                                                         <td class="td-action">
                                                             <button type="button" id="addProcessing" type="button"
@@ -210,7 +228,9 @@
                                                                             <td>
                                                                                 <select class="form-control" id="type">
                                                                                     <option selected
-                                                                                            value="${processing.type}">${processing.type}</option>
+                                                                                            value="${processing.type.name}">
+                                                                                        <spring:message
+                                                                                                code="message.enum.processingType.${processing.type.name}"/></option>
                                                                                 </select>
                                                                             </td>
                                                                             <td>
@@ -223,7 +243,7 @@
                                                                                 <input class="form-control"
                                                                                        type="number"
                                                                                        id="quantity"
-                                                                                       placeholder="Quantity"
+                                                                                       placeholder="<spring:message code="message.form.amount.placeholder"/>"
                                                                                        value="${processing.quantity}">
                                                                             </td>
                                                                         </tr>
@@ -251,7 +271,8 @@
                                 <c:if test="${!isForTemplate || isForTemplate==null}">
                                     <div class="form-row">
                                         <div class="form-group col-lg-4 col-md-6">
-                                            <label for="result">Result:</label>
+                                            <label for="result"><spring:message
+                                                    code="message.orders.column.cost"/></label>
                                             <security:authorize access="hasRole('ADMIN')">
                                                 <spring:bind path="cost">
                                                     <div class="form-group ${status.error ? 'has-danger' : ''}">
@@ -285,22 +306,24 @@
                                         <c:if test="${!isForTemplate || isForTemplate==null}">
                                             <button type="button" class="btn btn-primary animation-on-hover"
                                                     id="calculate">
-                                                Calculate
+                                                <spring:message code="message.form.button.calculate"/>
                                             </button>
                                         </c:if>
                                         <security:authorize access="!isAuthenticated()">
                                             <button type="button" class="btn btn-success animation-on-hover"
-                                                    id="formOrder">Form order
+                                                    id="formOrder"><spring:message
+                                                    code="message.orders.button.formOrder"/>
                                             </button>
                                         </security:authorize>
                                         <security:authorize access="hasRole('USER')">
                                             <button type="submit" class="btn btn-success animation-on-hover"
-                                                    id="addToCart">Add to cart
+                                                    id="addToCart"><spring:message
+                                                    code="message.form.button.addToCart"/>
                                             </button>
                                         </security:authorize>
                                         <security:authorize access="hasRole('ADMIN')">
                                             <button type="submit" class="btn btn-success animation-on-hover"
-                                                    id="addOrder">Save
+                                                    id="addOrder"><spring:message code="message.form.button.save"/>
                                             </button>
                                         </security:authorize>
                                     </div>
@@ -337,18 +360,20 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/calculator.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         <security:authorize access="hasRole('ADMIN')">
-        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
-            $("#orderSection").addClass("active");
-        });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
-            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        });
+        <c:choose>
+        <c:when test="${isForTemplate}">
+        $("#catalogSection").addClass("active");
+        </c:when>
+        <c:otherwise>
+        $("#orderSection").addClass("active");
+        </c:otherwise>
+        </c:choose>
         </security:authorize>
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
 
