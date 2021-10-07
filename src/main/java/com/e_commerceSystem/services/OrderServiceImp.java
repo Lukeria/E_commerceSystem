@@ -51,6 +51,7 @@ public class OrderServiceImp implements OrderService {
 
         order.setCreationDate(creationDate);
         order.setDeadline(deadLine);
+        order.setStatus(OrderStatus.ACTIVE);
 
 //        for (Glass glass : order.getGlassList()) {
 //            glass.setOrder(order);
@@ -76,10 +77,10 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     @Transactional
-    public void updateOrderCustomer(Order order) {
+    public void updateOrderCustomer(Long id, Customer customer) {
 
-        Order orderToUpdate = getOrderById(order.getId());
-        orderToUpdate.setCustomer(order.getCustomer());
+        Order orderToUpdate = getOrderById(id);
+        orderToUpdate.setCustomer(customer);
 
         orderDao.saveOrUpdateOrder(orderToUpdate);
     }

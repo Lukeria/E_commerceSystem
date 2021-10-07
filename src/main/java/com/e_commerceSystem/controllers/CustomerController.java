@@ -21,7 +21,7 @@ public class CustomerController {
 
     @GetMapping("/add")
     public ModelAndView addCustomer(@ModelAttribute("customer") Customer customer,
-                                    @ModelAttribute("orderId") Long orderId,
+                                    @RequestParam("orderId") Long orderId,
                                     HttpServletRequest request, RedirectAttributes redirectAttributes){
 
         ModelAndView modelAndView = new ModelAndView("/admin/customers/add");
@@ -39,9 +39,7 @@ public class CustomerController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/order/" + orderId);
 
-        Order order = orderService.getOrderById(orderId);
-        order.setCustomer(customer);
-        orderService.updateOrderCustomer(order);
+        orderService.updateOrderCustomer(orderId, customer);
 
         return modelAndView;
     }

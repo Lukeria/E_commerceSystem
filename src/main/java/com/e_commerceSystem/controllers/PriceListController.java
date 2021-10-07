@@ -10,6 +10,7 @@ import com.e_commerceSystem.services.ComponentServiceFactory;
 import com.e_commerceSystem.services.interfaces.PriceListService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,7 +58,7 @@ public class PriceListController {
         priceListService.updatePriceListAccessory(allParams.get("tableJsonAccessory"));
 
         JsonResponse response = new JsonResponse();
-        response.setStatus("SUCCESS");
+        response.setStatus(HttpStatus.OK);
         response.setResult("");
 
         return response;

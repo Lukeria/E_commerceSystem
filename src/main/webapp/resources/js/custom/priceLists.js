@@ -88,7 +88,7 @@ function doAjaxPost() {
             "&tableJsonAccessory=" + tableJsonAccessory,
         success: function (response) {
             // we have the response
-            if (response.status == "SUCCESS") {
+            if (response.status === "OK") {
                 $('#successMessage').text('Prices set successfully');
             }
         },

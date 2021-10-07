@@ -32,7 +32,7 @@ function saveCatalogItem() {
         data: dataForm,
         success: function (response) {
 
-            if (response.status=='SUCCESS') {
+            if (response.status=='OK') {
 
                 showNotification("Catalog item has been added successfully", "success");
                 $("#file_upload").val('');

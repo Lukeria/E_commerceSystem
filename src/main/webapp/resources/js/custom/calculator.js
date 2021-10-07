@@ -10,9 +10,6 @@ $(document).ready(function () {
 
 
     $().ready(function () {
-        // $("#glassType").change(function () {
-        //     prepareThickness($(this));
-        // })
 
         $("#addRaw").click(function () {
             addGlassRow();
@@ -22,23 +19,30 @@ $(document).ready(function () {
             doAjaxCalculatePost();
         });
 
-        $('#calculatorForm').submit(function (event) {
-            // event.preventDefault();
-            // let form = $(this);
-            // $("#glassListJson").val(JSON.stringify(glassTable()));
-            // $('#calculatorForm').off("submit");
-            // form.submit();
-            let tableGlass = JSON.stringify(glassTable());
-            $('<input />').attr('type', 'hidden')
-                .attr('name', 'tableGlass')
-                .attr('value', tableGlass)
-                .appendTo('#calculatorForm');
-
-        })
-
-        // $('#formOrder').click(function () {
-        //     showNotification(messages.authorizeOrCall, 'warning');
+        // $('#calculatorForm').submit(function (event) {
+        //     // event.preventDefault();
+        //     // let form = $(this);
+        //     // $("#glassListJson").val(JSON.stringify(glassTable()));
+        //     // $('#calculatorForm').off("submit");
+        //     // form.submit();
+        //     let tableGlass = JSON.stringify(glassTable());
+        //     $('<input />').attr('type', 'hidden')
+        //         .attr('name', 'tableGlass')
+        //         .attr('value', tableGlass)
+        //         .appendTo('#calculatorForm');
+        //
         // })
+
+        $('#addOrder').click(function () {
+            doAjaxSaveOrderPost();
+        });
+
+        $('#addTemplate').click(function () {
+            doAjaxSaveTemplatePost();
+        });
+        $('#addToCart').click(function () {
+            doAjaxAddToCartPost();
+        });
     });
 
 });
@@ -136,7 +140,7 @@ function prepareData() {
         url: "/component/getData",
         success: function (response) {
             // we have the response
-            if (response.status === "SUCCESS") {
+            if (response.status === "OK") {
                 let result = JSON.parse(response.result);
                 glassTypeList = result.glassTypeList;
                 processingList = result.processingList;
@@ -428,7 +432,28 @@ function manageProcessingInputsVisibility(currentRow) {
 
 ///////////
 
-////Save data////
+////// Create model
+function createOrder(){
+
+    let object = {};
+    object['id']= $("#id").val();
+    object['productType']=$("#productType>option:selected").val();
+    object['cost'] = Number.parseFloat($("#cost").val()) || 0;
+    object['glassList']=glassTable();
+
+    return object;
+}
+
+function createTemplate(){
+
+    let object = {};
+    object['id']= $("#id").val();
+    object['productType']=$("#productType>option:selected").val();
+    object['glassList']=glassTable();
+
+    return object;
+}
+
 function glassTable() {
 
     let myRows = [];
@@ -444,6 +469,7 @@ function glassTable() {
         obj["type"] = type;
         obj["width"] = Number.parseInt($(this).find("#width").val()) || 0;
         obj["height"] = Number.parseInt($(this).find("#height").val()) || 0;
+        obj["amount"] = Number.parseInt($(this).find("#amount").val()) || 1;
 
         let tableProcessing = $(this).find("#processing>tr");
         let processingList = [];
@@ -458,7 +484,9 @@ function glassTable() {
             }
         )
 
-        obj["processingArrayList"] = processingList;
+        // obj["processingArrayList"] = processingList;
+        obj["processingList"] = processingList;
+
 
         myRows.push(obj)
     });
@@ -467,6 +495,7 @@ function glassTable() {
 
 }
 
+////Save data////
 function doAjaxCalculatePost() {
     // get the form values
     let Json = JSON.stringify(glassTable());
@@ -477,9 +506,9 @@ function doAjaxCalculatePost() {
         data: Json,
         success: function (response) {
             // we have the response
-            if (response.status == "SUCCESS") {
-                $('#result').val(response.result);
-                $('#resultText').text(response.result);
+            if (response.status === "OK") {
+                $('#cost').val(response.result);
+                $('#costCart').text(response.result);
             } else {
                 showNotification(messages['loadingData'], 'danger');
             }
@@ -491,25 +520,25 @@ function doAjaxCalculatePost() {
 }
 
 function doAjaxSaveOrderPost() {
-    // get the form values
-    let order = {};
-    order["id"] = $('#id').text();
-    order["productType"] = $('#productType').val();
-    order["cost"] = Number.parseFloat($('#result').val()) || 0;
-    order["glassList"] = glassTable();
 
-    let Json = JSON.stringify(order);
-
-    // $.post("/order/save", Json);
-
+    let Json = JSON.stringify(createOrder());
     $.ajax({
         type: "POST",
-        url: "/order/save",
+        url: "/order/saveAjax",
         contentType: "application/json",
-        async: false,
         data: Json,
         success: function (response) {
-            location.href = "/customer/add";
+            if (response.status === "OK") {
+                if(response.redirect){
+                    window.location.replace(response.redirectUrl);
+                }
+            } else {
+                response.result.forEach(function (item) {
+                    $('#error_'+item.field).text(messages[item.code]);
+                    $('#'+item.field).addClass('form-control-danger');
+                    $('#group_'+item.field).addClass('has-danger');
+                });
+            }
         },
         error: function (e) {
             showNotification(messages['loadingData'], 'danger');
@@ -517,42 +546,55 @@ function doAjaxSaveOrderPost() {
     });
 }
 
+function doAjaxSaveTemplatePost() {
 
-function doAjaxAddToCartPost() {
-    // get the form values
-    let Json = JSON.stringify(glassTable());
-    let price = Number.parseFloat($("#resultText").text()) || 0;
-
+    let Json = JSON.stringify(createTemplate());
     $.ajax({
         type: "POST",
-        url: "/cart/add",
-        data: "tableJSON=" + Json + "&price=" + price,
-        success:
-            function (response) {
-                // we have the response
-                if (response.indexOf("loginForm") != -1) {
-                    window.location = "/login";
-
+        url: "/catalog/settings/saveAjax",
+        contentType: "application/json",
+        data: Json,
+        success: function (response) {
+            if (response.status === "OK") {
+                if(response.redirect){
+                    window.location.replace(response.redirectUrl);
                 }
-            },
+            } else {
+                response.result.forEach(function (item) {
+                    $('#error_'+item.field).text(messages[item.code]);
+                    $('#'+item.field).addClass('form-control-danger');
+                    $('#group_'+item.field).addClass('has-danger');
+                });
+            }
+        },
         error: function (e) {
-            alert('Error: ' + e);
+            showNotification(messages['loadingData'], 'danger');
         }
     });
 }
 
-/////Вынести в отдельный файл!!!
-// function showNotification(text, color) {
-//     $.notify({
-//         icon: "tim-icons icon-bell-55",
-//         message: text
-//
-//     }, {
-//         type: color,
-//         timer: 8000,
-//         placement: {
-//             from: 'bottom',
-//             align: 'center'
-//         }
-//     });
-// }
+function doAjaxAddToCartPost() {
+
+    let Json = JSON.stringify(createOrder());
+    $.ajax({
+        type: "POST",
+        url: "/cart/addAjax",
+        contentType: "application/json",
+        data: Json,
+        success: function (response) {
+            if (response.status === "OK") {
+               showNotification(messages[response.result], "success");
+            } else {
+                response.result.forEach(function (item) {
+                    $('#error_'+item.field).text(messages[item.code]);
+                    $('#'+item.field).addClass('form-control-danger');
+                    $('#group_'+item.field).addClass('has-danger');
+                });
+            }
+        },
+        error: function (e) {
+            showNotification(messages['loadingData'], 'danger');
+        }
+    });
+}
+

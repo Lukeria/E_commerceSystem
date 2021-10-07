@@ -83,7 +83,7 @@ function submitOrder() {
         contentType: "application/json",
         success: function (response) {
             // we have the response
-            if (response.status === "SUCCESS") {
+            if (response.status === "OK") {
                 $('#order>tr').each(function () {
                     if (!$(this).find('.form-check-label>input[id*="selected_"]').is(":checked")) {
                         return true;

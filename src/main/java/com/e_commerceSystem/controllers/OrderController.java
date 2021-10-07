@@ -1,12 +1,12 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.OrderStatus;
-import com.e_commerceSystem.entities.glass.Glass;
-import com.e_commerceSystem.services.JsonEditor;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.services.interfaces.OrderService;
 import com.e_commerceSystem.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/order")
@@ -24,9 +23,6 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private JsonEditor jsonEditor;
 
     @Autowired
     private OrderValidator orderValidator;
@@ -125,38 +121,65 @@ public class OrderController {
         return modelAndView;
     }
 
-    @PostMapping("/save")
-    public ModelAndView saveOrder(@ModelAttribute("order") @Validated Order order,
+//    @PostMapping("/save")
+//    public ModelAndView saveOrder(@ModelAttribute("order") @Validated Order order,
+//                                  BindingResult result,
+//                                  @RequestParam("tableGlass") String tableGlass,
+//                                  HttpServletRequest request, RedirectAttributes redirectAttributes) {
+//
+//        ModelAndView modelAndView = new ModelAndView();
+//
+//        Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
+//        order.setGlassList(glassList);
+//
+//        if (result.hasErrors()) {
+//            modelAndView.addObject("order", order);
+//            modelAndView.setViewName("general/calculator");
+//            return modelAndView;
+//        }
+//
+//        order.setStatus(OrderStatus.ACTIVE);
+//
+//        if (order.isNew()) {
+//            orderService.addOrder(order);
+//            modelAndView.setViewName("redirect:/customer/add");
+//            redirectAttributes.addFlashAttribute("orderId", order.getId());
+////            redirectAttributes.addFlashAttribute("orderId", order.getId());
+////            redirectAttributes.addFlashAttribute("customer", new Customer());
+//        } else {
+//            orderService.updateOrder(order);
+//            modelAndView.setViewName("redirect:/order/" + order.getId());
+//        }
+//
+//        return modelAndView;
+//    }
+
+    @PostMapping("/saveAjax")
+    @ResponseBody
+    public JsonResponse saveOrder(@RequestBody @Validated Order order,
                                   BindingResult result,
-                                  @RequestParam("tableGlass") String tableGlass,
-                                  HttpServletRequest request, RedirectAttributes redirectAttributes) {
+                                  RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView();
-
-        Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
-        order.setGlassList(glassList);
+        JsonResponse response = new JsonResponse();
 
         if (result.hasErrors()) {
-            modelAndView.addObject("order", order);
-            modelAndView.setViewName("general/calculator");
-            return modelAndView;
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            response.setResult(result.getAllErrors());
+            return response;
         }
 
-        order.setStatus(OrderStatus.ACTIVE);
+        response.setStatus(HttpStatus.OK);
+        response.setRedirect(true);
 
         if (order.isNew()) {
             orderService.addOrder(order);
-            modelAndView.setViewName("redirect:/customer/add");
-            redirectAttributes.addFlashAttribute("orderId", order.getId());
-//            redirectAttributes.addFlashAttribute("orderId", order.getId());
-//            redirectAttributes.addFlashAttribute("customer", new Customer());
+            response.setRedirectUrl("/customer/add?orderId="+order.getId());
         } else {
             orderService.updateOrder(order);
-            modelAndView.setViewName("redirect:/order/" + order.getId());
+            response.setRedirectUrl("/order/" + order.getId());
         }
 
-        return modelAndView;
+        return response;
     }
-
 
 }

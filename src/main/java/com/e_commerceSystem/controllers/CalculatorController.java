@@ -11,6 +11,7 @@ import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.e_commerceSystem.services.interfaces.OrderService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,9 +46,9 @@ public class CalculatorController {
 
         if (isTemplate) {
             catalogService.prepareForView(catalog, productType);
-            modelAndView.addObject("order", catalog);
+            modelAndView.addObject("model", catalog);
         } else {
-            modelAndView.addObject("order", order);
+            modelAndView.addObject("model", order);
         }
         modelAndView.addObject("isForTemplate", isTemplate);
         modelAndView.addObject("message", message);
@@ -65,7 +66,7 @@ public class CalculatorController {
         float resultPrice = calculatingService.calculatePrice(glassList);
 
         JsonResponse response = new JsonResponse();
-        response.setStatus("SUCCESS");
+        response.setStatus(HttpStatus.OK);
         response.setResult(resultPrice);
 
         return response;

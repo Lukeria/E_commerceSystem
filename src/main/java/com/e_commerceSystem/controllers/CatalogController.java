@@ -3,31 +3,22 @@ package com.e_commerceSystem.controllers;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
-import com.e_commerceSystem.entities.Order;
-import com.e_commerceSystem.entities.glass.Glass;
-import com.e_commerceSystem.services.JsonEditor;
 import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.e_commerceSystem.validation.CatalogValidator;
 import com.sun.javafx.iio.ImageStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/catalog")
@@ -35,9 +26,6 @@ public class CatalogController {
 
     @Autowired
     private CatalogService catalogService;
-
-    @Autowired
-    private JsonEditor jsonEditor;
 
     @Autowired
     private CatalogValidator catalogValidator;
@@ -117,29 +105,51 @@ public class CatalogController {
         return modelAndView;
     }
 
-    @PostMapping("/settings/save")
-//   jquery
-    public ModelAndView catalogSaveItem(@ModelAttribute("order") @Validated Catalog catalog,
-                                        BindingResult result,
-                                        @RequestParam("tableGlass") String tableGlass) {
+//    @PostMapping("/settings/save")
+////   jquery
+//    public ModelAndView catalogSaveItem(@ModelAttribute("order") @Validated Catalog catalog,
+//                                        BindingResult result,
+//                                        @RequestParam("tableGlass") String tableGlass) {
+//
+//        ModelAndView modelAndView = new ModelAndView();
+//
+//        Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
+//        catalog.setGlassList(glassList);
+//
+//        if (result.hasErrors()) {
+//            modelAndView.addObject("order", catalog);
+//            modelAndView.addObject("isForTemplate", true);
+//            modelAndView.setViewName("general/calculator");
+//            return modelAndView;
+//        }
+//
+//        modelAndView.setViewName("redirect:/catalog/settings/" + catalog.getId());
+//        catalogService.updateItem(catalog);
+//
+//        return modelAndView;
+//    }
 
-        ModelAndView modelAndView = new ModelAndView();
+    @PostMapping("/settings/saveAjax")
+    @ResponseBody
+    public JsonResponse catalogSaveItemAjax(@RequestBody @Validated Catalog catalog,
+                                            BindingResult result) {
 
-        Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
-        catalog.setGlassList(glassList);
+        JsonResponse response = new JsonResponse();
 
         if (result.hasErrors()) {
-            modelAndView.addObject("order", catalog);
-            modelAndView.addObject("isForTemplate", true);
-            modelAndView.setViewName("general/calculator");
-            return modelAndView;
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            response.setResult(result.getAllErrors());
+            return response;
         }
 
-        modelAndView.setViewName("redirect:/catalog/settings/" + catalog.getId());
         catalogService.updateItem(catalog);
+        response.setStatus(HttpStatus.OK);
+        response.setRedirect(true);
+        response.setRedirectUrl("/catalog/settings/" + catalog.getId());
 
-        return modelAndView;
+        return response;
     }
+
 
     @PostMapping("/settings/upload")
     @ResponseBody
@@ -150,7 +160,7 @@ public class CatalogController {
 
         Catalog catalog = catalogService.createItem(file, productType);
         jsonResponse.setResult(catalog.getId());
-        jsonResponse.setStatus("SUCCESS");
+        jsonResponse.setStatus(HttpStatus.OK);
 
         return jsonResponse;
     }

@@ -82,7 +82,7 @@
                             <c:choose>
                                 <c:when test="${isForTemplate}">
                                     <h4 class="card-title"><spring:message code="message.calculator.template"/>
-                                        #${order.id}</h4>
+                                        #${model.id}</h4>
                                 </c:when>
                                 <c:otherwise>
                                     <h4 class="card-title"><spring:message
@@ -91,68 +91,63 @@
                             </c:choose>
                         </div>
                         <div class="card-body">
-                            <c:choose>
-                                <c:when test="${isForTemplate}">
-                                    <spring:url value="/catalog/settings/save" var="formUrl"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <security:authorize access="hasRole('ADMIN')">
-                                        <spring:url value="/order/save" var="formUrl"/>
-                                    </security:authorize>
-                                    <security:authorize access="hasRole('USER')">
-                                        <spring:url value="/cart/add" var="formUrl"/>
-                                    </security:authorize>
-                                </c:otherwise>
-                            </c:choose>
-                            <form:form id="calculatorForm" method="post" action="${formUrl}" modelAttribute="order">
+                            <%--                            <c:choose>--%>
+                            <%--                                <c:when test="${isForTemplate}">--%>
+                            <%--                                    <spring:url value="/catalog/settings/save" var="formUrl"/>--%>
+                            <%--                                </c:when>--%>
+                            <%--                                <c:otherwise>--%>
+                            <%--                                    <security:authorize access="hasRole('ADMIN')">--%>
+                            <%--                                        <spring:url value="/order/save" var="formUrl"/>--%>
+                            <%--                                    </security:authorize>--%>
+                            <%--                                    <security:authorize access="hasRole('USER')">--%>
+                            <%--                                        <spring:url value="/cart/add" var="formUrl"/>--%>
+                            <%--                                    </security:authorize>--%>
+                            <%--                                </c:otherwise>--%>
+                            <%--                            </c:choose>--%>
+                            <form id="calculatorForm" method="post" action="${formUrl}" modelAttribute="model">
 
                                 <security:authorize access="hasRole('ADMIN')">
-                                    <c:choose>
-                                        <c:when test="${isForTemplate}">
-                                            <form:input path="id" type="hidden"/>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:if test="${order.id != null}">
-                                                <div class="form-row">
-                                                    <div class="form-group col-lg-6">
-                                                        <p class="text-primary"><spring:message
-                                                                code="message.orders.heading.single"/> #<span
-                                                                id="id">${order.id}</span>
-                                                        </p>
-                                                        <form:input path="id" type="hidden"/>
-                                                    </div>
+                                    <c:if test="${!isForTemplate || isForTemplate==null}">
+                                        <c:if test="${model.id != null}">
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-6">
+                                                    <p class="text-primary"><spring:message
+                                                            code="message.orders.heading.single"/> #${model.id}
+                                                    </p>
                                                 </div>
+                                            </div>
 
-                                                <div class="form-row">
-                                                    <div class="form-group col-lg-6">
-                                                        <p class="text-success"><spring:message
-                                                                code="message.calculator.customer"/>: ${order.customer.name}</p>
-                                                    </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-lg-6">
+                                                    <p class="text-success"><spring:message
+                                                            code="message.calculator.customer"/>: ${model.customer.name}</p>
                                                 </div>
-                                            </c:if>
-                                        </c:otherwise>
-                                    </c:choose>
+                                            </div>
+                                        </c:if>
+                                    </c:if>
+                                    <input id="id" type="hidden" value="${model.id}"/>
                                 </security:authorize>
 
-                                <spring:bind path="productType">
-                                    <div class="form-row">
-                                        <div class="form-group col-lg-6 col-md-12">
-                                            <label for="productType"><spring:message
-                                                    code="message.form.productType.label"/></label>
-                                            <div class="form-group ${status.error ? 'has-danger' : ''}">
-                                                <form:select path="productType" id="productType"
-                                                             class="form-control ${status.error ? 'form-control-danger' : ''}">
-                                                    <c:forEach items="${productTypes}" var="type">
-                                                        <spring:message code="message.enum.productType.${type.name}"
-                                                                        var="typeLabel"/>
-                                                        <form:option value="${type.name}" label="${typeLabel}"/>
-                                                    </c:forEach>
-                                                </form:select>
-                                            </div>
-                                            <form:errors path="productType" class="form-text text-danger"/>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-6 col-md-12">
+                                        <label for="productType"><spring:message
+                                                code="message.form.productType.label"/></label>
+                                        <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                            <select id="productType"
+                                                    class="form-control ${status.error ? 'form-control-danger' : ''}">
+                                                <c:forEach items="${productTypes}" var="type">
+                                                    <c:set var="selected" value=""/>
+                                                    <c:if test="${type==model.productType}">
+                                                        <c:set var="selected" value="selected"/>
+                                                    </c:if>
+                                                    <spring:message code="message.enum.productType.${type.name}"
+                                                                    var="typeLabel"/>
+                                                    <option value="${type}" ${selected}>${typeLabel}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
-                                </spring:bind>
+                                </div>
 
                                 <div class="form-row">
                                     <div class="form-group col">
@@ -170,7 +165,7 @@
                                                 <th><spring:message code="message.glass.column.processing"/></th>
                                                 </thead>
                                                 <tbody id="glass">
-                                                <c:forEach var="glass" items="${order.glassList}" varStatus="status">
+                                                <c:forEach var="glass" items="${model.glassList}" varStatus="status">
                                                     <tr id="row_${status.count}">
                                                         <td class="td-action">
                                                             <button type="button" id="delete" type="button"
@@ -289,30 +284,27 @@
                                 <c:if test="${!isForTemplate || isForTemplate==null}">
                                     <div class="form-row">
                                         <div class="form-group col-lg-4 col-md-6">
-                                            <label for="result"><spring:message
+                                            <label for="cost"><spring:message
                                                     code="message.orders.column.cost"/></label>
                                             <security:authorize access="hasRole('ADMIN')">
-                                                <spring:bind path="cost">
-                                                    <div class="form-group ${status.error ? 'has-danger' : ''}">
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <div class="input-group-text">
-                                                                    <i class="tim-icons icon-coins text-primary"></i>
-                                                                </div>
+                                                <div class="form-group " id="group_cost">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="tim-icons icon-coins text-primary"></i>
                                                             </div>
-                                                            <form:input path="cost" type="number"
-                                                                        class="form-control ${status.error ? 'form-control-danger' : ''}"
-                                                                        id="result"
-                                                                        name="cost"/>
                                                         </div>
-                                                        <form:errors path="cost" class="form-text text-danger"/>
+                                                        <input id="cost" type="number"
+                                                               class="form-control"
+                                                               name="cost" value="${model.cost}"/>
                                                     </div>
-                                                </spring:bind>
+                                                    <div class="form-text text-danger" id="error_cost"></div>
+                                                </div>
                                             </security:authorize>
                                             <security:authorize access="!hasRole('ADMIN')">
                                                 <h3>
                                                     <i class="tim-icons icon-coins text-primary"></i>
-                                                    <span id="resultText">${order.cost}</span>
+                                                    <span id="costCart">${model.cost}</span>
                                                 </h3>
                                             </security:authorize>
                                         </div>
@@ -329,25 +321,36 @@
                                         </c:if>
                                         <security:authorize access="!isAuthenticated()">
                                             <button type="button" class="btn btn-success animation-on-hover"
-                                                    id="formOrder"  data-toggle="modal"
+                                                    id="formOrder" data-toggle="modal"
                                                     data-target="#exampleModal"><spring:message
                                                     code="message.orders.button.formOrder"/>
                                             </button>
                                         </security:authorize>
                                         <security:authorize access="hasRole('USER')">
-                                            <button type="submit" class="btn btn-success animation-on-hover"
+                                            <button type="button" class="btn btn-success animation-on-hover"
                                                     id="addToCart"><spring:message
                                                     code="message.form.button.addToCart"/>
                                             </button>
                                         </security:authorize>
                                         <security:authorize access="hasRole('ADMIN')">
-                                            <button type="submit" class="btn btn-success animation-on-hover"
-                                                    id="addOrder"><spring:message code="message.form.button.save"/>
-                                            </button>
+                                            <c:choose>
+                                                <c:when test="${isForTemplate}">
+                                                    <button type="button" class="btn btn-success animation-on-hover"
+                                                            id="addTemplate"><spring:message
+                                                            code="message.form.button.save"/>
+                                                    </button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button type="button" class="btn btn-success animation-on-hover"
+                                                            id="addOrder"><spring:message
+                                                            code="message.form.button.save"/>
+                                                    </button>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </security:authorize>
                                     </div>
                                 </div>
-                            </form:form>
+                            </form>
                         </div>
                     </div>
                     <div class="form-row align-items-center">
@@ -382,13 +385,15 @@
 <%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
 <script type="text/javascript">
 
-    messages={};
-    messages['placeholderAmount']="<spring:message code="message.form.amount.placeholder"/>";
-    messages['processing_processing']="<spring:message code="message.enum.processingType.processing"/>";
-    messages['processing_facet']="<spring:message code="message.enum.processingType.facet"/>";
-    messages['processing_hole']="<spring:message code="message.enum.processingType.hole"/>";
-    messages["loadingData"]="<spring:message code="message.notification.loadingData.failure"/>";
-    messages["firstRow"]="<spring:message code="message.notification.firstRow"/>";
+    messages = {};
+    messages['placeholderAmount'] = "<spring:message code="message.form.amount.placeholder" javaScriptEscape="true"/>";
+    messages['processing_processing'] = "<spring:message code="message.enum.processingType.processing" javaScriptEscape="true"/>";
+    messages['processing_facet'] = "<spring:message code="message.enum.processingType.facet" javaScriptEscape="true"/>";
+    messages['processing_hole'] = "<spring:message code="message.enum.processingType.hole" javaScriptEscape="true"/>";
+    messages["loadingData"] = "<spring:message code="message.notification.loadingData.failure" javaScriptEscape="true"/>";
+    messages["firstRow"] = "<spring:message code="message.notification.firstRow" javaScriptEscape="true"/>";
+    messages["message.notEmpty.calculator.cost"] = "<spring:message code="message.notEmpty.calculator.cost" javaScriptEscape="true"/>";
+    messages["successCreation"] = "<spring:message code="message.order.successCreation" javaScriptEscape="true"/>";
 
 </script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
@@ -406,11 +411,6 @@
         </c:choose>
         </security:authorize>
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
-
-        <c:if test="${not empty message}">
-        let message = "<spring:message code="message.order.${message}" javaScriptEscape="true"/>";
-        showNotification(message, 'success');
-        </c:if>
     });
 </script>
 </body>

@@ -16,7 +16,7 @@ public interface OrderService {
     void addOrder(Order order);
     Order createOrder(Catalog catalog);
     void updateOrder(Order order);
-    void updateOrderCustomer(Order order);
+    void updateOrderCustomer(Long id,Customer customer);
     void updateOrderStatus(Long id, OrderStatus status);
     void deleteOrder(Long id);
     Order getOrderById(Long id);

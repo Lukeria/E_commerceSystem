@@ -87,7 +87,7 @@
                                                     <tbody>
                                                     <tr>
                                                         <td style="color:#00f2c3 !important">
-                                                                ${order.productType}
+                                                                <spring:message code="message.enum.productType.${order.productType.name}"/>
                                                         </td>
                                                     </tr>
                                                     <c:forEach var="glass" items="${order.glassList}">
