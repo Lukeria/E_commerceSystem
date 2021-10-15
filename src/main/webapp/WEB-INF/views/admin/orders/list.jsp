@@ -124,9 +124,9 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="order" items="${orders}" varStatus="status">
+                                    <c:forEach var="order" items="${orders.pageList}" varStatus="status">
                                         <tr>
-                                            <td class="text-center">${status.count}</td>
+                                            <td class="text-center">${(orders.firstElementOnPage+status.count)}</td>
                                             <td>${order.customer.name}</td>
                                             <td><spring:message
                                                     code="message.enum.productType.${order.productType.name}"/></td>
@@ -175,6 +175,16 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                        <div class="card-footer">
+                            <ul class="pagination">
+                                <c:forEach begin="1" end="${orders.pageCount}" step="1" varStatus="tagStatus">
+                                    <li class="page-item ${tagStatus.current==(orders.page+1) ? 'active' : ''}">
+                                        <a class="page-link"
+                                           href="${pageContext.request.contextPath}/order/all?filter=${param.filter}&page=${tagStatus.current}">${tagStatus.current}</a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
                         </div>
                     </div>
                 </div>

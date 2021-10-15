@@ -6,6 +6,7 @@ import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.services.interfaces.OrderService;
 import com.e_commerceSystem.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -42,11 +43,16 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    public ModelAndView orders(@RequestParam(defaultValue = "all")String filter) {
+    public ModelAndView orders(@RequestParam(defaultValue = "all") String filter,
+                               @RequestParam(defaultValue = "1") Integer page) {
 
         ModelAndView modelAndView = new ModelAndView("/admin/orders/list");
 
-        modelAndView.addObject("orders", orderService.getOrders(filter));
+        PagedListHolder<Order> pagedListHolder = new PagedListHolder<>(orderService.getOrders(filter));
+        pagedListHolder.setPage(page - 1);
+        pagedListHolder.setPageSize(15);
+
+        modelAndView.addObject("orders", pagedListHolder);
         modelAndView.addObject("orderStatusCount", orderService.getOrderStatusCount());
         modelAndView.addObject("expiredOrderCount", orderService.getExpiredOrderCount());
 
@@ -173,7 +179,7 @@ public class OrderController {
 
         if (order.isNew()) {
             orderService.addOrder(order);
-            response.setRedirectUrl("/customer/add?orderId="+order.getId());
+            response.setRedirectUrl("/customer/add?orderId=" + order.getId());
         } else {
             orderService.updateOrder(order);
             response.setRedirectUrl("/order/" + order.getId());

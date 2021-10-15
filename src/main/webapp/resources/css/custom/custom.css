@@ -242,3 +242,8 @@ a, .btn {
 .table>tbody>tr>.text-danger{
     color: #fd5d93 !important;
 }
+
+.page-link{
+    border: 0.0625rem solid #393e4b;
+    color: #ba54f5;
+}
