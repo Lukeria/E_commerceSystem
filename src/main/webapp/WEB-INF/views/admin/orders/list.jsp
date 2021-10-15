@@ -44,41 +44,56 @@
                                 <div class="col-lg-12">
                                     <label style="margin-right: 1rem"><spring:message
                                             code="message.orders.filter.label"/></label>
-                                    <button type="button" class="btn btn-success btn-link">
-                                    <span>
-                                    <i class="tim-icons icon-bullet-list-67"></i> <spring:message
-                                            code="message.orders.filter.all"/> <span
-                                            class="badge badge-default">10</span>
-                                    </span>
-                                    </button>
-                                    <button type="button" class="btn btn-info btn-link">
-                                    <span>
-                                    <i class="tim-icons icon-chart-pie-36"></i> <spring:message
-                                            code="message.orders.filter.active"/> <span
-                                            class="badge badge-default">7</span>
-                                    </span>
-                                    </button>
-                                    <button type="button" class="btn btn-warning btn-link">
-                                    <span>
-                                    <i class="tim-icons icon-money-coins"></i> <spring:message
-                                            code="message.orders.filter.paid"/> <span
-                                            class="badge badge-default">1</span>
-                                    </span>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-link">
-                                    <span>
-                                    <i class="tim-icons icon-alert-circle-exc"></i> <spring:message
-                                            code="message.orders.filter.expired"/> <span
-                                            class="badge badge-default">1</span>
-                                    </span>
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn-link">
-                                    <span>
-                                    <i class="tim-icons icon-button-power"></i> <spring:message
-                                            code="message.orders.filter.closed"/> <span
-                                            class="badge badge-default">1</span>
-                                    </span>
-                                    </button>
+                                    <a type="button" class="btn btn-success btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=all">
+                                            <span>
+                                                <i class="tim-icons icon-bullet-list-67"></i> <spring:message
+                                                    code="message.orders.filter.all"/>
+                                                <c:if test="${orderStatusCount.all != 0}">
+                                                    <span class="badge badge-default">${orderStatusCount.all}</span>
+                                                </c:if>
+                                            </span>
+                                    </a>
+                                    <a type="button" class="btn btn-info btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=active">
+                                            <span>
+                                                <i class="tim-icons icon-chart-pie-36"></i> <spring:message
+                                                    code="message.orders.filter.active"/>
+                                                <c:if test="${orderStatusCount.active != 0}">
+                                                    <span class="badge badge-default">${orderStatusCount.active}</span>
+                                                </c:if>
+                                            </span>
+                                    </a>
+                                    <a type="button" class="btn btn-warning btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=paid">
+                                            <span>
+                                                <i class="tim-icons icon-money-coins"></i> <spring:message
+                                                    code="message.orders.filter.paid"/>
+                                                <c:if test="${orderStatusCount.paid != 0}">
+                                                    <span class="badge badge-default">${orderStatusCount.paid}</span>
+                                                </c:if>
+                                             </span>
+                                    </a>
+                                    <a type="button" class="btn btn-danger btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=expired">
+                                            <span>
+                                                <i class="tim-icons icon-alert-circle-exc"></i> <spring:message
+                                                    code="message.orders.filter.expired"/>
+                                                <c:if test="${expiredOrderCount != 0}">
+                                                    <span class="badge badge-default">${expiredOrderCount}</span>
+                                                </c:if>
+                                            </span>
+                                    </a>
+                                    <a type="button" class="btn btn-primary btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=closed">
+                                            <span>
+                                                <i class="tim-icons icon-button-power"></i> <spring:message
+                                                    code="message.orders.filter.closed"/>
+                                                <c:if test="${orderStatusCount.closed != 0}">
+                                                    <span class="badge badge-default">${orderStatusCount.closed}</span>
+                                                </c:if>
+                                            </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +128,8 @@
                                         <tr>
                                             <td class="text-center">${status.count}</td>
                                             <td>${order.customer.name}</td>
-                                            <td><spring:message code="message.enum.productType.${order.productType.name}"/></td>
+                                            <td><spring:message
+                                                    code="message.enum.productType.${order.productType.name}"/></td>
                                             <c:choose>
                                                 <c:when test="${order.status.name.equals('active')}">
                                                     <c:set var="color" value="badge-info"/>
@@ -129,7 +145,7 @@
                                                     code="message.enum.orderStatus.${order.status.name}"/></span>
                                             </td>
                                             <td>${order.creationDateFormat}</td>
-                                            <td>${order.deadlineFormat}</td>
+                                            <td class="${order.expired ? 'text-danger' : ''}">${order.deadlineFormat}</td>
                                             <td class="text-right">${order.cost}</td>
                                             <td class="td-actions text-right">
                                                 <spring:url value="/order/${order.id}" var="orderUrl"/>

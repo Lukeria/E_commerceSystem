@@ -3,23 +3,24 @@ package com.e_commerceSystem.repositories;
 import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
-import com.e_commerceSystem.entities.components.Accessory;
-import com.e_commerceSystem.entities.components.Component;
-import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.repositories.interfaces.OrderDao;
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Repository
 public class OrderDaoImp implements OrderDao {
 
+    private final SessionFactory sessionFactory;
+
     @Autowired
-    private SessionFactory sessionFactory;
+    public OrderDaoImp(SessionFactory sessionFactory) {
+
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public List<Order> getOrdersByStatus(OrderStatus status) {
@@ -42,6 +43,17 @@ public class OrderDaoImp implements OrderDao {
     }
 
     @Override
+    public List<Order> getExpiredOrders() {
+
+        List<Order> orderList = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_expired_orders", Order.class)
+                .setParameter("current", LocalDateTime.now())
+                .setParameter("order_status", Arrays.asList(OrderStatus.CART, OrderStatus.CLOSED))
+                .getResultList();
+        return orderList;
+    }
+
+    @Override
     public Optional<Order> getOrderById(Long id) {
 
         List<Order> orderList = sessionFactory.getCurrentSession()
@@ -51,6 +63,18 @@ public class OrderDaoImp implements OrderDao {
                 .getResultList();
         return orderList.stream().findFirst();
 
+    }
+
+    @Override
+    public Long getExpiredOrdersCount() {
+
+        Long count = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_expired_orders_count", Long.class)
+                .setParameter("current", LocalDateTime.now())
+                .setParameter("order_status", Arrays.asList(OrderStatus.CART, OrderStatus.CLOSED))
+                .getSingleResult();
+
+        return count;
     }
 
     @Override
@@ -78,6 +102,33 @@ public class OrderDaoImp implements OrderDao {
     @Override
     public void saveOrUpdateOrder(Order order) {
         sessionFactory.getCurrentSession().saveOrUpdate(order);
+    }
+
+    @Override
+    public Map<String, Long> getOrderStatusCount() {
+
+        Map<String, Long> map = new HashMap<>();
+
+        List list = sessionFactory.getCurrentSession()
+                .createNamedQuery("get_order_status_count")
+                .getResultList();
+
+        Long sum = 0L;
+
+        for (Object o : list) {
+
+            Object[] row = (Object[]) o;
+
+            if (row[0] != OrderStatus.CART) {
+                sum += (Long) row[1];
+            }
+
+            map.put(row[0].toString().toLowerCase(), (Long) row[1]);
+        }
+
+        map.put("all", sum);
+
+        return map;
     }
 
     @Override

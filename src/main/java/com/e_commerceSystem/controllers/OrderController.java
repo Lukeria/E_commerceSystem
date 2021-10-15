@@ -15,17 +15,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Controller
 @RequestMapping("/order")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
+    private final OrderValidator orderValidator;
 
     @Autowired
-    private OrderValidator orderValidator;
+    public OrderController(OrderService orderService, OrderValidator orderValidator) {
+
+        this.orderService = orderService;
+        this.orderValidator = orderValidator;
+    }
 
     @InitBinder(value = "order")
     protected void initBinder(WebDataBinder binder) {
@@ -40,11 +42,13 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    public ModelAndView orders() {
+    public ModelAndView orders(@RequestParam(defaultValue = "all")String filter) {
 
         ModelAndView modelAndView = new ModelAndView("/admin/orders/list");
 
-        modelAndView.addObject("orders", orderService.getOrders());
+        modelAndView.addObject("orders", orderService.getOrders(filter));
+        modelAndView.addObject("orderStatusCount", orderService.getOrderStatusCount());
+        modelAndView.addObject("expiredOrderCount", orderService.getExpiredOrderCount());
 
         return modelAndView;
     }
@@ -52,9 +56,7 @@ public class OrderController {
     @GetMapping("/add")
     public ModelAndView orderAdd() {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
-
-        return modelAndView;
+        return new ModelAndView("redirect:/calculator/");
     }
 
     @GetMapping(value = "/{id}")
@@ -99,8 +101,7 @@ public class OrderController {
 
     @GetMapping("/{id}/update")
     public ModelAndView updateOrder(@PathVariable("id") Long id,
-                                    final RedirectAttributes redirectAttributes,
-                                    HttpServletRequest request) {
+                                    final RedirectAttributes redirectAttributes) {
 
         ModelAndView modelAndView = new ModelAndView();
 
@@ -157,8 +158,7 @@ public class OrderController {
     @PostMapping("/saveAjax")
     @ResponseBody
     public JsonResponse saveOrder(@RequestBody @Validated Order order,
-                                  BindingResult result,
-                                  RedirectAttributes redirectAttributes) {
+                                  BindingResult result) {
 
         JsonResponse response = new JsonResponse();
 

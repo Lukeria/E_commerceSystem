@@ -13,20 +13,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImp implements OrderService {
 
+    private final OrderDao orderDao;
+    private final LocalDateTimeHandler dateTimeHandler;
+
     @Autowired
-    private OrderDao orderDao;
-    @Autowired
-    private LocalDateTimeHandler dateTimeHandler;
+    public OrderServiceImp(OrderDao orderDao, LocalDateTimeHandler dateTimeHandler) {
+
+        this.orderDao = orderDao;
+        this.dateTimeHandler = dateTimeHandler;
+    }
 
     @Override
     @Transactional
@@ -37,9 +41,27 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     @Transactional
-    public List<Order> getOrders() {
+    public List<Order> getOrders(String filter) {
 
-        return orderDao.getOrders();
+        switch (filter) {
+            case "active":
+                return getOrdersByStatus(OrderStatus.ACTIVE);
+            case "paid":
+                return getOrdersByStatus(OrderStatus.PAID);
+            case "expired":
+                return getExpiredOrders();
+            case "closed":
+                return getOrdersByStatus(OrderStatus.CLOSED);
+            default:
+                return orderDao.getOrders();
+        }
+
+    }
+
+    @Override
+    public List<Order> getExpiredOrders() {
+
+        return orderDao.getExpiredOrders();
     }
 
     @Override
@@ -53,10 +75,6 @@ public class OrderServiceImp implements OrderService {
         order.setDeadline(deadLine);
         order.setStatus(OrderStatus.ACTIVE);
 
-//        for (Glass glass : order.getGlassList()) {
-//            glass.setOrder(order);
-//        }
-
         orderDao.saveOrUpdateOrder(order);
     }
 
@@ -68,9 +86,6 @@ public class OrderServiceImp implements OrderService {
         orderToUpdate.setProductType(order.getProductType());
         orderToUpdate.setCost(order.getCost());
         orderToUpdate.setGlassList(order.getGlassList());
-//        for (Glass glass : orderToUpdate.getGlassList()) {
-//            glass.setOrder(orderToUpdate);
-//        }
 
         orderDao.saveOrUpdateOrder(orderToUpdate);
     }
@@ -97,7 +112,7 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     @Transactional
-    public void deleteOrder(Long id){
+    public void deleteOrder(Long id) {
 
         Order order = getOrderById(id);
         orderDao.deleteOrder(order);
@@ -110,6 +125,18 @@ public class OrderServiceImp implements OrderService {
 
         return orderDao.getOrderById(id)
                 .orElseThrow(() -> new OrderNotFoundException(id));
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Long> getOrderStatusCount() {
+        return orderDao.getOrderStatusCount();
+    }
+
+    @Override
+    @Transactional
+    public Long getExpiredOrderCount() {
+        return orderDao.getExpiredOrdersCount();
     }
 
     @Override
@@ -126,7 +153,7 @@ public class OrderServiceImp implements OrderService {
     @Override
     public void prepareForView(Order order, ProductType productType) {
 
-        List<Glass> glassList = new ArrayList<Glass>();
+        List<Glass> glassList = new ArrayList<>();
         glassList.add(new Glass());
 
         order.setGlassList(new HashSet<>(glassList));

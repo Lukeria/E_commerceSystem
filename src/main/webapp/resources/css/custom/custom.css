@@ -238,3 +238,7 @@ body .card label{
 a, .btn {
     cursor: pointer;
 }
+
+.table>tbody>tr>.text-danger{
+    color: #fd5d93 !important;
+}

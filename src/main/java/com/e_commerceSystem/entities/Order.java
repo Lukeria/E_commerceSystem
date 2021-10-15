@@ -14,8 +14,15 @@ import java.util.*;
         query = "from orders where order_status=:order_status order by creation_date desc")
 @NamedQuery(name = "get_orders",
         query = "from orders where order_status!=:order_status order by creation_date desc")
+@NamedQuery(name = "get_expired_orders",
+        query = "from orders as o where o.deadline<:current and o.status not in (:order_status) order by o.creationDate desc")
 @NamedQuery(name = "get_order_by_id",
         query = "from orders where order_status!=:order_status and id=:id")
+@NamedQuery(name = "get_order_status_count",
+        query = "select o.status, count(o) from orders as o group by o.status")
+@NamedQuery(name = "get_expired_orders_count",
+        query = "select count(o) from orders as o where o.deadline<:current and o.status not in (:order_status)")
+
 
 @NamedQuery(name = "get_cart_orders",
         query = "from orders where customer_id=:customer_id and order_status=:order_status order by creation_date desc")
@@ -101,7 +108,7 @@ public class Order {
 
     public String getCreationDateFormat() {
 
-        if(creationDate != null) {
+        if (creationDate != null) {
             return creationDate.format(dateFormat);
         }
         return "";
@@ -158,6 +165,11 @@ public class Order {
 
     public boolean isNew() {
         return id == null;
+    }
+
+    public boolean isExpired() {
+        return deadline != null && deadline.isBefore(LocalDateTime.now()) &&
+                status != OrderStatus.CLOSED && status != OrderStatus.CART;
     }
 
     @Override
