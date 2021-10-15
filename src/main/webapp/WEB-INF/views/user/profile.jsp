@@ -54,14 +54,23 @@
                         <div class="card-header">
                             <h4 class="title"><spring:message code="message.profile.heading"/></h4>
                         </div>
-                        <div class="card-body">
-                            <form>
+                        <form:form modelAttribute="customer" method="post" action="/profile/save">
+                            <div class="card-body">
                                 <div class="row">
                                     <div class="col">
+                                        <form:input path="id" type="hidden"/>
                                         <div class="form-group">
                                             <label><spring:message code="message.form.name.label"/></label>
-                                            <input type="text" class="form-control" placeholder="<spring:message
-                                                code="message.form.name.placeHolder"/>">
+                                            <spring:bind path="name">
+                                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                    <spring:message code="message.form.name.placeHolder"
+                                                                    var="namePlaceholder"/>
+                                                    <form:input path="name" type="text"
+                                                                class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                                placeholder="${namePlaceholder}"/>
+                                                    <form:errors path="name" class="form-text text-danger"/>
+                                                </div>
+                                            </spring:bind>
                                         </div>
                                     </div>
                                 </div>
@@ -69,16 +78,25 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label><spring:message code="message.form.username.label"/></label>
-                                            <input type="text" class="form-control"
-                                                   placeholder="<spring:message code="message.form.username.placeHolder"/>">
+                                            <input type="text" class="form-control" disabled
+                                                   placeholder="<spring:message code="message.form.username.placeHolder"/>"
+                                                   value="${username}">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1"><spring:message
                                                     code="message.form.email.label"/> </label>
-                                            <input type="email" id="exampleInputEmail1" class="form-control"
-                                                   placeholder="<spring:message code="message.form.email.placeHolder"/>">
+                                            <spring:bind path="email">
+                                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                    <spring:message code="message.form.email.placeHolder"
+                                                                    var="emailPlaceholder"/>
+                                                    <form:input path="email" type="email" id="exampleInputEmail1"
+                                                                class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                                placeholder="${emailPlaceholder}"/>
+                                                    <form:errors path="email" class="form-text text-danger"/>
+                                                </div>
+                                            </spring:bind>
                                         </div>
                                     </div>
                                 </div>
@@ -86,8 +104,16 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label><spring:message code="message.form.phone.label"/></label>
-                                            <input type="phone" class="form-control"
-                                                   placeholder="<spring:message code="message.form.phone.placeholder"/>">
+                                            <spring:bind path="phone">
+                                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                    <spring:message code="message.form.phone.placeholder"
+                                                                    var="phonePlaceholder"/>
+                                                    <form:input path="phone" type="text"
+                                                                class="form-control ${status.error ? 'form-control-danger' : ''}"
+                                                                placeholder="${phonePlaceholder}"/>
+                                                    <form:errors path="phone" class="form-text text-danger"/>
+                                                </div>
+                                            </spring:bind>
                                         </div>
                                     </div>
                                 </div>
@@ -95,17 +121,25 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label><spring:message code="message.form.address.label"/></label>
-                                            <input type="text" class="form-control"
-                                                   placeholder="<spring:message code="message.form.address.placeholder"/>">
+                                            <spring:bind path="address">
+                                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                    <spring:message code="message.form.address.placeholder"
+                                                                    var="addressPlaceholder"/>
+                                                    <form:input path="address" type="text" class="form-control"
+                                                                placeholder="${addressPlaceholder}"/>
+                                                    <form:errors path="address" class="form-text text-danger"/>
+                                                </div>
+                                            </spring:bind>
                                         </div>
                                     </div>
                                 </div>
-
-                            </form>
-                        </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-fill btn-success animation-on-hover"><spring:message code="message.form.button.save"/></button>
-                        </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-fill btn-success animation-on-hover">
+                                    <spring:message
+                                            code="message.form.button.save"/></button>
+                            </div>
+                        </form:form>
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -126,7 +160,7 @@
                                 <img class="avatar"
                                      src="${pageContext.request.contextPath}/resources/img/default-avatar.png"
                                      alt="Photo">
-                                <h5 class="title">Mike Andrew</h5>
+                                <h5 class="title">${customer.name}</h5>
                             </div>
                             <p></p>
                         </div>
@@ -149,8 +183,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
-<!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
 <!-- Bootstrap -->
 <script src="${pageContext.request.contextPath}/resources/js/custom/bootstrap.js"></script>
 

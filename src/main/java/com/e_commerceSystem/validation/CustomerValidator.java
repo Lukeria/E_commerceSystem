@@ -1,7 +1,6 @@
 package com.e_commerceSystem.validation;
 
 import com.e_commerceSystem.entities.Customer;
-import com.e_commerceSystem.entities.Message;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;

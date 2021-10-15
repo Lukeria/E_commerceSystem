@@ -44,7 +44,7 @@
                                 <label for="name"><spring:message code="message.form.name.label"/></label>
                                 <spring:message code="message.form.name.placeHolder" var="namePlaceholder"/>
                                 <form:input path="name" type="text"
-                                            class="form-control ${status.error ? 'form-control-dange' : ''}" id="name"
+                                            class="form-control ${status.error ? 'form-control-danger' : ''}" id="name"
                                             placeholder="${namePlaceholder}"/>
                                 <form:errors path="name" class="form-text text-danger"/>
                             </div>
@@ -54,7 +54,7 @@
                                 <label for="email"><spring:message code="message.form.email.label"/></label>
                                 <spring:message code="message.form.email.placeHolder" var="emailPlaceholder"/>
                                 <form:input path="email" type="email"
-                                            class="form-control ${status.error ? 'form-control-dange' : ''}" id="email"
+                                            class="form-control ${status.error ? 'form-control-danger' : ''}" id="email"
                                             placeholder="${emailPlaceholder}"/>
                                 <form:errors path="email" class="form-text text-danger"/>
                             </div>
@@ -64,7 +64,7 @@
                                 <label for="phone"><spring:message code="message.form.phone.label"/></label>
                                 <spring:message code="message.form.phone.placeholder" var="phonePlaceholder"/>
                                 <form:input path="phone" type="phone"
-                                            class="form-control ${status.error ? 'form-control-dange' : ''}" id="phone"
+                                            class="form-control ${status.error ? 'form-control-danger' : ''}" id="phone"
                                             placeholder="${phonePlaceholder}"/>
                                 <form:errors path="phone" class="form-text text-danger"/>
                             </div>
