@@ -39,7 +39,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
-
     /////Validation
     @Bean
     public ResourceBundleMessageSource validationMessageSource() {
@@ -60,7 +59,6 @@ public class WebConfig implements WebMvcConfigurer {
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
     }
-
 
     ///////////i18n
     @Bean("messageSource")

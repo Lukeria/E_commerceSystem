@@ -1,6 +1,8 @@
 package com.e_commerceSystem.validation;
 
 import com.e_commerceSystem.entities.Order;
+import com.e_commerceSystem.entities.glass.Glass;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -10,6 +12,13 @@ import org.springframework.validation.annotation.Validated;
 
 @Component
 public class OrderValidator implements Validator {
+
+    private final GlassValidator glassValidator;
+
+    @Autowired
+    public OrderValidator(GlassValidator glassValidator) {
+        this.glassValidator = glassValidator;
+    }
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -26,5 +35,9 @@ public class OrderValidator implements Validator {
         if (order.getCost() != null && order.getCost() <= 0) {
             errors.rejectValue("cost", "message.notEmpty.calculator.cost");
         }
+
+//        for (Glass glass : order.getGlassList()) {
+//            ValidationUtils.invokeValidator(this.glassValidator, glass, errors);
+//        }
     }
 }

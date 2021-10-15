@@ -9,11 +9,15 @@ import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
 import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.e_commerceSystem.services.interfaces.OrderService;
+import com.e_commerceSystem.validation.GlassValidator;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -28,12 +32,21 @@ import java.util.List;
 @RequestMapping("/calculator")
 public class CalculatorController {
 
+    private final CalculatorService calculatingService;
+    private final OrderService orderService;
+    private final CatalogService catalogService;
+    private final GlassValidator glassValidator;
+
     @Autowired
-    private CalculatorService calculatingService;
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private CatalogService catalogService;
+    public CalculatorController(CalculatorService calculatingService,
+                                OrderService orderService,
+                                CatalogService catalogService,
+                                GlassValidator glassValidator) {
+        this.calculatingService = calculatingService;
+        this.orderService = orderService;
+        this.catalogService = catalogService;
+        this.glassValidator = glassValidator;
+    }
 
     @GetMapping("/")
     public ModelAndView calculator(@RequestParam(name = "productType", required = false) ProductType productType,
@@ -72,6 +85,8 @@ public class CalculatorController {
         return response;
     }
 
+
+    ///move to order
     @GetMapping("/fillByCatalog/{id}")
     public ModelAndView createOrderByTemplate(@PathVariable("id") Long id,
                                               RedirectAttributes redirectAttributes) {

@@ -19,7 +19,7 @@
             </div>
             <div class="modal-body">
                 <form id="questionForm">
-                    <div class="form-group">
+                    <div class="form-group" id="group_name">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text text-primary">
@@ -29,8 +29,9 @@
                             <input type="email" class="form-control" id="name"
                                    placeholder="<spring:message code="message.form.nameModal.placeHolder"/>">
                         </div>
+                        <div class="form-text text-danger" id="error_name"></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="group_email">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text text-primary">
@@ -40,8 +41,9 @@
                             <input type="email" class="form-control" id="email"
                                    placeholder="<spring:message code="message.form.email.placeHolder"/>">
                         </div>
+                        <div class="form-text text-danger" id="error_email"></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="group_phone">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text text-primary">
@@ -49,10 +51,11 @@
                                 </div>
                             </div>
                             <input type="text" class="form-control" id="phone"
-                                   placeholder=" <spring:message code="message.form.phone.placeholder"/>">
+                                   placeholder="+375(99) 999-99-99">
                         </div>
+                        <div class="form-text text-danger" id="error_phone"></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="group_topic">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text text-primary">
@@ -63,16 +66,18 @@
                             <input type="text" class="form-control" id="topic"
                                    placeholder=" <spring:message code="message.form.topic.placeholder"/>">
                         </div>
+                        <div class="form-text text-danger" id="error_topic"></div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="group_message">
                         <textarea class="form-control" id="message" rows="3"
                                   placeholder="<spring:message code="message.form.message.placeholder"/>"></textarea>
+                        <div class="form-text text-danger" id="error_message"></div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary animation-on-hover" data-dismiss="modal"
-                        aria-hidden="true"
+                <button type="submit" class="btn btn-primary animation-on-hover"
+                        id="sendRequest"
                         onclick="sendMessage()"><spring:message
                         code="message.navbar.modal.button.send"/>
                 </button>
@@ -200,6 +205,18 @@
     </div>
 </nav>
 <script src="${pageContext.request.contextPath}/resources/js/core/jquery.min.js"></script>
+<script type="text/javascript">
+
+    messages = {};
+    messages['successfulRequest'] = "<spring:message code="message.notification.modalSend.success" javaScriptEscape="true"/>";
+    messages['failRequest'] = "<spring:message code="message.notification.modalSend.failure" javaScriptEscape="true"/>";
+    messages["message.notEmpty.customer.name"] = "<spring:message code="message.notEmpty.customer.name" javaScriptEscape="true"/>";
+    messages["message.notEmpty.customer.phone"] = "<spring:message code="message.notEmpty.customer.phone" javaScriptEscape="true"/>";
+    messages["message.notEmpty.modal.message"] = "<spring:message code="message.notEmpty.modal.message" javaScriptEscape="true"/>";
+    messages["message.notMatches.customer.phone"] = "<spring:message code="message.notMatches.customer.phone" javaScriptEscape="true"/>";
+
+</script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/custom/callRequest.js"></script>
 </body>
 </html>
