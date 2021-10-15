@@ -395,6 +395,13 @@
     messages["message.notEmpty.calculator.cost"] = "<spring:message code="message.notEmpty.calculator.cost" javaScriptEscape="true"/>";
     messages["successCreation"] = "<spring:message code="message.order.successCreation" javaScriptEscape="true"/>";
 
+    messages['successfulRequest'] = "<spring:message code="message.notification.modalSend.success" javaScriptEscape="true"/>";
+    messages['failRequest'] = "<spring:message code="message.notification.modalSend.failure" javaScriptEscape="true"/>";
+    messages["message.notEmpty.customer.name"] = "<spring:message code="message.notEmpty.customer.name" javaScriptEscape="true"/>";
+    messages["message.notEmpty.customer.phone"] = "<spring:message code="message.notEmpty.customer.phone" javaScriptEscape="true"/>";
+    messages["message.notEmpty.modal.message"] = "<spring:message code="message.notEmpty.modal.message" javaScriptEscape="true"/>";
+    messages["message.notMatches.customer.phone"] = "<spring:message code="message.notMatches.customer.phone" javaScriptEscape="true"/>";
+
 </script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/calculator.js"></script>
