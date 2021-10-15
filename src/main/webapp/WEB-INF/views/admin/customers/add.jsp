@@ -6,7 +6,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sprin" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
-<html>
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -40,28 +39,40 @@
                     <spring:url value="/customer/saveOrderCustomer" var="orderAdd"/>
                     <form:form method="post" action="${orderAdd}" modelAttribute="customer">
                         <input name="orderId" type="hidden" class="form-control" id="id" value="${orderId}"/>
+                        <spring:bind path="name">
+                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label for="name"><spring:message code="message.form.name.label"/></label>
+                                <spring:message code="message.form.name.placeHolder" var="namePlaceholder"/>
+                                <form:input path="name" type="text"
+                                            class="form-control ${status.error ? 'form-control-dange' : ''}" id="name"
+                                            placeholder="${namePlaceholder}"/>
+                                <form:errors path="name" class="form-text text-danger"/>
+                            </div>
+                        </spring:bind>
+                        <spring:bind path="email">
+                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label for="email"><spring:message code="message.form.email.label"/></label>
+                                <spring:message code="message.form.email.placeHolder" var="emailPlaceholder"/>
+                                <form:input path="email" type="email"
+                                            class="form-control ${status.error ? 'form-control-dange' : ''}" id="email"
+                                            placeholder="${emailPlaceholder}"/>
+                                <form:errors path="email" class="form-text text-danger"/>
+                            </div>
+                        </spring:bind>
+                        <spring:bind path="phone">
+                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label for="phone"><spring:message code="message.form.phone.label"/></label>
+                                <spring:message code="message.form.phone.placeholder" var="phonePlaceholder"/>
+                                <form:input path="phone" type="phone"
+                                            class="form-control ${status.error ? 'form-control-dange' : ''}" id="phone"
+                                            placeholder="${phonePlaceholder}"/>
+                                <form:errors path="phone" class="form-text text-danger"/>
+                            </div>
+                        </spring:bind>
                         <div class="form-group">
-                            <label for="name"><spring:message code="message.form.name.label"/></label>
-                            <spring:message code="message.form.name.placeHolder" var="namePlaceholder"/>
-                            <form:input path="name" type="text" class="form-control" id="name"
-                                        placeholder="${namePlaceholder}"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="email"><spring:message code="message.form.email.label"/></label>
-                            <spring:message code="message.form.email.placeHolder" var="emailPlaceholder"/>
-                            <form:input path="email" type="email" class="form-control" id="email"
-                                        placeholder="${emailPlaceholder}"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone"><spring:message code="message.form.phone.label"/></label>
-                            <spring:message code="message.form.phone.placeholder" var="phonePlaceholder"/>
-                            <form:input path="phone" type="phone" class="form-control" id="phone"
-                                        placeholder="${phonePlaceholder}"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone"><spring:message code="message.form.address.label"/></label>
+                            <label for="address"><spring:message code="message.form.address.label"/></label>
                             <spring:message code="message.form.address.placeholder" var="addressPlaceholder"/>
-                            <form:input path="address" type="phone" class="form-control" id="phone"
+                            <form:input path="address" class="form-control" id="address"
                                         placeholder="${addressPlaceholder}"/>
                         </div>
                         <button type="submit" class="btn btn-primary animation-on-hover"><spring:message
