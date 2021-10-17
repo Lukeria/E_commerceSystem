@@ -101,7 +101,7 @@
     </style>
 </head>
 <body>
-<h1>404</h1>
+<h1>${status}</h1>
 <div><p>> <span><spring:message code="message.accessDenied.code.label"/></span>: "<i><spring:message code="message.notFound.code.text"/></i>"</p>
     <p>> <span><spring:message code="message.accessDenied.description.label"/></span>: "<i><spring:message code="message.notFound.description.text"/> ${error}</i>"</p>
     <p>> <span><spring:message code="message.accessDenied.footer"/></span></p>

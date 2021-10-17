@@ -1,11 +1,13 @@
 package com.e_commerceSystem.services;
 
+import com.e_commerceSystem.additional.UTF8Control;
 import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.exceptions.notFoundExceptions.OrderAccessDeniedException;
 import com.e_commerceSystem.exceptions.notFoundExceptions.OrderNotFoundException;
 import com.e_commerceSystem.repositories.interfaces.OrderDao;
 import com.e_commerceSystem.services.interfaces.OrderService;
@@ -14,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrderServiceImp implements OrderService {
@@ -102,9 +101,14 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     @Transactional
-    public void updateOrderStatus(Long id, OrderStatus status) {
+    public void updateOrderStatus(Long id, OrderStatus status) throws OrderAccessDeniedException{
 
         Order order = getOrderById(id);
+
+        if (order.getStatus() == OrderStatus.CLOSED || order.getStatus() == OrderStatus.CART) {
+            throw new OrderAccessDeniedException();
+        }
+
         order.setStatus(status);
         orderDao.saveOrUpdateOrder(order);
 

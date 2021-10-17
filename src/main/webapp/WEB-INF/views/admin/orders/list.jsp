@@ -149,7 +149,9 @@
                                             <td class="text-right">${order.cost}</td>
                                             <td class="td-actions text-right">
                                                 <spring:url value="/order/${order.id}" var="orderUrl"/>
-                                                <spring:url value="/order/${order.id}/delete" var="deleteUrl"/>
+                                                <spring:url
+                                                        value="/order/${order.id}/delete?filter=${param.filter}&page=${orders.page+1}"
+                                                        var="deleteUrl"/>
                                                 <spring:url value="/order/${order.id}/update" var="updateUrl"/>
 
                                                 <button type="button" rel="tooltip"
@@ -221,13 +223,23 @@
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
-<!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
+
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/custom/order.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#orderSection").addClass("active");
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
 
+        <c:if test="${not empty message}">
+        let message = "${message}";
+        let status = "${status}";
+        if (status == null) {
+            status = "warning";
+        }
+        showNotification(message, status);
+        </c:if>
 
         $().ready(function () {
             $sidebar = $('.sidebar');
@@ -336,28 +348,6 @@
             });
         });
     });
-
-    function post(path, params, method) {
-        method = method || "post";
-
-        var form = document.createElement("form");
-        form.setAttribute("method", method);
-        form.setAttribute("action", path);
-
-        for (var key in params) {
-            if (params.hasOwnProperty(key)) {
-                var hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", key);
-                hiddenField.setAttribute("value", params[key]);
-
-                form.appendChild(hiddenField);
-            }
-        }
-
-        document.body.appendChild(form);
-        form.submit();
-    }
 </script>
 </body>
 

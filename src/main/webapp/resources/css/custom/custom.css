@@ -247,3 +247,8 @@ a, .btn {
     border: 0.0625rem solid #393e4b;
     color: #ba54f5;
 }
+
+li.page-item.active .page-link{
+    background-color: #ba54f5;
+    border-color: #ba54f5;
+}

@@ -3,6 +3,8 @@ package com.e_commerceSystem.controllers;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.Order;
+import com.e_commerceSystem.exceptions.notFoundExceptions.OrderAccessDeniedException;
+import com.e_commerceSystem.services.LocaleMessageHandler;
 import com.e_commerceSystem.services.interfaces.OrderService;
 import com.e_commerceSystem.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,16 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderValidator orderValidator;
+    private final LocaleMessageHandler localeMessageHandler;
 
     @Autowired
-    public OrderController(OrderService orderService, OrderValidator orderValidator) {
+    public OrderController(OrderService orderService,
+                           OrderValidator orderValidator,
+                           LocaleMessageHandler localeMessageHandler) {
 
         this.orderService = orderService;
         this.orderValidator = orderValidator;
+        this.localeMessageHandler = localeMessageHandler;
     }
 
     @InitBinder(value = "order")
@@ -44,7 +50,9 @@ public class OrderController {
 
     @GetMapping("/all")
     public ModelAndView orders(@RequestParam(defaultValue = "all") String filter,
-                               @RequestParam(defaultValue = "1") Integer page) {
+                               @RequestParam(defaultValue = "1") Integer page,
+                               @ModelAttribute("message") String message,
+                               @ModelAttribute("status") String status) {
 
         ModelAndView modelAndView = new ModelAndView("/admin/orders/list");
 
@@ -56,10 +64,13 @@ public class OrderController {
         modelAndView.addObject("orderStatusCount", orderService.getOrderStatusCount());
         modelAndView.addObject("expiredOrderCount", orderService.getExpiredOrderCount());
 
+        modelAndView.addObject("message", message);
+        modelAndView.addObject("status", status);
+
         return modelAndView;
     }
 
-    @GetMapping("/add")
+    @GetMapping("/")
     public ModelAndView orderAdd() {
 
         return new ModelAndView("redirect:/calculator/");
@@ -76,31 +87,10 @@ public class OrderController {
         Order order = orderService.getOrderById(id);
 
         modelAndView.addObject("order", order);
+
         modelAndView.addObject("message", message);
         modelAndView.addObject("status", status);
 
-
-        return modelAndView;
-    }
-
-    @GetMapping(value = "/{id}/close")
-    //jquery post
-    public ModelAndView closeOrder(@PathVariable("id") Long id) {
-
-        ModelAndView modelAndView = new ModelAndView("redirect:/order/" + id);
-
-        orderService.updateOrderStatus(id, OrderStatus.CLOSED);
-
-        return modelAndView;
-    }
-
-    @PostMapping("/{id}/delete")
-    //jquery
-    public ModelAndView deleteOrder(@PathVariable("id") Long id) {
-
-        ModelAndView modelAndView = new ModelAndView("redirect:/order/all");
-
-        orderService.deleteOrder(id);
 
         return modelAndView;
     }
@@ -116,7 +106,8 @@ public class OrderController {
         if (order.getStatus() == OrderStatus.CLOSED) {
 
             modelAndView.setViewName("redirect:/order/" + id);
-            redirectAttributes.addFlashAttribute("message", "Updating closed orders is not allowed");
+            redirectAttributes.addFlashAttribute("message",
+                    localeMessageHandler.getMessage("message.notification.order.update.failure"));
             redirectAttributes.addFlashAttribute("status", "danger");
 
         } else {
@@ -128,40 +119,48 @@ public class OrderController {
         return modelAndView;
     }
 
-//    @PostMapping("/save")
-//    public ModelAndView saveOrder(@ModelAttribute("order") @Validated Order order,
-//                                  BindingResult result,
-//                                  @RequestParam("tableGlass") String tableGlass,
-//                                  HttpServletRequest request, RedirectAttributes redirectAttributes) {
-//
-//        ModelAndView modelAndView = new ModelAndView();
-//
-//        Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
-//        order.setGlassList(glassList);
-//
-//        if (result.hasErrors()) {
-//            modelAndView.addObject("order", order);
-//            modelAndView.setViewName("general/calculator");
-//            return modelAndView;
-//        }
-//
-//        order.setStatus(OrderStatus.ACTIVE);
-//
-//        if (order.isNew()) {
-//            orderService.addOrder(order);
-//            modelAndView.setViewName("redirect:/customer/add");
-//            redirectAttributes.addFlashAttribute("orderId", order.getId());
-////            redirectAttributes.addFlashAttribute("orderId", order.getId());
-////            redirectAttributes.addFlashAttribute("customer", new Customer());
-//        } else {
-//            orderService.updateOrder(order);
-//            modelAndView.setViewName("redirect:/order/" + order.getId());
-//        }
-//
-//        return modelAndView;
-//    }
+    @PostMapping(value = "/{id}/status")
+    public ModelAndView updateStatus(@PathVariable("id") Long id,
+                                     @RequestParam("status") OrderStatus status,
+                                     final RedirectAttributes redirectAttributes) {
 
-    @PostMapping("/saveAjax")
+        ModelAndView modelAndView = new ModelAndView("redirect:/order/" + id);
+
+        try {
+
+            orderService.updateOrderStatus(id, status);
+            redirectAttributes.addFlashAttribute("message",
+                    localeMessageHandler.getMessage("message.notification.order.status.success"));
+            redirectAttributes.addFlashAttribute("status", "success");
+
+        } catch (OrderAccessDeniedException exception) {
+
+            redirectAttributes.addFlashAttribute("message",
+                    localeMessageHandler.getMessage("message.notification.order.status.failure"));
+            redirectAttributes.addFlashAttribute("status", "danger");
+        }
+
+        return modelAndView;
+    }
+
+    @PostMapping("/{id}/delete")
+    public ModelAndView deleteOrder(@PathVariable("id") Long id,
+                                    @RequestParam(required = false) Integer page,
+                                    @RequestParam(required = false) String filter,
+                                    final RedirectAttributes redirectAttributes) {
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/order/all?filter="+filter+"&page="+page);
+
+        orderService.deleteOrder(id);
+
+        redirectAttributes.addFlashAttribute("message",
+                localeMessageHandler.getMessage("message.notification.order.delete.success"));
+        redirectAttributes.addFlashAttribute("status", "success");
+
+        return modelAndView;
+    }
+
+    @PostMapping("/save")
     @ResponseBody
     public JsonResponse saveOrder(@RequestBody @Validated Order order,
                                   BindingResult result) {

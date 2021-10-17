@@ -33,5 +33,8 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
                         1024*1024*2, 1024*1024*2, 1024*1024*2);
 
         registration.setMultipartConfig(multipartConfigElement);
+        registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+        registration.setInitParameter("throwExceptionIfHttpRequestMethodNotSupported", "true");
+
     }
 }

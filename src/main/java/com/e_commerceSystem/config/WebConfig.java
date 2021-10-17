@@ -23,6 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/accessDenied").setViewName("accessDenied");
         registry.addViewController("/contacts").setViewName("user/contacts");
@@ -31,15 +32,16 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
+
         registry.jsp("/WEB-INF/views/", ".jsp");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
-    /////Validation
     @Bean
     public ResourceBundleMessageSource validationMessageSource() {
         ResourceBundleMessageSource rb = new ResourceBundleMessageSource();
@@ -60,9 +62,9 @@ public class WebConfig implements WebMvcConfigurer {
         return new StandardServletMultipartResolver();
     }
 
-    ///////////i18n
     @Bean("messageSource")
     public MessageSource messageSource(){
+
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages/messages");
         messageSource.setDefaultEncoding("UTF-8");
@@ -72,6 +74,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver(){
+
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         return localeResolver;
     }
@@ -83,6 +86,4 @@ public class WebConfig implements WebMvcConfigurer {
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
     }
-
-
 }

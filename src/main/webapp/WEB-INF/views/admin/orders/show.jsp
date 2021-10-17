@@ -45,27 +45,34 @@
                                         <c:set var="color" value="badge-primary"/>
                                     </c:when>
                                 </c:choose>
-                                <span class="badge badge-pill ${color}"><spring:message code="message.enum.orderStatus.${order.status.name}"/></span>
+                                <span class="badge badge-pill ${color}"><spring:message
+                                        code="message.enum.orderStatus.${order.status.name}"/></span>
                             </h4>
                         </div>
                         <div class="card-body">
+                            <input type="hidden" id="orderId" value="${order.id}">
                             <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
                                 <table class="table">
                                     <tbody>
                                     <tr>
-                                        <td style="width: 10rem"><label><spring:message code="message.orders.column.date"/>:</label></td>
+                                        <td style="width: 10rem"><label><spring:message
+                                                code="message.orders.column.date"/>:</label></td>
                                         <td class="text-left">${order.creationDateFormat}</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 10rem"><label><spring:message code="message.orders.column.deadline"/>:</label></td>
+                                        <td style="width: 10rem"><label><spring:message
+                                                code="message.orders.column.deadline"/>:</label></td>
                                         <td class="text-left">${order.deadlineFormat}</td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 10rem"><label><spring:message code="message.orders.column.product"/>:</label></td>
-                                        <td class="text-left"><spring:message code="message.enum.productType.${order.productType.name}"/></td>
+                                        <td style="width: 10rem"><label><spring:message
+                                                code="message.orders.column.product"/>:</label></td>
+                                        <td class="text-left"><spring:message
+                                                code="message.enum.productType.${order.productType.name}"/></td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 10rem"><label class="text-primary"><spring:message code="message.orders.column.cost"/>:</label></td>
+                                        <td style="width: 10rem"><label class="text-primary"><spring:message
+                                                code="message.orders.column.cost"/>:</label></td>
                                         <td class="text-left t"><span class="text-primary">${order.cost}</span></td>
                                     </tr>
                                     </tbody>
@@ -152,10 +159,22 @@
                 </div>
             </div>
             <c:if test="${!order.status.name.equals('closed')}">
+                <spring:url value="/order/${order.id}/status?status=CLOSED" var="closedUrl"/>
+                <spring:url value="/order/${order.id}/status?status=PAID" var="paidUrl"/>
+                <spring:url value="/order/${order.id}/update" var="updateUrl"/>
+
                 <div class="row">
                     <div class="col-lg-12">
-                        <a href="/order/${order.id}/update" class="btn btn-success animation-on-hover"><spring:message code="message.form.button.update"/></a>
-                        <a href="/order/${order.id}/close" class="btn btn-primary animation-on-hover" id="closeOrder"><spring:message code="message.form.button.close"/></a>
+                        <a href="/order/${order.id}/update" class="btn btn-success animation-on-hover"><spring:message
+                                code="message.form.button.update"/></a>
+                        <c:if test="${!order.status.name.equals('paid')}">
+                            <button onclick="post('${paidUrl}')" class="btn btn-warning animation-on-hover"
+                               id="payForOrder"><i class="tim-icons icon-money-coins"></i> <spring:message
+                                    code="message.form.button.pay"/></button>
+                        </c:if>
+                        <button onclick="post('${closedUrl}')" class="btn btn-primary animation-on-hover"
+                           id="closeOrder"><i class="tim-icons icon-button-power"></i> <spring:message
+                                code="message.form.button.close"/></button>
                     </div>
                 </div>
             </c:if>
@@ -178,7 +197,7 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
-<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
+<script src="${pageContext.request.contextPath}/resources/js/custom/order.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -187,7 +206,11 @@
 
         <c:if test="${not empty message}">
         let message = "${message}";
-        showNotification(message, 'danger');
+        let status = "${status}";
+        if (status == null) {
+            status = "warning";
+        }
+        showNotification(message, status);
         </c:if>
     });
 </script>
