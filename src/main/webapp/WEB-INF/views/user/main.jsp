@@ -51,7 +51,7 @@
                                 <div class="carousel-caption d-none d-md-block">
                                     <h3><spring:message code="message.main.headingCarousel.partition"/></h3>
                                     <p><spring:message code="message.main.textCarousel"/></p>
-                                    <a href="${pageContext.request.contextPath}/catalog/partition"
+                                    <a href="${pageContext.request.contextPath}/catalog/?productType=partition"
                                        class="btn btn-warning animation-on-hover"><spring:message
                                             code="message.main.button.goToCatalog"/></a>
                                 </div>
@@ -62,7 +62,7 @@
                                 <div class="carousel-caption d-none d-md-block">
                                     <h3><spring:message code="message.main.headingCarousel.mirror"/></h3>
                                     <p><spring:message code="message.main.textCarousel"/></p>
-                                    <a href="${pageContext.request.contextPath}/catalog/mirror"
+                                    <a href="${pageContext.request.contextPath}/catalog/?productType=mirror"
                                        class="btn btn-warning animation-on-hover"><spring:message
                                             code="message.main.button.goToCatalog"/></a>
                                 </div>
@@ -73,7 +73,7 @@
                                 <div class="carousel-caption d-none d-md-block">
                                     <h3><spring:message code="message.main.headingCarousel.shower"/></h3>
                                     <p><spring:message code="message.main.textCarousel"/></p>
-                                    <a href="${pageContext.request.contextPath}/catalog/shower"
+                                    <a href="${pageContext.request.contextPath}/catalog/?productType=shower"
                                        class="btn btn-warning animation-on-hover"><spring:message
                                             code="message.main.button.goToCatalog"/></a>
                                 </div>
@@ -118,7 +118,7 @@
                              alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title"><spring:message code="message.main.catalogSection.mirror"/></h4>
-                            <a href="${pageContext.request.contextPath}/catalog/mirror"
+                            <a href="${pageContext.request.contextPath}/catalog/?productType=mirror"
                                class="btn btn-simple btn-warning btn-one">
                                 <span><spring:message code="message.main.button.goToCatalog"/> <i
                                         class="tim-icons icon-double-right"></i></span>
@@ -132,7 +132,7 @@
                              alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title"><spring:message code="message.main.catalogSection.partition"/></h4>
-                            <a href="${pageContext.request.contextPath}/catalog/partition"
+                            <a href="${pageContext.request.contextPath}/catalog/?productType=partition"
                                class="btn btn-simple btn-warning btn-one">
                                 <span><spring:message code="message.main.button.goToCatalog"/> <i
                                         class="tim-icons icon-double-right"></i></span>
@@ -146,7 +146,7 @@
                              alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title"><spring:message code="message.main.catalogSection.shower"/></h4>
-                            <a href="${pageContext.request.contextPath}/catalog/shower"
+                            <a href="${pageContext.request.contextPath}/catalog/?productType=shower"
                                class="btn btn-simple btn-warning btn-one">
                                 <span><spring:message code="message.main.button.goToCatalog"/> <i
                                         class="tim-icons icon-double-right"></i></span>
@@ -160,7 +160,7 @@
                              alt="Card image cap">
                         <div class="card-body">
                             <h4 class="card-title"><spring:message code="message.main.catalogSection.apron"/></h4>
-                            <a href="${pageContext.request.contextPath}/catalog/apron"
+                            <a href="${pageContext.request.contextPath}/catalog/?productType=apron"
                                class="btn btn-simple btn-warning btn-one">
                                 <span><spring:message code="message.main.button.goToCatalog"/> <i
                                         class="tim-icons icon-double-right"></i></span>

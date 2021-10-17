@@ -115,7 +115,9 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/catalog.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#catalogSection").addClass("active");

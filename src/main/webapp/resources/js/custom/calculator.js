@@ -551,7 +551,7 @@ function doAjaxSaveTemplatePost() {
     let Json = JSON.stringify(createTemplate());
     $.ajax({
         type: "POST",
-        url: "/catalog/settings/saveAjax",
+        url: "/catalog/settings/",
         contentType: "application/json",
         data: Json,
         success: function (response) {

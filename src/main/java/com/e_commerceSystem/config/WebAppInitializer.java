@@ -34,7 +34,6 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
         registration.setMultipartConfig(multipartConfigElement);
         registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
-        registration.setInitParameter("throwExceptionIfHttpRequestMethodNotSupported", "true");
 
     }
 }

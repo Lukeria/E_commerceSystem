@@ -23,7 +23,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleNoHandlerFoundException(NoHandlerFoundException e) {
 
         ModelAndView modelAndView = new ModelAndView("notFound");
@@ -34,7 +33,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ModelAndView handleHttpRequestMethodNotSupportedException(NoHandlerFoundException e) {
 
         ModelAndView modelAndView = new ModelAndView("notFound");

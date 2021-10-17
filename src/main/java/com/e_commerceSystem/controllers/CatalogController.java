@@ -3,6 +3,7 @@ package com.e_commerceSystem.controllers;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
+import com.e_commerceSystem.services.LocaleMessageHandler;
 import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.e_commerceSystem.validation.CatalogValidator;
 import com.sun.javafx.iio.ImageStorageException;
@@ -24,25 +25,28 @@ import java.io.IOException;
 @RequestMapping("/catalog")
 public class CatalogController {
 
-    @Autowired
-    private CatalogService catalogService;
+    private final CatalogService catalogService;
+    private final CatalogValidator catalogValidator;
+    private final LocaleMessageHandler localeMessageHandler;
 
     @Autowired
-    private CatalogValidator catalogValidator;
+    public CatalogController(CatalogService catalogService,
+                             CatalogValidator catalogValidator,
+                             LocaleMessageHandler localeMessageHandler) {
+
+        this.catalogService = catalogService;
+        this.catalogValidator = catalogValidator;
+        this.localeMessageHandler = localeMessageHandler;
+    }
 
     @InitBinder("catalog")
     protected void initBinder(WebDataBinder binder) {
+
         binder.setValidator(catalogValidator);
     }
 
     @GetMapping("/")
-    public ModelAndView catalog() {
-
-        return new ModelAndView("redirect:/catalog/mirror");
-    }
-
-    @GetMapping("/{productType}")
-    public ModelAndView catalogByProductType(@PathVariable ProductType productType) {
+    public ModelAndView catalog(@RequestParam(defaultValue = "mirror") ProductType productType) {
 
         ModelAndView modelAndView = new ModelAndView("user/catalog");
 
@@ -52,7 +56,7 @@ public class CatalogController {
         return modelAndView;
     }
 
-    @GetMapping("/settings")
+    @GetMapping("/settings/list")
     public ModelAndView catalogSettings(@RequestParam(defaultValue = "mirror") ProductType productType) {
 
         ModelAndView modelAndView = new ModelAndView("admin/catalog/settings");
@@ -64,7 +68,7 @@ public class CatalogController {
         return modelAndView;
     }
 
-    @GetMapping("/settings/add")
+    @GetMapping("/settings")
     public ModelAndView catalogAddItem(@RequestParam(required = false) ProductType productType) {
 
         ModelAndView modelAndView = new ModelAndView("admin/catalog/add");
@@ -87,9 +91,15 @@ public class CatalogController {
 
     @PostMapping("/settings/{id}/delete")
     @ResponseBody
-    public void catalogDeleteItem(@PathVariable("id") Long id) {
+    public JsonResponse catalogDeleteItem(@PathVariable("id") Long id) {
+
+        JsonResponse jsonResponse = new JsonResponse();
 
         catalogService.deleteItem(id);
+        jsonResponse.setStatus(HttpStatus.OK);
+        jsonResponse.setMessage(localeMessageHandler.getMessage("message.notification.catalog.delete.success"));
+
+        return jsonResponse;
     }
 
     @GetMapping("/settings/{id}/updateGlass")
@@ -105,33 +115,9 @@ public class CatalogController {
         return modelAndView;
     }
 
-//    @PostMapping("/settings/save")
-////   jquery
-//    public ModelAndView catalogSaveItem(@ModelAttribute("order") @Validated Catalog catalog,
-//                                        BindingResult result,
-//                                        @RequestParam("tableGlass") String tableGlass) {
-//
-//        ModelAndView modelAndView = new ModelAndView();
-//
-//        Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
-//        catalog.setGlassList(glassList);
-//
-//        if (result.hasErrors()) {
-//            modelAndView.addObject("order", catalog);
-//            modelAndView.addObject("isForTemplate", true);
-//            modelAndView.setViewName("general/calculator");
-//            return modelAndView;
-//        }
-//
-//        modelAndView.setViewName("redirect:/catalog/settings/" + catalog.getId());
-//        catalogService.updateItem(catalog);
-//
-//        return modelAndView;
-//    }
-
-    @PostMapping("/settings/saveAjax")
+    @PostMapping("/settings")
     @ResponseBody
-    public JsonResponse catalogSaveItemAjax(@RequestBody @Validated Catalog catalog,
+    public JsonResponse catalogSaveItem(@RequestBody @Validated Catalog catalog,
                                             BindingResult result) {
 
         JsonResponse response = new JsonResponse();
@@ -159,14 +145,15 @@ public class CatalogController {
         JsonResponse jsonResponse = new JsonResponse();
 
         Catalog catalog = catalogService.createItem(file, productType);
-        jsonResponse.setResult(catalog.getId());
         jsonResponse.setStatus(HttpStatus.OK);
+        jsonResponse.setRedirect(true);
+        jsonResponse.setRedirectUrl("/catalog/settings/"+catalog.getId());
 
         return jsonResponse;
     }
 
     @GetMapping("/displayImage")
-    public void catalogAddItem(@RequestParam Long id, HttpServletResponse response)
+    public void catalogDisplayImage(@RequestParam Long id, HttpServletResponse response)
             throws IOException {
 
         Catalog catalog = catalogService.getItemById(id);

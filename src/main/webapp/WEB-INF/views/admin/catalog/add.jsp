@@ -44,15 +44,11 @@
                                 <select type="text" id="productType" class="form-control" name="productType">
                                     <c:forEach var="type" items="${productTypes}">
                                         <c:if test="${!type.name.equals('glass')}">
-                                            <c:choose>
-                                                <c:when test=" ${type==activeType}">
-                                                    <c:set value="selected" var="selected"/>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:set value="" var="selected"/>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <option ${selected} value="${type.name}"><spring:message
+                                            <c:set var="selected" value=""/>
+                                            <c:if test="${type==activeType}">
+                                                <c:set var="selected" value="selected"/>
+                                            </c:if>
+                                            <option value="${type.name}" ${selected}><spring:message
                                                     code="message.enum.productType.${type.name}"/></option>
                                         </c:if>
                                     </c:forEach>
@@ -103,7 +99,18 @@
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
+
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/catalog.js"></script>
+
+<script type="text/javascript">
+
+    let messages = {};
+    messages['message.notification.catalog.upload.validate'] = "<spring:message code="message.notification.catalog.upload.validate" javaScriptEscape="true"/>";
+    messages['message.notification.catalog.upload.failure'] = "<spring:message code="message.notification.catalog.upload.failure" javaScriptEscape="true"/>";
+
+</script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#catalogSection").addClass("active");

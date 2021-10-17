@@ -108,19 +108,19 @@
                         <div class="collapse show" id="collapseExample">
                             <div class="card-body">
                                 <ul class="list-group list-group-flush">
-                                    <a href="${pageContext.request.contextPath}/catalog/mirror"
+                                    <a href="${pageContext.request.contextPath}/catalog/?productType=mirror"
                                        class="btn btn-simple btn-warning">
                                         <spring:message code="message.enum.productType.mirror.plural"/>
                                     </a>
-                                    <a href="${pageContext.request.contextPath}/catalog/partition"
+                                    <a href="${pageContext.request.contextPath}/catalog/?productType=partition"
                                        class="btn btn-simple btn-warning">
                                         <spring:message code="message.enum.productType.partition.plural"/>
                                     </a>
-                                    <a href="${pageContext.request.contextPath}/catalog/shower"
+                                    <a href="${pageContext.request.contextPath}/catalog/?productType=shower"
                                        class="btn btn-simple btn-warning">
                                         <spring:message code="message.enum.productType.shower.plural"/>
                                     </a>
-                                    <a href="${pageContext.request.contextPath}/catalog/apron"
+                                    <a href="${pageContext.request.contextPath}/catalog/?productType=apron"
                                        class="btn btn-simple btn-warning">
                                         <spring:message code="message.enum.productType.apron.plural"/>
                                     </a>
@@ -181,8 +181,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
-<!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<%--    <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
 
 <script type="text/javascript">
 

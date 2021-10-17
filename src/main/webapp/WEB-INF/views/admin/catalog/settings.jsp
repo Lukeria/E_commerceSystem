@@ -39,7 +39,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-2 col-md-3 col-sm-4">
-                                    <a href="${pageContext.request.contextPath}/catalog/settings/add?productType=${activeType.name}"
+                                    <a href="${pageContext.request.contextPath}/catalog/settings/?productType=${activeType.name}"
                                        class="btn btn-success animation-on-hover"><spring:message
                                             code="message.form.button.add"/></a>
                                 </div>
@@ -58,7 +58,7 @@
 
                                                 <li class="nav-item">
                                                     <a class="nav-link btn-primary btn-link ${active}"
-                                                       href="${pageContext.request.contextPath}/catalog/settings?productType=${type.name}">
+                                                       href="${pageContext.request.contextPath}/catalog/settings/list?productType=${type.name}">
                                                         <spring:message
                                                                 code="message.enum.productType.${type.name}.plural"/> </a>
                                                 </li>
@@ -120,7 +120,16 @@
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
+
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/catalog.js"></script>
+
+<script type="text/javascript">
+
+    let messages = {};
+    messages['message.notification.loadingData.failure']="<spring:message code="message.notification.loadingData.failure" javaScriptEscape="true"/>";
+
+</script>
 
 <script type="text/javascript">
     $(document).ready(function () {
