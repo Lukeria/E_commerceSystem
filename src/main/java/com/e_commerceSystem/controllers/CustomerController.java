@@ -5,13 +5,11 @@ import com.e_commerceSystem.services.interfaces.OrderService;
 import com.e_commerceSystem.validation.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/customer")
@@ -23,6 +21,7 @@ public class CustomerController {
     @Autowired
     public CustomerController(OrderService orderService,
                               CustomerValidator customerValidator) {
+
         this.orderService = orderService;
         this.customerValidator = customerValidator;
     }
@@ -45,7 +44,7 @@ public class CustomerController {
         return  modelAndView;
     }
 
-    @PostMapping("/saveOrderCustomer")
+    @PostMapping("/")
     public ModelAndView saveOrderCustomer(@ModelAttribute("customer") @Validated Customer customer,
                                           BindingResult result,
                                           @RequestParam("orderId") Long orderId) {
@@ -55,7 +54,6 @@ public class CustomerController {
         if(result.hasErrors()){
 
             modelAndView.setViewName("/admin/customers/add");
-            modelAndView.addObject("customer", customer);
             modelAndView.addObject("orderId", orderId);
 
             return modelAndView;

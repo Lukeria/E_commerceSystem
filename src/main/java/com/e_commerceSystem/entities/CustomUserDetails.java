@@ -1,4 +1,4 @@
-package com.e_commerceSystem.additional;
+package com.e_commerceSystem.entities;
 
 import com.e_commerceSystem.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.additional.CustomUserDetails;
+import com.e_commerceSystem.entities.CustomUserDetails;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.User;

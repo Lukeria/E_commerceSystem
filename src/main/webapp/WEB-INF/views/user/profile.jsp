@@ -54,7 +54,7 @@
                         <div class="card-header">
                             <h4 class="title"><spring:message code="message.profile.heading"/></h4>
                         </div>
-                        <form:form modelAttribute="customer" method="post" action="/profile/save">
+                        <form:form modelAttribute="customer" method="post" action="/profile/">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
@@ -62,7 +62,7 @@
                                         <div class="form-group">
                                             <label><spring:message code="message.form.name.label"/></label>
                                             <spring:bind path="name">
-                                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                <div class="form-group ${status.error ? 'has-danger' : ''}">
                                                     <spring:message code="message.form.name.placeHolder"
                                                                     var="namePlaceholder"/>
                                                     <form:input path="name" type="text"
@@ -88,7 +88,7 @@
                                             <label for="exampleInputEmail1"><spring:message
                                                     code="message.form.email.label"/> </label>
                                             <spring:bind path="email">
-                                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                <div class="form-group ${status.error ? 'has-danger' : ''}">
                                                     <spring:message code="message.form.email.placeHolder"
                                                                     var="emailPlaceholder"/>
                                                     <form:input path="email" type="email" id="exampleInputEmail1"
@@ -105,7 +105,7 @@
                                         <div class="form-group">
                                             <label><spring:message code="message.form.phone.label"/></label>
                                             <spring:bind path="phone">
-                                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                <div class="form-group ${status.error ? 'has-danger' : ''}">
                                                     <spring:message code="message.form.phone.placeholder"
                                                                     var="phonePlaceholder"/>
                                                     <form:input path="phone" type="text"
@@ -122,7 +122,7 @@
                                         <div class="form-group">
                                             <label><spring:message code="message.form.address.label"/></label>
                                             <spring:bind path="address">
-                                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                <div class="form-group ${status.error ? 'has-danger' : ''}">
                                                     <spring:message code="message.form.address.placeholder"
                                                                     var="addressPlaceholder"/>
                                                     <form:input path="address" type="text" class="form-control"
@@ -189,6 +189,15 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
+
+        <c:if test="${not empty message}">
+        let message = "${message}";
+        let status = "${status}";
+        if (status == null) {
+            status = "warning";
+        }
+        showNotification(message, status);
+        </c:if>
     });
 </script>
 </body>

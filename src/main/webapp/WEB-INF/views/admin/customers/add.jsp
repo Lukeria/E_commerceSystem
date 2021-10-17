@@ -36,11 +36,10 @@
                     <h4 class="card-title"><spring:message code="message.customer.heading"/></h4>
                 </div>
                 <div class="card-body">
-                    <spring:url value="/customer/saveOrderCustomer" var="orderAdd"/>
-                    <form:form method="post" action="${orderAdd}" modelAttribute="customer">
-                        <input name="orderId" type="hidden" class="form-control" id="id" value="${orderId}"/>
+                    <spring:url value="/customer/?orderId=${orderId}" var="customerSave"/>
+                    <form:form method="post" action="${customerSave}" modelAttribute="customer">
                         <spring:bind path="name">
-                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <div class="form-group ${status.error ? 'has-danger' : ''}">
                                 <label for="name"><spring:message code="message.form.name.label"/></label>
                                 <spring:message code="message.form.name.placeHolder" var="namePlaceholder"/>
                                 <form:input path="name" type="text"
@@ -50,7 +49,7 @@
                             </div>
                         </spring:bind>
                         <spring:bind path="email">
-                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <div class="form-group ${status.error ? 'has-danger' : ''}">
                                 <label for="email"><spring:message code="message.form.email.label"/></label>
                                 <spring:message code="message.form.email.placeHolder" var="emailPlaceholder"/>
                                 <form:input path="email" type="email"
@@ -60,7 +59,7 @@
                             </div>
                         </spring:bind>
                         <spring:bind path="phone">
-                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <div class="form-group ${status.error ? 'has-danger' : ''}">
                                 <label for="phone"><spring:message code="message.form.phone.label"/></label>
                                 <spring:message code="message.form.phone.placeholder" var="phonePlaceholder"/>
                                 <form:input path="phone" type="phone"

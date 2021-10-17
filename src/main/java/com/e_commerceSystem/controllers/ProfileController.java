@@ -1,8 +1,9 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.additional.CustomUserDetails;
+import com.e_commerceSystem.entities.CustomUserDetails;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.User;
+import com.e_commerceSystem.services.LocaleMessageHandler;
 import com.e_commerceSystem.services.interfaces.CustomerService;
 import com.e_commerceSystem.validation.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/profile")
@@ -20,12 +22,16 @@ public class ProfileController {
 
     private final CustomerService customerService;
     private final CustomerValidator customerValidator;
+    private final LocaleMessageHandler localeMessageHandler;
 
     @Autowired
     public ProfileController(CustomerService customerService,
-                             CustomerValidator customerValidator) {
+                             CustomerValidator customerValidator,
+                             LocaleMessageHandler localeMessageHandler) {
+
         this.customerService = customerService;
         this.customerValidator = customerValidator;
+        this.localeMessageHandler = localeMessageHandler;
     }
 
     @InitBinder(value = "customer")
@@ -35,7 +41,9 @@ public class ProfileController {
     }
 
     @GetMapping("/")
-    public ModelAndView profile(Authentication authentication){
+    public ModelAndView profile(Authentication authentication,
+                                @ModelAttribute("message") String message,
+                                @ModelAttribute("status") String status){
 
         ModelAndView modelAndView =  new ModelAndView("user/profile");
 
@@ -44,13 +52,17 @@ public class ProfileController {
         modelAndView.addObject("customer",currentUser.getCustomer());
         modelAndView.addObject("username", currentUser.getUsername());
 
+        modelAndView.addObject("message", message);
+        modelAndView.addObject("status", status);
+
         return modelAndView;
     }
 
-    @PostMapping("/save")
+    @PostMapping("/")
     public ModelAndView saveProfile(@ModelAttribute("customer") @Validated Customer customer,
                                     BindingResult result,
-                                    Authentication authentication){
+                                    Authentication authentication,
+                                    RedirectAttributes redirectAttributes){
 
         ModelAndView modelAndView = new ModelAndView();
 
@@ -62,6 +74,10 @@ public class ProfileController {
         customerService.update(customer, authentication);
 
         modelAndView.setViewName("redirect:/profile/");
+        redirectAttributes.addFlashAttribute("message",
+                localeMessageHandler.getMessage("message.notification.profile.save.success"));
+        redirectAttributes.addFlashAttribute("status", "success");
+
 
         return modelAndView;
     }

@@ -1,6 +1,6 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.additional.CustomUserDetails;
+import com.e_commerceSystem.entities.CustomUserDetails;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.exceptions.notFoundExceptions.CustomerNotFoundException;
 import com.e_commerceSystem.repositories.interfaces.CustomerDao;
