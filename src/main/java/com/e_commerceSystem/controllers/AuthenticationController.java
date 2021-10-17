@@ -15,14 +15,20 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class AuthenticationController {
 
-    @Autowired
-    private UserValidator userValidator;
+    private final UserValidator userValidator;
+
+    private final UserService userService;
 
     @Autowired
-    private UserService userService;
+    public AuthenticationController(UserValidator userValidator, UserService userService) {
+
+        this.userValidator = userValidator;
+        this.userService = userService;
+    }
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
+
         binder.setValidator(userValidator);
     }
 
@@ -31,6 +37,7 @@ public class AuthenticationController {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("general/login");
+
         return modelAndView;
     }
 
@@ -39,6 +46,7 @@ public class AuthenticationController {
 
         ModelAndView modelAndView = new ModelAndView("general/registration");
         modelAndView.addObject("user", new User());
+
         return modelAndView;
     }
 
@@ -49,17 +57,23 @@ public class AuthenticationController {
         ModelAndView modelAndView = new ModelAndView();
 
         if (result.hasErrors()) {
+
             modelAndView.addObject("user", user);
             modelAndView.setViewName("general/registration");
+
             return modelAndView;
         }
 
         try {
+
             userService.registerNewUser(user);
+
         } catch (UserAlreadyExistsException exception){
+
             result.rejectValue("email", "message.alreadyExists.user.email");
             modelAndView.addObject("user", user);
             modelAndView.setViewName("general/registration");
+
             return modelAndView;
         }
 
