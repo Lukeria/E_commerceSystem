@@ -1,4 +1,4 @@
-package com.e_commerceSystem.controllers;
+package com.e_commerceSystem.exceptions;
 
 import com.e_commerceSystem.exceptions.notFoundExceptions.NotFoundException;
 import org.springframework.http.HttpStatus;

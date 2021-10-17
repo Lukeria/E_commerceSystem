@@ -524,7 +524,7 @@ function doAjaxSaveOrderPost() {
     let Json = JSON.stringify(createOrder());
     $.ajax({
         type: "POST",
-        url: "/order/save",
+        url: "/order/",
         contentType: "application/json",
         data: Json,
         success: function (response) {

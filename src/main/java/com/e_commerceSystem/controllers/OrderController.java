@@ -42,12 +42,6 @@ public class OrderController {
         binder.setValidator(orderValidator);
     }
 
-    @GetMapping("/")
-    public ModelAndView order() {
-
-        return new ModelAndView("redirect:/order/all");
-    }
-
     @GetMapping("/all")
     public ModelAndView orders(@RequestParam(defaultValue = "all") String filter,
                                @RequestParam(defaultValue = "1") Integer page,
@@ -160,7 +154,7 @@ public class OrderController {
         return modelAndView;
     }
 
-    @PostMapping("/save")
+    @PostMapping("/")
     @ResponseBody
     public JsonResponse saveOrder(@RequestBody @Validated Order order,
                                   BindingResult result) {

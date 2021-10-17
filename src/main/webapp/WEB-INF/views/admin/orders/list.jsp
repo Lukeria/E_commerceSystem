@@ -105,7 +105,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div>
-                                <a href="${pageContext.request.contextPath}/order/add"
+                                <a href="${pageContext.request.contextPath}/order/"
                                    class="btn btn-primary animation-on-hover"><spring:message
                                         code="message.form.button.add"/></a>
                             </div>
