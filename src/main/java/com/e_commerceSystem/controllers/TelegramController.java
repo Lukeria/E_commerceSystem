@@ -24,6 +24,7 @@ public class TelegramController {
     @Autowired
     public TelegramController(MessageService messageService,
                               MessageValidator messageValidator) {
+
         this.messageService = messageService;
         this.messageValidator = messageValidator;
     }

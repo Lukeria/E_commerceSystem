@@ -1,27 +1,28 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.additional.UTF8Control;
 import com.e_commerceSystem.entities.Message;
 import com.e_commerceSystem.services.interfaces.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Formatter;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Service
 public class MessageServiceImp implements MessageService {
 
+    private final LocaleMessageHandler localeMessageHandler;
+
+    @Autowired
+    public MessageServiceImp(LocaleMessageHandler localeMessageHandler) {
+
+        this.localeMessageHandler = localeMessageHandler;
+    }
+
     @Override
     public String getMessageText(Message message, String lang) {
 
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages/messages",
-                Locale.forLanguageTag(lang), new UTF8Control());
-
-        String text = resourceBundle.getString("message.callRequest.text");
-        String email = resourceBundle.getString("message.callRequest.email");
-        String topic = resourceBundle.getString("message.callRequest.topic");
-        String messageText = resourceBundle.getString("message.callRequest.message");
+        String text = localeMessageHandler.getMessage("message.callRequest.text");
+        String email = localeMessageHandler.getMessage("message.callRequest.email");
+        String topic = localeMessageHandler.getMessage("message.callRequest.topic");
+        String messageText = localeMessageHandler.getMessage("message.callRequest.message");
 
         StringBuilder result = new StringBuilder();
 

@@ -1,10 +1,8 @@
 package com.e_commerceSystem.entities.glass;
 
-import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.enums.ProcessingType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,23 +16,18 @@ public class Processing implements Serializable, DefaultComponent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(ComponentViews.Normal.class)
     private Long id;
 
-    @JsonView(ComponentViews.Normal.class)
     @Enumerated(EnumType.STRING)
     private ProcessingType type;
 
-    @JsonView(ComponentViews.Normal.class)
     private String name;
 
     @JsonIgnore
     private String symbol;
 
-    @JsonView(ComponentViews.PriceList.class)
     private Float price;
 
-    @JsonView(ComponentViews.PriceList.class)
     private Float priceUSD;
 
     @Transient

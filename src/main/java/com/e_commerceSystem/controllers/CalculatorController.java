@@ -1,6 +1,5 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
@@ -10,22 +9,14 @@ import com.e_commerceSystem.services.interfaces.CalculatorService;
 import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.e_commerceSystem.services.interfaces.OrderService;
 import com.e_commerceSystem.validation.GlassValidator;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.jws.WebParam;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -73,7 +64,6 @@ public class CalculatorController {
 
     @PostMapping("/calculate")
     @ResponseBody
-    @JsonView(ComponentViews.Normal.class)
     public JsonResponse calculate(@RequestBody List<Glass> glassList) {
 
         float resultPrice = calculatingService.calculatePrice(glassList);

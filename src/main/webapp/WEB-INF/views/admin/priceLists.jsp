@@ -250,7 +250,6 @@
                 </div>
             </div>
 
-            <div><p id="successMessage"></p></div>
             <div id="footerGroup"></div>
         </div>
     </div>
@@ -267,8 +266,16 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 
-<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/priceLists.js"></script>
+
+<script type="text/javascript">
+
+    let messages = {};
+    messages['message.notification.loadingData.failure']="<spring:message code="message.notification.loadingData.failure" javaScriptEscape="true"/>";
+    messages['message.notification.priceList.update.success']="<spring:message code="message.notification.priceList.update.success" javaScriptEscape="true"/>";
+
+</script>
 
 <script type="text/javascript">
     $(document).ready(function () {
