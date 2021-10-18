@@ -3,26 +3,37 @@ let selectedOrders = false;
 $(document).ready(function () {
 
     $("#formOrder").click(function (event) {
-        submitOrder();
+        submitOrder("/cart/submit");
     });
+
+    $("#payForOrder").click(function (event) {
+        if (checkPaymentInfo()) {
+            submitOrder("/cart/submitAndPay");
+        } else {
+            showNotification("payment information is not filled", "danger")
+        }
+    });
+
     $("#order_selectAll").click(function () {
         selectAll('order', !selectedOrders);
         selectedOrders = !selectedOrders;
     });
 
     $('input[type=radio][name="delivery"]').change(function () {
-        if(this.value === "delivery"){
-           $('#deliveryInfo').show();
-        } else{
+        if (this.value === "delivery") {
+            $('#deliveryInfo').show();
+        } else {
             $('#deliveryInfo').hide();
         }
     });
 
     $('input[type=radio][name="payment"]').change(function () {
-        if(this.value === "card"){
+        if (this.value === "card") {
             $('#payForOrder').show();
-        } else{
+            $('#cardInfo').show();
+        } else {
             $('#payForOrder').hide();
+            $('#cardInfo').hide();
         }
     });
 
@@ -34,9 +45,9 @@ function selectAll(id, value) {
     $('#' + id + '>tr').each(function () {
         let currentSelectPoint = $(this).find('.form-check-label>input[id*="selected_"]');
         $(currentSelectPoint).prop('checked', value);
-        if(value===false) {
+        if (value === false) {
             $('#total').text(0);
-        }else{
+        } else {
             calculateCost(currentSelectPoint);
         }
     });
@@ -61,25 +72,42 @@ function deleteCartOrder(url, element) {
     $.ajax({
         type: "POST",
         url: url,
-        success: function () {
+        success: function (response) {
 
-            $(element).parents("tr").remove();
-            showNotification("Order has been deleted", "success");
+            if (response.status === "OK") {
+                $(element).parents("tr").remove();
+                $('#total').text(0);
+                $('#order>tr').each(function () {
+                    let currentSelectPoint = $(this).find('.form-check-label>input[id*="selected_"]');
+                    if ($(currentSelectPoint).is('checked')) {
+                        $('#total').text(0);
+                    } else {
+                        calculateCost(currentSelectPoint);
+                    }
+                });
+                showNotification(response.message, "success");
+            }
         },
         error: function (e) {
 
-            showNotification("Cannot delete order", "danger");
+            showNotification(messages['message.notification.loadingData.failure'], "danger");
         }
     });
 }
 
-function submitOrder() {
+function submitOrder(url) {
 
-    let ids = getIdsArray();
+    let ordersArray = getOrdersArray();
+
+    if (ordersArray.length === 0) {
+        showNotification(messages['message.notification.cart.orderSelect'], "warning");
+        return;
+    }
+
     $.ajax({
         type: "POST",
-        url: "/cart/submit",
-        data: JSON.stringify(ids),
+        url: url,
+        data: JSON.stringify(ordersArray),
         contentType: "application/json",
         success: function (response) {
             // we have the response
@@ -90,16 +118,17 @@ function submitOrder() {
                     }
                     $(this).remove();
                 });
-                showNotification("Order is submitted", "success");
+                $('#total').text('');
+                showNotification(response.message, "success");
             }
         },
         error: function (e) {
-            showNotification("Order can't be submitted", "danger");
+            showNotification(messages['message.notification.loadingData.failure'], "danger");
         }
     });
 }
 
-function getIdsArray() {
+function getOrdersArray() {
 
     let array = [];
 
@@ -108,9 +137,36 @@ function getIdsArray() {
             return true;
         }
 
-        let id = Number.parseInt(($(this).find('input[id*="id_"]').val()) || 0);
-        array.push(id);
+        let object = {};
+
+        object['id'] = Number.parseInt(($(this).find('input[id*="id_"]').val()) || 0);
+        object['delivery'] = $('input[name="delivery"]:checked').val() === "delivery";
+        object['deliveryAddress'] = $('#address').val();
+        object['paymentMethod'] = $('input[name="payment"]:checked').val().toUpperCase();
+
+        array.push(object);
     });
 
     return array;
+}
+
+function checkPaymentInfo() {
+
+    let check = true;
+    let fieldsToCheck = [];
+
+    fieldsToCheck.push($('#cardNumber'));
+    fieldsToCheck.push($('#cardName'));
+    fieldsToCheck.push($('#expired'));
+    fieldsToCheck.push($('#cvv'));
+
+    fieldsToCheck.forEach(function (item) {
+        if (item.val() === "") {
+            check = false;
+            item.parent().addClass('has-danger');
+            item.addClass('form-control-danger')
+        }
+    });
+
+    return check
 }

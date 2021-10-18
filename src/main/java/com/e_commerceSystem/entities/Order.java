@@ -1,6 +1,7 @@
 package com.e_commerceSystem.entities;
 
 import com.e_commerceSystem.additional.enums.OrderStatus;
+import com.e_commerceSystem.additional.enums.PaymentMethod;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.glass.Glass;
 import org.hibernate.annotations.Cascade;
@@ -58,6 +59,17 @@ public class Order {
     private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     private LocalDateTime deadline;
+
+    private Boolean delivery = false;
+
+    @Column(name = "delivery_address")
+    private String deliveryAddress;
+
+    private Boolean installation = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_method")
+    private PaymentMethod paymentMethod = PaymentMethod.CASH;
 
     @OneToMany(mappedBy = "order")
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
@@ -170,6 +182,46 @@ public class Order {
     public boolean isExpired() {
         return deadline != null && deadline.isBefore(LocalDateTime.now()) &&
                 status != OrderStatus.CLOSED && status != OrderStatus.CART;
+    }
+
+    public DateTimeFormatter getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(DateTimeFormatter dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    public Boolean getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(Boolean delivery) {
+        this.delivery = delivery;
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public Boolean getInstallation() {
+        return installation;
+    }
+
+    public void setInstallation(Boolean installation) {
+        this.installation = installation;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.e_commerceSystem.services.interfaces;
 
-import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 
@@ -12,5 +11,5 @@ public interface CartService {
     Order getOrderById(Long id);
     void addOrder(Order order, Customer customer);
     void deleteOrder(Long id);
-    void submitCartOrder(Long id);
+    void submitCartOrder(Order order, boolean pay);
 }

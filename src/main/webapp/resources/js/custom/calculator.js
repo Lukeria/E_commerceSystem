@@ -578,12 +578,12 @@ function doAjaxAddToCartPost() {
     let Json = JSON.stringify(createOrder());
     $.ajax({
         type: "POST",
-        url: "/cart/addAjax",
+        url: "/cart/add",
         contentType: "application/json",
         data: Json,
         success: function (response) {
             if (response.status === "OK") {
-               showNotification(messages[response.result], "success");
+               showNotification(response.message, "success");
             } else {
                 response.result.forEach(function (item) {
                     $('#error_'+item.field).text(messages[item.code]);

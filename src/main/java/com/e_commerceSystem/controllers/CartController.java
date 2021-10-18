@@ -4,6 +4,7 @@ import com.e_commerceSystem.entities.CustomUserDetails;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.User;
+import com.e_commerceSystem.services.LocaleMessageHandler;
 import com.e_commerceSystem.services.interfaces.CartService;
 import com.e_commerceSystem.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,14 +22,23 @@ import java.util.*;
 @RequestMapping("/cart")
 public class CartController {
 
-    @Autowired
-    private CartService cartService;
+    private final CartService cartService;
+    private final OrderValidator orderValidator;
+    private final LocaleMessageHandler localeMessageHandler;
 
     @Autowired
-    private OrderValidator orderValidator;
+    public CartController(CartService cartService,
+                          OrderValidator orderValidator,
+                          LocaleMessageHandler localeMessageHandler) {
 
-    @InitBinder("catalog")
+        this.cartService = cartService;
+        this.orderValidator = orderValidator;
+        this.localeMessageHandler = localeMessageHandler;
+    }
+
+    @InitBinder("order")
     protected void initBinder(WebDataBinder binder) {
+
         binder.setValidator(orderValidator);
     }
 
@@ -41,57 +50,29 @@ public class CartController {
         ModelAndView modelAndView = new ModelAndView("/user/cart");
         modelAndView.addObject("orders",
                 cartService.getOrders(currentUser.getCustomer()));
+        modelAndView.addObject("address", currentUser.getCustomer().getAddress());
 
         return modelAndView;
     }
 
-//    @PostMapping("/add")
-//    public ModelAndView cartAdd(@ModelAttribute("order") Order order,
-//                                BindingResult result,
-//                                @RequestParam("tableGlass") String tableGlass,
-//                                Authentication authentication,
-//                                RedirectAttributes redirectAttributes) {
-//
-//        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
-//
-////        if (order.getProductType().isEmpty()) {
-////            result.rejectValue("productType", "message.notEmpty.calculator.productType");
-////        }
-//
-//        Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
-//        order.setGlassList(glassList);
-//
-//        if (result.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("order", order);
-//            return modelAndView;
-//        } else {
-//            redirectAttributes.addFlashAttribute("message", "successCreation");
-//        }
-//
-//        User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
-//        cartService.addOrder(order, currentUser.getCustomer());
-//
-//        return modelAndView;
-//    }
-
-    @PostMapping("/addAjax")
+    @PostMapping("/add")
     @ResponseBody
-    public JsonResponse cartAddAjax(@RequestBody @Validated Order order,
+    public JsonResponse cartAddAjax(@RequestBody Order order,
                                     BindingResult result,
                                     Authentication authentication) {
 
         JsonResponse response = new JsonResponse();
 
-        if (result.hasErrors()) {
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setResult(result.getAllErrors());
-            return response;
-        }
+//        if (result.hasErrors()) {
+//            response.setStatus(HttpStatus.BAD_REQUEST);
+//            response.setResult(result.getAllErrors());
+//            return response;
+//        }
 
         User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         cartService.addOrder(order, currentUser.getCustomer());
         response.setStatus(HttpStatus.OK);
-        response.setResult("successCreation");
+        response.setMessage(localeMessageHandler.getMessage("message.notification.order.addCart.success"));
 
         return response;
     }
@@ -99,21 +80,45 @@ public class CartController {
 
     @PostMapping("/{id}/delete")
     @ResponseBody
-    public void cartDeleteItem(@PathVariable Long id) {
+    public JsonResponse cartDeleteItem(@PathVariable Long id) {
+
+        JsonResponse jsonResponse = new JsonResponse();
 
         cartService.deleteOrder(id);
+        jsonResponse.setStatus(HttpStatus.OK);
+        jsonResponse.setMessage(localeMessageHandler.getMessage("message.notification.order.delete.success"));
+
+        return jsonResponse;
+
     }
 
     @PostMapping("/submit")
     @ResponseBody
-    public JsonResponse cartSubmit(@RequestBody List<Long> orderIds) {
+    public JsonResponse cartSubmit(@RequestBody List<Order> orders) {
 
-        for (Long id : orderIds) {
-            cartService.submitCartOrder(id);
+        for (Order order : orders) {
+            cartService.submitCartOrder(order, false);
         }
 
         JsonResponse response = new JsonResponse();
         response.setStatus(HttpStatus.OK);
+        response.setMessage(localeMessageHandler.getMessage("message.notification.order.submit.success"));
+
+        return response;
+    }
+
+    @PostMapping("/submitAndPay")
+    @ResponseBody
+    public JsonResponse cartSubmitAndPay(@RequestBody List<Order> orders) {
+
+        for (Order order : orders) {
+            cartService.submitCartOrder(order, true);
+        }
+
+        JsonResponse response = new JsonResponse();
+        response.setStatus(HttpStatus.OK);
+        response.setMessage(localeMessageHandler.getMessage("message.notification.order.pay.success"));
+
         return response;
     }
 }

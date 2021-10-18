@@ -252,3 +252,27 @@ li.page-item.active .page-link{
     background-color: #ba54f5;
     border-color: #ba54f5;
 }
+
+.credit-card {
+    background: linear-gradient(
+            0deg, #ff8d72 0%, #fd5d93 100%);
+    margin: 15px;
+    border-radius: 15px;
+}
+
+.credit-card .form-control{
+    border-color: rgba(255, 255, 255, 0.6);
+    color: floralwhite;
+}
+
+.credit-card .form-control:focus{
+    border-color: white;
+}
+
+.credit-card .form-control::placeholder{
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.credit-card .form-control-danger{
+    border-color: red;
+}

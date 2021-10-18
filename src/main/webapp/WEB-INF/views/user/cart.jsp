@@ -87,12 +87,14 @@
                                                     <tbody>
                                                     <tr>
                                                         <td style="color:#00f2c3 !important">
-                                                                <spring:message code="message.enum.productType.${order.productType.name}"/>
+                                                            <spring:message
+                                                                    code="message.enum.productType.${order.productType.name}"/>
                                                         </td>
                                                     </tr>
                                                     <c:forEach var="glass" items="${order.glassList}">
                                                         <tr>
-                                                            <td class="text-left" style="width: 8rem">${glass.glassType.name}-${glass.glassType.thickness}</td>
+                                                            <td class="text-left"
+                                                                style="width: 8rem">${glass.glassType.name}-${glass.glassType.thickness}</td>
                                                             <td style="width: 8rem">${glass.width}x${glass.height}</td>
                                                             <td class="text-left">
                                                                 <c:forEach var="processing"
@@ -166,7 +168,7 @@
                             <div class="form-row" id="deliveryInfo">
                                 <div class="form-group col">
                                     <label for="address"><spring:message code="message.form.address.label"/></label>
-                                    <input type="text" id="address" class="form-control"
+                                    <input type="text" id="address" class="form-control" value="${address}"
                                            placeholder="<spring:message code="message.form.address.placeholder"/>"
                                            aria-describedby="addressHelp"/>
                                     <small id="addressHelp" class="form-text text-muted"><spring:message
@@ -198,8 +200,43 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="btn btn-primary animation-on-hover" id="payForOrder" style="display: none"><spring:message
-                                    code="message.orders.button.formAndPayOrder"/></a>
+                            <button class="btn btn-primary animation-on-hover" id="payForOrder" style="display: none">
+                                <spring:message
+                                        code="message.orders.button.formAndPayOrder"/></button>
+                        </div>
+                    </div>
+                    <div class="card" id="cardInfo" style="display: none">
+                        <div class="card-header">
+                            <h4 class="card-title"><spring:message code="message.cart.paymentInfo.header"/></h4>
+                        </div>
+                        <div class="card-body credit-card">
+                            <div class="form-group">
+                                <label><spring:message code="message.cart.paymentInfo.cardNumber"/></label>
+                                <div class="form-group">
+                                    <input id="cardNumber" class="form-control" type="text"
+                                           placeholder="0000-0000-0000-0000">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><spring:message code="message.cart.paymentInfo.YourName"/></label>
+                                <div class="form-group">
+                                    <input id="cardName" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="form-group col">
+                                    <label><spring:message code="message.cart.paymentInfo.Expired"/></label>
+                                    <div class="form-group">
+                                        <input id="expired" class="form-control" type="text" placeholder="MM/YYYY">
+                                    </div>
+                                </div>
+                                <div class="form-group col">
+                                    <label>CVV</label>
+                                    <div class="form-group">
+                                        <input id="cvv" class="form-control" type="password" placeholder="***">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,6 +263,13 @@
 
 <script src="${pageContext.request.contextPath}/resources/js/custom/cart.js"></script>
 
+<script type="text/javascript">
+
+    let messages = {};
+    messages['message.notification.loadingData.failure']="<spring:message code="message.notification.loadingData.failure" javaScriptEscape="true"/>";
+    messages['message.notification.cart.orderSelect']="<spring:message code="message.notification.cart.orderSelect" javaScriptEscape="true"/>";
+
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");

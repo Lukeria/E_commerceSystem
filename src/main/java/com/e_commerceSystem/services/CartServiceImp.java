@@ -3,7 +3,6 @@ package com.e_commerceSystem.services;
 import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
-import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.exceptions.notFoundExceptions.OrderNotFoundException;
 import com.e_commerceSystem.repositories.interfaces.OrderDao;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
@@ -60,18 +59,29 @@ public class CartServiceImp implements CartService {
 
     @Override
     @Transactional
-    public void submitCartOrder(Long id) {
+    public void submitCartOrder(Order order, boolean pay) {
 
-        Order order = getOrderById(id);
+        Order orderToUpdate = getOrderById(order.getId());
 
         LocalDateTime creationDate = LocalDateTime.now();
         LocalDateTime deadLine = dateTimeHandler.addWorkDays(creationDate, 7);
 
-        order.setCreationDate(creationDate);
-        order.setDeadline(deadLine);
-        order.setStatus(OrderStatus.ACTIVE);
+        orderToUpdate.setCreationDate(creationDate);
+        orderToUpdate.setDeadline(deadLine);
+        if(pay){
+            orderToUpdate.setStatus(OrderStatus.PAID);
+        }else {
+            orderToUpdate.setStatus(OrderStatus.ACTIVE);
+        }
 
-        orderDao.saveOrUpdateOrder(order);
+        orderToUpdate.setDelivery(order.getDelivery());
+        if(order.getDelivery()){
+            orderToUpdate.setDeliveryAddress(order.getDeliveryAddress());
+        }
+
+        orderToUpdate.setPaymentMethod(order.getPaymentMethod());
+
+        orderDao.saveOrUpdateOrder(orderToUpdate);
 
     }
 }
