@@ -71,6 +71,24 @@
                                                 code="message.enum.productType.${order.productType.name}"/></td>
                                     </tr>
                                     <tr>
+                                        <td style="width: 10rem"><label><spring:message
+                                                code="message.orders.column.payment"/>:</label></td>
+                                        <td class="text-left"><spring:message
+                                                code="message.enum.payment.${order.paymentMethod.name}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 10rem"><label><spring:message
+                                                code="message.orders.column.service"/>:</label></td>
+                                        <td class="text-left">
+                                            <c:if test="${order.delivery}">
+                                                <spring:message code="message.orders.column.delivery"/>
+                                            </c:if>
+                                            <c:if test="${order.installation}">
+                                                <spring:message code="message.orders.column.installation"/>
+                                            </c:if>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td style="width: 10rem"><label class="text-primary"><spring:message
                                                 code="message.orders.column.cost"/>:</label></td>
                                         <td class="text-left t"><span class="text-primary">${order.cost}</span></td>
@@ -78,6 +96,26 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <c:if test="${!order.status.name.equals('closed')}">
+                                <spring:url value="/order/${order.id}/status?status=CLOSED" var="closedUrl"/>
+                                <spring:url value="/order/${order.id}/status?status=PAID" var="paidUrl"/>
+                                <spring:url value="/order/${order.id}/update" var="updateUrl"/>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <a href="/order/${order.id}/update" class="btn btn-success animation-on-hover"><spring:message
+                                                code="message.form.button.update"/></a>
+                                        <c:if test="${!order.status.name.equals('paid')}">
+                                            <button onclick="post('${paidUrl}')" class="btn btn-warning animation-on-hover"
+                                                    id="payForOrder"><i class="tim-icons icon-money-coins"></i> <spring:message
+                                                    code="message.form.button.pay"/></button>
+                                        </c:if>
+                                        <button onclick="post('${closedUrl}')" class="btn btn-primary animation-on-hover"
+                                                id="closeOrder"><i class="tim-icons icon-button-power"></i> <spring:message
+                                                code="message.form.button.close"/></button>
+                                    </div>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                     <div class="card">
@@ -144,7 +182,7 @@
                                     </tr>
                                     <tr>
                                         <td><label><spring:message code="message.form.address.label"/>: </label></td>
-                                        <td>${order.customer.address}</td>
+                                        <td>${order.deliveryAddress}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -158,26 +196,6 @@
 
                 </div>
             </div>
-            <c:if test="${!order.status.name.equals('closed')}">
-                <spring:url value="/order/${order.id}/status?status=CLOSED" var="closedUrl"/>
-                <spring:url value="/order/${order.id}/status?status=PAID" var="paidUrl"/>
-                <spring:url value="/order/${order.id}/update" var="updateUrl"/>
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <a href="/order/${order.id}/update" class="btn btn-success animation-on-hover"><spring:message
-                                code="message.form.button.update"/></a>
-                        <c:if test="${!order.status.name.equals('paid')}">
-                            <button onclick="post('${paidUrl}')" class="btn btn-warning animation-on-hover"
-                               id="payForOrder"><i class="tim-icons icon-money-coins"></i> <spring:message
-                                    code="message.form.button.pay"/></button>
-                        </c:if>
-                        <button onclick="post('${closedUrl}')" class="btn btn-primary animation-on-hover"
-                           id="closeOrder"><i class="tim-icons icon-button-power"></i> <spring:message
-                                code="message.form.button.close"/></button>
-                    </div>
-                </div>
-            </c:if>
             <div id="footerGroup"></div>
         </div>
     </div>

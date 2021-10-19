@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface OrderDao {
 
     List<Order> getOrdersByStatus(OrderStatus status);
+    List<Order> getOrdersByCustomer(Customer customer);
     List<Order> getOrders();
     List<Order> getExpiredOrders();
     Optional<Order> getOrderById(Long id);

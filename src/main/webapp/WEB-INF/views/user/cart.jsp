@@ -242,6 +242,7 @@
                 </div>
                 <div class="col-lg-2"></div>
             </div>
+            <div id="footerGroup"></div>
         </div>
     </div>
 </div>

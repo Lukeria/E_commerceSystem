@@ -12,6 +12,7 @@ import java.util.Map;
 public interface OrderService {
 
     List<Order> getOrdersByStatus(OrderStatus status);
+    List<Order> getOrdersByCustomer(Customer customer);
     List<Order> getOrders(String filter);
     List<Order> getExpiredOrders();
     void addOrder(Order order);

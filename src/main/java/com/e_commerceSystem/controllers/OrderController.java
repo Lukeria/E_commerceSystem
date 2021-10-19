@@ -2,7 +2,9 @@ package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.OrderStatus;
+import com.e_commerceSystem.entities.CustomUserDetails;
 import com.e_commerceSystem.entities.Order;
+import com.e_commerceSystem.entities.User;
 import com.e_commerceSystem.exceptions.notFoundExceptions.OrderAccessDeniedException;
 import com.e_commerceSystem.services.LocaleMessageHandler;
 import com.e_commerceSystem.services.interfaces.OrderService;
@@ -10,6 +12,7 @@ import com.e_commerceSystem.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -60,6 +63,24 @@ public class OrderController {
 
         modelAndView.addObject("message", message);
         modelAndView.addObject("status", status);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/history")
+    public ModelAndView ordersHistory(@RequestParam(defaultValue = "1") Integer page,
+                                      Authentication authentication) {
+
+        ModelAndView modelAndView = new ModelAndView("/user/orderHistory");
+
+        User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+
+        PagedListHolder<Order> pagedListHolder = new PagedListHolder<>(
+                orderService.getOrdersByCustomer(currentUser.getCustomer()));
+        pagedListHolder.setPage(page - 1);
+        pagedListHolder.setPageSize(5);
+
+        modelAndView.addObject("orders", pagedListHolder);
 
         return modelAndView;
     }
@@ -143,7 +164,7 @@ public class OrderController {
                                     @RequestParam(required = false) String filter,
                                     final RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/order/all?filter="+filter+"&page="+page);
+        ModelAndView modelAndView = new ModelAndView("redirect:/order/all?filter=" + filter + "&page=" + page);
 
         orderService.deleteOrder(id);
 

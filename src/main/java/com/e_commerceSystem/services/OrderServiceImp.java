@@ -1,6 +1,5 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.additional.UTF8Control;
 import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
@@ -36,6 +35,13 @@ public class OrderServiceImp implements OrderService {
     public List<Order> getOrdersByStatus(OrderStatus status) {
 
         return orderDao.getOrdersByStatus(status);
+    }
+
+    @Override
+    @Transactional
+    public List<Order> getOrdersByCustomer(Customer customer) {
+
+        return orderDao.getOrdersByCustomer(customer);
     }
 
     @Override

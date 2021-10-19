@@ -144,9 +144,9 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="card-plain" style="margin-bottom: 1rem">
-                        <button type="button" class="btn btn-success btn-simple animation-on-hover">
+                        <a href="/order/history" type="button" class="btn btn-success btn-simple animation-on-hover">
                             <spring:message code="message.profile.button.ordersHistory"/>
-                        </button>
+                        </a>
                     </div>
                     <div class="card card-user">
                         <div class="card-body">
@@ -168,6 +168,7 @@
                 </div>
                 <div class="col-lg-2"></div>
             </div>
+            <div id="footerGroup"></div>
         </div>
     </div>
 </div>

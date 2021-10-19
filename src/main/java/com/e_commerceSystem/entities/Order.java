@@ -13,6 +13,8 @@ import java.util.*;
 
 @NamedQuery(name = "get_orders_by_status",
         query = "from orders where order_status=:order_status order by creation_date desc")
+@NamedQuery(name = "get_orders_by_status_by_customer",
+        query = "from orders where order_status!=:order_status and customer_id=:customer_id order by creation_date desc")
 @NamedQuery(name = "get_orders",
         query = "from orders where order_status!=:order_status order by creation_date desc")
 @NamedQuery(name = "get_expired_orders",
