@@ -33,6 +33,10 @@ public class Catalog {
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private Set<Glass> glassList = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "catalog", orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private Set<CatalogItem> accessories = new HashSet<>();
+
     public Catalog() {
     }
 
@@ -75,6 +79,19 @@ public class Catalog {
 
     public boolean isEmpty(){
         return glassList.isEmpty();
+    }
+
+    public Set<CatalogItem> getAccessories() {
+        return accessories;
+    }
+
+    public void setAccessories(Set<CatalogItem> accessories) {
+
+        this.accessories.retainAll(accessories);
+        this.accessories.addAll(accessories);
+        for (CatalogItem catalogItem : accessories) {
+            catalogItem.setCatalog(this);
+        }
     }
 
     @Override

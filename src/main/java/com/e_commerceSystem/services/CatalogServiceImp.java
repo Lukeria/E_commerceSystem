@@ -51,9 +51,10 @@ public class CatalogServiceImp implements CatalogService {
         Catalog catalogToUpdate = getItemById(catalog.getId());
         catalogToUpdate.setGlassList(catalog.getGlassList());
         catalogToUpdate.setProductType(catalog.getProductType());
-        for(Glass glass: catalogToUpdate.getGlassList()){
-            glass.setCatalog(catalogToUpdate);
-        }
+//        for(Glass glass: catalogToUpdate.getGlassList()){
+//            glass.setCatalog(catalogToUpdate);
+//        }
+        catalogToUpdate.setAccessories(catalog.getAccessories());
 
         catalogDao.saveOrUpdateItem(catalogToUpdate);
     }

@@ -1,20 +1,15 @@
 package com.e_commerceSystem.entities;
 
-import com.e_commerceSystem.entities.components.Accessory;
-import com.e_commerceSystem.entities.embedded_keys.OrderItemKey;
 import com.e_commerceSystem.entities.components.Component;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Entity(name = "order_item")
-@JsonIgnoreProperties("order")
-public class OrderItem implements Serializable {
+@Entity(name = "catalog_item")
+@JsonIgnoreProperties("catalog")
+public class CatalogItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,20 +17,14 @@ public class OrderItem implements Serializable {
 
     private int amount;
     @ManyToOne(optional = false)
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "catalog_id")
+    private Catalog catalog;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "component_id")
     private Component component;
 
-    public OrderItem() {
-    }
-
-    public OrderItem(int amount, Order order, Component component) {
-        this.amount = amount;
-        this.order = order;
-        this.component = component;
+    public CatalogItem() {
     }
 
     public Long getId() {
@@ -54,12 +43,12 @@ public class OrderItem implements Serializable {
         this.amount = amount;
     }
 
-    public Order getOrder() {
-        return order;
+    public Catalog getCatalog() {
+        return catalog;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setCatalog(Catalog catalog) {
+        this.catalog = catalog;
     }
 
     public Component getComponent() {
@@ -74,12 +63,12 @@ public class OrderItem implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderItem orderItem = (OrderItem) o;
-        return amount == orderItem.amount && Objects.equals(id, orderItem.id) && Objects.equals(order, orderItem.order) && Objects.equals(component, orderItem.component);
+        CatalogItem that = (CatalogItem) o;
+        return amount == that.amount && Objects.equals(id, that.id) && Objects.equals(catalog, that.catalog) && Objects.equals(component, that.component);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount, order, component);
+        return Objects.hash(id, amount, catalog, component);
     }
 }

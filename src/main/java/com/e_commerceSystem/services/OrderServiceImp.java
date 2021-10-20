@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImp implements OrderService {
@@ -80,7 +81,6 @@ public class OrderServiceImp implements OrderService {
         order.setCreationDate(creationDate);
         order.setDeadline(deadLine);
         order.setStatus(OrderStatus.ACTIVE);
-//        order.setOrderItemsfromList(order.getOrderItemList());
 
         orderDao.saveOrUpdateOrder(order);
     }
@@ -93,7 +93,7 @@ public class OrderServiceImp implements OrderService {
         orderToUpdate.setProductType(order.getProductType());
         orderToUpdate.setCost(order.getCost());
         orderToUpdate.setGlassList(order.getGlassList());
-        orderToUpdate.setOrderItems(order.getOrderItems());
+        orderToUpdate.setAccessories(order.getAccessories());
 
 
         orderDao.saveOrUpdateOrder(orderToUpdate);
@@ -111,7 +111,7 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     @Transactional
-    public void updateOrderStatus(Long id, OrderStatus status) throws OrderAccessDeniedException{
+    public void updateOrderStatus(Long id, OrderStatus status) throws OrderAccessDeniedException {
 
         Order order = getOrderById(id);
 
@@ -160,6 +160,13 @@ public class OrderServiceImp implements OrderService {
 
         order.setProductType(catalog.getProductType());
         order.setGlassList(catalog.getGlassList());
+
+        Set<OrderItem> orderItems = catalog.getAccessories().stream()
+                .map(catalogItem ->
+                        new OrderItem(catalogItem.getAmount(), order, catalogItem.getComponent()))
+                .collect(Collectors.toSet());
+
+        order.setAccessories(orderItems);
 
         return order;
     }

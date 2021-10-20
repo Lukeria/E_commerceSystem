@@ -295,7 +295,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <c:if test="${!isForTemplate || isForTemplate==null}">
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
@@ -311,7 +310,7 @@
                                                         </button>
                                                     </th>
                                                     <tbody id="accessories">
-                                                    <c:forEach var="accessory" items="${model.orderItems}"
+                                                    <c:forEach var="accessory" items="${model.accessories}"
                                                                varStatus="status">
                                                         <tr id="row_${status.count}">
                                                             <td class="td-action">
@@ -344,7 +343,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </c:if>
                                 <c:if test="${!isForTemplate || isForTemplate==null}">
                                     <div class="form-row">
                                         <div class="form-group col-lg-4 col-md-6">

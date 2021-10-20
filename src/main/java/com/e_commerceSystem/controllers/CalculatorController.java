@@ -103,7 +103,7 @@ public class CalculatorController {
     @ModelAttribute("isTemplate")
     public void prepareOrder(Model model){
 
-        model.addAttribute("isTemplate", new Boolean(false));
+        model.addAttribute("isTemplate", Boolean.FALSE);
     }
 
 }

@@ -531,7 +531,7 @@ function createOrder(){
     object['cost'] = Number.parseFloat($("#cost").val()) || 0;
     object['installation'] = new Boolean($("#installation").val());
     object['glassList']=glassTable();
-    object['orderItems']=accessoryTable();
+    object['accessories']=accessoryTable();
 
     return object;
 }
@@ -542,6 +542,7 @@ function createTemplate(){
     object['id']= $("#id").val();
     object['productType']=$("#productType>option:selected").val();
     object['glassList']=glassTable();
+    object['accessories']=accessoryTable();
 
     return object;
 }
@@ -599,6 +600,7 @@ function accessoryTable() {
         accessory["name"] = $(this).find("#accessory>option:selected").text();
 
         obj["component"] = accessory;
+        obj["amount"] = Number.parseInt($(this).find("#amountAccessory").val()) || 1;
 
         myRows.push(obj)
     });

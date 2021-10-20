@@ -4,9 +4,6 @@ import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.additional.enums.PaymentMethod;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.glass.Glass;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -79,7 +76,7 @@ public class Order implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private Set<OrderItem> accessories = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
@@ -152,15 +149,15 @@ public class Order implements Serializable {
         this.deadline = deadline;
     }
 
-    public Set<OrderItem> getOrderItems() {
-        return orderItems;
+    public Set<OrderItem> getAccessories() {
+        return accessories;
     }
 
-    public void setOrderItems(Set<OrderItem> orderItems) {
+    public void setAccessories(Set<OrderItem> accessories) {
 
-        this.orderItems.retainAll(orderItems);
-        this.orderItems.addAll(orderItems);
-        for (OrderItem orderItem : orderItems) {
+        this.accessories.retainAll(accessories);
+        this.accessories.addAll(accessories);
+        for (OrderItem orderItem : accessories) {
             orderItem.setOrder(this);
         }
 

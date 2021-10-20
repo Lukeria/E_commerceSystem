@@ -1,7 +1,7 @@
 package com.e_commerceSystem.entities.components;
 
+import com.e_commerceSystem.entities.CatalogItem;
 import com.e_commerceSystem.entities.OrderItem;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 
@@ -28,7 +28,12 @@ public class Component {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "component")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     @JsonIgnore
-    private Set<OrderItem> accessories = new HashSet<>();
+    private Set<OrderItem> orderItems = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "component")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @JsonIgnore
+    private Set<CatalogItem> catalogItems = new HashSet<>();
 
     public Component() {
     }
@@ -65,17 +70,20 @@ public class Component {
         this.priceUSD = priceUSD;
     }
 
-    public Set<OrderItem> getAccessories() {
-        return accessories;
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setAccessories(Set<OrderItem> accessories) {
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
 
-        this.accessories.retainAll(accessories);
-        this.accessories.addAll(accessories);
-        for (OrderItem orderItem : accessories) {
-            orderItem.setComponent(this);
-        }
+    public Set<CatalogItem> getCatalogItems() {
+        return catalogItems;
+    }
+
+    public void setCatalogItems(Set<CatalogItem> catalogItems) {
+        this.catalogItems = catalogItems;
     }
 
     @Override
