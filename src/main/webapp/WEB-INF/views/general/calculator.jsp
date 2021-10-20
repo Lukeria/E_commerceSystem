@@ -27,6 +27,8 @@
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/resources/css/black-dashboard.css?v=1.0.0"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/custom/custom.css"/>
+    <%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/custom/shapes.css"/>--%>
+
 </head>
 <body clas="">
 <div class="wrapper">
@@ -91,19 +93,6 @@
                             </c:choose>
                         </div>
                         <div class="card-body">
-                            <%--                            <c:choose>--%>
-                            <%--                                <c:when test="${isForTemplate}">--%>
-                            <%--                                    <spring:url value="/catalog/settings/save" var="formUrl"/>--%>
-                            <%--                                </c:when>--%>
-                            <%--                                <c:otherwise>--%>
-                            <%--                                    <security:authorize access="hasRole('ADMIN')">--%>
-                            <%--                                        <spring:url value="/order/save" var="formUrl"/>--%>
-                            <%--                                    </security:authorize>--%>
-                            <%--                                    <security:authorize access="hasRole('USER')">--%>
-                            <%--                                        <spring:url value="/cart/add" var="formUrl"/>--%>
-                            <%--                                    </security:authorize>--%>
-                            <%--                                </c:otherwise>--%>
-                            <%--                            </c:choose>--%>
                             <form id="calculatorForm" method="post" action="${formUrl}" modelAttribute="model">
 
                                 <security:authorize access="hasRole('ADMIN')">
@@ -147,6 +136,20 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <c:if test="${!isForTemplate || isForTemplate==null}">
+                                        <div class="form-group col-lg-6 col-md-12 align-self-center">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox" id="installation"
+                                                           value="${model.installation}">
+                                                    <spring:message code="message.orders.column.installation"/>
+                                                    <span class="form-check-sign"><span
+                                                            class="check"></span>
+                                                </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </c:if>
                                 </div>
 
                                 <div class="form-row">
@@ -154,7 +157,8 @@
                                         <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
                                             <table class="table">
                                                 <thead>
-                                                <th><spring:message code="message.orders.glass.heading"/></th>
+                                                <th style="width: 20px"><spring:message
+                                                        code="message.orders.glass.heading"/></th>
                                                 <th>
                                                     <button type="button"
                                                             class="btn btn-primary btn-simple btn-sm"
@@ -175,6 +179,25 @@
                                                             </button>
                                                         </td>
                                                         <td style="width:50%">
+                                                            <div class="form-row">
+                                                                    <%--                                                                <div class="cc-selector">--%>
+                                                                    <%--                                                                    <input id="visa_${status.count}" type="radio" name="credit-card_${status.count}" value="visa" />--%>
+                                                                    <%--                                                                    <label class="drinkcard-cc visa" for="visa_${status.count}"></label>--%>
+                                                                    <%--                                                                    <input id="mastercard_${status.count}" type="radio" name="credit-card_${status.count}" value="mastercard" />--%>
+                                                                    <%--                                                                    <label class="drinkcard-cc mastercard"for="mastercard_${status.count}"></label>--%>
+                                                                    <%--                                                                    <input id="triangle_${status.count}" type="radio" name="credit-card_${status.count}" value="triangle" />--%>
+                                                                    <%--                                                                    <label class="drinkcard-cc triangle"for="triangle_${status.count}"></label>--%>
+                                                                    <%--                                                                </div>--%>
+                                                                <div class="form-group col">
+                                                                        <%--                                                                    <select class="form-control" id="shape">--%>
+                                                                        <%--                                                                        <option value="circle">Круг</option>--%>
+                                                                        <%--                                                                        <option value="rectangle">Прямоугольник</option>--%>
+                                                                        <%--                                                                        <option value="triangle">Прямоугольный треугольник</option>--%>
+                                                                        <%--                                                                        <option value="custom">Произвольная</option>--%>
+                                                                        <%--                                                                    </select>--%>
+                                                                </div>
+                                                            </div>
+
                                                             <div class="form-row">
                                                                 <div class="form-group col-lg-8 col-md-12">
                                                                     <select class="form-control" id="glassType">
@@ -272,15 +295,56 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table>
-                                    <tbody id="accessory">
-                                    </tbody>
-                                </table>
-                                <table>
-                                    <tbody id="extraService">
-                                    </tbody>
-                                </table>
-
+                                <c:if test="${!isForTemplate || isForTemplate==null}">
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
+                                                <table class="table">
+                                                    <thead>
+                                                    <th style="width: 20px"><spring:message
+                                                            code="message.enum.componentType.accessory.plural"/></th>
+                                                    <th>
+                                                        <button type="button"
+                                                                class="btn btn-primary btn-simple btn-sm"
+                                                                id="addAccessoryRaw">
+                                                            <spring:message code="message.form.button.add"/>
+                                                        </button>
+                                                    </th>
+                                                    <tbody id="accessories">
+                                                    <c:forEach var="accessory" items="${model.orderItems}"
+                                                               varStatus="status">
+                                                        <tr id="row_${status.count}">
+                                                            <td class="td-action">
+                                                                <button type="button" id="delete" type="button"
+                                                                        rel="tooltip"
+                                                                        class="btn btn-link btn-danger btn-sm btn-icon">
+                                                                    <i class="tim-icons icon-trash-simple"></i>
+                                                                </button>
+                                                            </td>
+                                                            <td>
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-lg-8 col-md-12">
+                                                                        <select class="form-control" id="accessory">
+                                                                            <option selected
+                                                                                    value="${accessory.component.id}">${accessory.component.name}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group col-lg-4 col-md-12">
+                                                                        <input class="form-control" id="amountAccessory"
+                                                                               placeholder="<spring:message code="message.form.amount.placeholder"/>"
+                                                                               type="number"
+                                                                               value="${accessory.amount}"/>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
                                 <c:if test="${!isForTemplate || isForTemplate==null}">
                                     <div class="form-row">
                                         <div class="form-group col-lg-4 col-md-6">

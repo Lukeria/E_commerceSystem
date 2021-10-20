@@ -38,7 +38,7 @@ public class CalculatorServiceImp implements CalculatorService {
 
             GlassType glassType = (GlassType) componentServiceFactory.getComponentService(ComponentType.GLASS_TYPE).getComponentById(glass.getGlassType().getId());
             price = square * glassType.getPrice();
-            for (Processing currentProcessing : glass.getProcessingArrayList()) {
+            for (Processing currentProcessing : glass.getProcessingList()) {
 
                 Processing processing = (Processing) componentServiceFactory.getComponentService(ComponentType.PROCESSING).getComponentById(currentProcessing.getId());
                 price += processing.getPrice() * perimeter * (currentProcessing.getQuantity() != 0 ? currentProcessing.getQuantity() : 1);

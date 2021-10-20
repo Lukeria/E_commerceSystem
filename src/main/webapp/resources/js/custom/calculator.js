@@ -4,6 +4,10 @@ let accessoryList = [];
 
 $(document).ready(function () {
 
+    if ($('#installation').val()==="true"){
+        $("#installation").prop("checked", true);
+    }
+
     getGlassData();
     getProcessingData();
     getAccessory();
@@ -13,6 +17,10 @@ $(document).ready(function () {
 
         $("#addRaw").click(function () {
             addGlassRow();
+        });
+
+        $("#addAccessoryRaw").click(function () {
+            addAccessoryRow();
         });
 
         $("#calculate").click(function (event) {
@@ -125,6 +133,13 @@ function getAccessory(){
         url: "/component/list?componentType=accessory",
         success: function (response) {
             accessoryList = response;
+            $("#accessories>tr").each(function () {
+                prepareAccessory($(this));
+
+                $(this).find('#delete').click(function () {
+                    $(this).parents("#accessories>tr").remove();
+                });
+            });
         },
         error: function (e) {
             showNotification(messages['loadingData'], 'danger');
@@ -311,6 +326,33 @@ function prepareProcessingName(selected) {
     nameSelect.append(select);
 }
 
+function prepareAccessory(currentRow){
+
+    let accessorySelect = $(currentRow).find('#accessory');
+    let selectedOption = $(accessorySelect).find('option:selected');
+    accessorySelect.empty();
+
+    let accessorySet = new Set();
+    accessoryList.forEach(function (item) {
+        accessorySet.add(item)
+    });
+
+    let select = "";
+    accessorySet.forEach(function (item) {
+        let selected = "";
+        if (selectedOption.val() !== "") {
+            if (item.id === (Number.parseInt(selectedOption.val()||0))) {
+                selected = "selected";
+            }
+        }
+        let option = "<option " + selected + " value=" + item.id + ">" + item.name + "</option>";
+        select += option;
+    });
+
+    accessorySelect.append(select);
+
+    return accessorySelect;
+}
 ///////////////////////
 
 ////Add rows////
@@ -381,6 +423,27 @@ function addProcessingRow(glassRow) {
     });
 }
 
+function addAccessoryRow() {
+
+    let currentRow = $('#accessories>tr:last-child');
+    let newRow;
+    if (currentRow.length === 0) {
+        newRow = createAccessoryRow();
+    } else {
+        let currentId = Number.parseInt(currentRow[0].id.split("_")[1]) || 0;
+        newRow = $(currentRow).clone().prop("id", "row_" + (currentId + 1));
+        newRow.find("input").val("");
+    }
+
+    prepareAccessory(newRow);
+
+    newRow.find('#delete').click(function () {
+        $(this).parents("#accessories>tr").remove();
+    });
+
+    $('#accessories').append(newRow);
+}
+
 function createProcessingRow() {
 
     let currentRow = $("<tr id='row_1'></tr>");
@@ -409,8 +472,7 @@ function createProcessingRow() {
         '                       <input class="form-control"\n' +
         '                              type="number"\n' +
         '                              id="quantity"\n' +
-        '                              placeholder="'+messages.placeholderAmount+'"\n' +
-        '                              value="${processing.quantity}">\n' +
+        '                              placeholder="'+messages.placeholderAmount+'">\n' +
         '                   </div>\n' +
         '               </div>\n' +
         '           </td>');
@@ -430,6 +492,34 @@ function manageProcessingInputsVisibility(currentRow) {
     }
 }
 
+function createAccessoryRow(){
+
+    let currentRow = $("<tr id='row_1'></tr>");
+
+    currentRow.append('<td class="td-action">\n' +
+        '<button type="button" id="delete" type="button" rel="tooltip"\n' +
+        'class="btn btn-link btn-danger btn-sm btn-icon">\n' +
+        '<i class="tim-icons icon-trash-simple"></i>\n' +
+        '</button>\n' +
+        '</td>');
+
+    currentRow.append('<td>\n' +
+        '     <div class="form-row">\n' +
+        '          <div class="form-group col-lg-8 col-md-12">\n' +
+        '                  <select class="form-control" id="accessory">\n' +
+        '                  </select>\n' +
+        '          </div>\n' +
+        '          <div class="form-group col-lg-4 col-md-12">\n' +
+        '                  <input class="form-control" id="amountAccessory"\n' +
+        '                       placeholder="'+messages.placeholderAmount+'"\n' +
+        '                       type="number"/>\n' +
+        '           </div>\n' +
+        '      </div>\n' +
+        '</td>');
+
+    return currentRow;
+
+}
 ///////////
 
 ////// Create model
@@ -439,7 +529,9 @@ function createOrder(){
     object['id']= $("#id").val();
     object['productType']=$("#productType>option:selected").val();
     object['cost'] = Number.parseFloat($("#cost").val()) || 0;
+    object['installation'] = new Boolean($("#installation").val());
     object['glassList']=glassTable();
+    object['orderItems']=accessoryTable();
 
     return object;
 }
@@ -495,10 +587,29 @@ function glassTable() {
 
 }
 
+function accessoryTable() {
+
+    let myRows = [];
+
+    $('#accessories>tr').each(function () {
+        let obj = {}
+
+        let accessory = {};
+        accessory["id"] = $(this).find("#accessory>option:selected").val();
+        accessory["name"] = $(this).find("#accessory>option:selected").text();
+
+        obj["component"] = accessory;
+
+        myRows.push(obj)
+    });
+
+    return myRows;
+}
+
 ////Save data////
 function doAjaxCalculatePost() {
     // get the form values
-    let Json = JSON.stringify(glassTable());
+    let Json = JSON.stringify(createOrder());
     $.ajax({
         type: "POST",
         url: "/calculator/calculate",

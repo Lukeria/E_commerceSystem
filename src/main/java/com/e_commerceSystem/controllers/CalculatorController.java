@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -64,9 +65,9 @@ public class CalculatorController {
 
     @PostMapping("/calculate")
     @ResponseBody
-    public JsonResponse calculate(@RequestBody List<Glass> glassList) {
+    public JsonResponse calculate(@RequestBody Order order) {
 
-        float resultPrice = calculatingService.calculatePrice(glassList);
+        float resultPrice = calculatingService.calculatePrice(new ArrayList<>(order.getGlassList()));
 
         JsonResponse response = new JsonResponse();
         response.setStatus(HttpStatus.OK);

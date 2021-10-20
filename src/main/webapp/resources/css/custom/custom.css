@@ -83,7 +83,7 @@ table {
             0deg, #00f2c3 0%, #ba54f5 100%);
 }
 
-.sidebar a p{
+.sidebar a p {
     font-size: 0.7rem;
 }
 
@@ -91,11 +91,11 @@ table {
     display: inline-block;
 }
 
-.badge{
+.badge {
     font-size: 0.8rem;
 }
 
-.badge-success{
+.badge-success {
     background-image: linear-gradient(to bottom left, #0098f0, #00f2ea, #00f2c3);
 }
 
@@ -108,11 +108,11 @@ table {
     border-bottom: 0.0625rem;
 }
 
-body .content label{
+body .content label {
     font-size: 0.8rem;
 }
 
-body .card label{
+body .card label {
     font-size: 0.8rem;
 }
 
@@ -239,16 +239,16 @@ a, .btn {
     cursor: pointer;
 }
 
-.table>tbody>tr>.text-danger{
+.table > tbody > tr > .text-danger {
     color: #fd5d93 !important;
 }
 
-.page-link{
+.page-link {
     border: 0.0625rem solid #393e4b;
     color: #ba54f5;
 }
 
-li.page-item.active .page-link{
+li.page-item.active .page-link {
     background-color: #ba54f5;
     border-color: #ba54f5;
 }
@@ -260,19 +260,19 @@ li.page-item.active .page-link{
     border-radius: 15px;
 }
 
-.credit-card .form-control{
+.credit-card .form-control {
     border-color: rgba(255, 255, 255, 0.6);
     color: floralwhite;
 }
 
-.credit-card .form-control:focus{
+.credit-card .form-control:focus {
     border-color: white;
 }
 
-.credit-card .form-control::placeholder{
+.credit-card .form-control::placeholder {
     color: rgba(255, 255, 255, 0.6);
 }
 
-.credit-card .form-control-danger{
+.credit-card .form-control-danger {
     border-color: red;
 }

@@ -4,9 +4,13 @@ import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.additional.enums.PaymentMethod;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.glass.Glass;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -33,7 +37,7 @@ import java.util.*;
         query = "from orders where order_status=:order_status and id=:id")
 
 @Entity(name = "orders")
-public class Order {
+public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,8 +77,8 @@ public class Order {
     @Column(name = "payment_method")
     private PaymentMethod paymentMethod = PaymentMethod.CASH;
 
-    @OneToMany(mappedBy = "order")
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Set<OrderItem> orderItems = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", orphanRemoval = true)
@@ -153,7 +157,13 @@ public class Order {
     }
 
     public void setOrderItems(Set<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+
+        this.orderItems.retainAll(orderItems);
+        this.orderItems.addAll(orderItems);
+        for (OrderItem orderItem : orderItems) {
+            orderItem.setOrder(this);
+        }
+
     }
 
     public Set<Glass> getGlassList() {
@@ -214,7 +224,7 @@ public class Order {
         return installation;
     }
 
-    public void setInstallation(Boolean installation) {
+    public void isInstallation(Boolean installation) {
         this.installation = installation;
     }
 

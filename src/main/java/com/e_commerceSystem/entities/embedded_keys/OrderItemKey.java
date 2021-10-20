@@ -29,8 +29,8 @@ public class OrderItemKey implements Serializable {
         return componentId;
     }
 
-    public void setComponentId(Long itemId) {
-        this.componentId = itemId;
+    public void setComponentId(Long componentId) {
+        this.componentId = componentId;
     }
 
     @Override

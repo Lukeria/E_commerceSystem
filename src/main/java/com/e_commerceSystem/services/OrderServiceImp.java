@@ -5,6 +5,7 @@ import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
+import com.e_commerceSystem.entities.OrderItem;
 import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.exceptions.notFoundExceptions.OrderAccessDeniedException;
 import com.e_commerceSystem.exceptions.notFoundExceptions.OrderNotFoundException;
@@ -79,6 +80,7 @@ public class OrderServiceImp implements OrderService {
         order.setCreationDate(creationDate);
         order.setDeadline(deadLine);
         order.setStatus(OrderStatus.ACTIVE);
+//        order.setOrderItemsfromList(order.getOrderItemList());
 
         orderDao.saveOrUpdateOrder(order);
     }
@@ -91,6 +93,8 @@ public class OrderServiceImp implements OrderService {
         orderToUpdate.setProductType(order.getProductType());
         orderToUpdate.setCost(order.getCost());
         orderToUpdate.setGlassList(order.getGlassList());
+        orderToUpdate.setOrderItems(order.getOrderItems());
+
 
         orderDao.saveOrUpdateOrder(orderToUpdate);
     }

@@ -34,9 +34,6 @@ public class Glass implements Serializable {
     )
     private Set<Processing> processingList = new HashSet<>();
 
-    @Transient
-    private List<Processing> processingArrayList = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
@@ -109,14 +106,6 @@ public class Glass implements Serializable {
     public void setOrder(Order order) {
         this.order = order;
 //        order.addToGlassList(this);
-    }
-
-    public List<Processing> getProcessingArrayList() {
-        return processingArrayList;
-    }
-
-    public void setProcessingArrayList(List<Processing> processingArrayList) {
-        this.processingArrayList = processingArrayList;
     }
 
     public Catalog getCatalog() {
