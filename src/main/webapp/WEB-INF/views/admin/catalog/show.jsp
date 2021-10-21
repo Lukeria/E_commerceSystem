@@ -84,6 +84,33 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title"><spring:message code="message.enum.componentType.accessory.plural"/></h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th><spring:message code="message.component.column.name"/></th>
+                                        <th><spring:message code="message.glass.column.amount"/></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="accessory" items="${catalog.accessories}" varStatus="status">
+                                        <tr>
+                                            <td class="text-center">${status.count}</td>
+                                            <td>${accessory.component.name}</td>
+                                            <td>${accessory.amount}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="card">

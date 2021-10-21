@@ -94,8 +94,8 @@
                                                     <c:forEach var="glass" items="${order.glassList}">
                                                         <tr>
                                                             <td class="text-left"
-                                                                style="width: 8rem">${glass.glassType.name}-${glass.glassType.thickness}</td>
-                                                            <td style="width: 8rem">${glass.width}x${glass.height}</td>
+                                                                style="width: 8rem">- ${glass.glassType.name}-${glass.glassType.thickness}</td>
+                                                            <td style="width: 8rem">${glass.width}x${glass.height}-${glass.amount}</td>
                                                             <td class="text-left">
                                                                 <c:forEach var="processing"
                                                                            items="${glass.processingList}"
@@ -106,6 +106,18 @@
                                                             </td>
                                                         </tr>
                                                     </c:forEach>
+                                                    <c:forEach var="accessory" items="${order.accessories}">
+                                                        <tr>
+                                                            <td class="text-left" colspan="2">- ${accessory.component.name} - ${accessory.amount}шт.</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    <c:if test="${order.installation}">
+                                                        <tr>
+                                                            <td>
+                                                                - <spring:message code="message.orders.column.installation"/>
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
                                                     </tbody>
                                                 </table>
                                             </td>
