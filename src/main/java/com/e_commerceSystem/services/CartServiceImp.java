@@ -43,7 +43,7 @@ public class CartServiceImp implements CartService {
     public void addOrder(Order order, Customer customer) {
 
         order.setCustomer(customer);
-        order.setCost(calculatorService.calculatePrice(new ArrayList<>(order.getGlassList())));
+        order.setCost(calculatorService.calculatePrice(order));
         order.setStatus(OrderStatus.CART);
 
         orderDao.saveOrUpdateOrder(order);

@@ -2,6 +2,7 @@ package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.ProductType;
+import com.e_commerceSystem.additional.enums.Shape;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.glass.Glass;
@@ -58,6 +59,7 @@ public class CalculatorController {
         modelAndView.addObject("isForTemplate", isTemplate);
         modelAndView.addObject("message", message);
         modelAndView.addObject("productTypes", ProductType.values());
+        modelAndView.addObject("shapes", Shape.values());
 
         return modelAndView;
 
@@ -67,7 +69,7 @@ public class CalculatorController {
     @ResponseBody
     public JsonResponse calculate(@RequestBody Order order) {
 
-        float resultPrice = calculatingService.calculatePrice(new ArrayList<>(order.getGlassList()));
+        float resultPrice = calculatingService.calculatePrice(order);
 
         JsonResponse response = new JsonResponse();
         response.setStatus(HttpStatus.OK);

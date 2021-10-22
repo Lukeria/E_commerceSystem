@@ -1,5 +1,6 @@
 package com.e_commerceSystem.entities.glass;
 
+import com.e_commerceSystem.additional.enums.Shape;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Order;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,6 +22,9 @@ public class Glass implements Serializable {
     private Integer height;
     private Integer amount;
 
+    @Enumerated(EnumType.STRING)
+    private Shape shape;
+
     @ManyToOne
     @JoinColumn(name = "glass_type_id")
     @JsonProperty("type")
@@ -29,8 +33,8 @@ public class Glass implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Glass_Processing",
-            joinColumns = { @JoinColumn(name = "glass_id") },
-            inverseJoinColumns = { @JoinColumn(name = "processing_id") }
+            joinColumns = {@JoinColumn(name = "glass_id")},
+            inverseJoinColumns = {@JoinColumn(name = "processing_id")}
     )
     private Set<Processing> processingList = new HashSet<>();
 
@@ -75,7 +79,6 @@ public class Glass implements Serializable {
 
     public void setGlassType(GlassType glassType) {
         this.glassType = glassType;
-//        glassType.addToGlass(this);
     }
 
     public Set<Processing> getProcessingList() {
@@ -84,7 +87,7 @@ public class Glass implements Serializable {
 
     public void setProcessingList(Set<Processing> processingList) {
 
-       this.processingList = processingList;
+        this.processingList = processingList;
     }
 
     public Integer getAmount() {
@@ -105,7 +108,6 @@ public class Glass implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
-//        order.addToGlassList(this);
     }
 
     public Catalog getCatalog() {
@@ -116,16 +118,27 @@ public class Glass implements Serializable {
         this.catalog = catalog;
     }
 
+
+    public Shape getShape() {
+        return shape;
+    }
+
+    public void setShape(Shape shape) {
+        this.shape = shape;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Glass glass = (Glass) o;
-        return id.equals(glass.id) && Objects.equals(width, glass.width) && Objects.equals(height, glass.height) && Objects.equals(amount, glass.amount);
+        return Objects.equals(id, glass.id) && Objects.equals(width, glass.width) && Objects.equals(height, glass.height)
+                && Objects.equals(amount, glass.amount) && shape == glass.shape && Objects.equals(glassType, glass.glassType)
+                && Objects.equals(order, glass.order) && Objects.equals(catalog, glass.catalog);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, width, height, amount);
+        return Objects.hash(id, width, height, amount, shape, glassType, order, catalog);
     }
 }

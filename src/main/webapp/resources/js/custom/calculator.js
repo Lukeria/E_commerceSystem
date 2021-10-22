@@ -4,7 +4,7 @@ let accessoryList = [];
 
 $(document).ready(function () {
 
-    if ($('#installation').val()==="true"){
+    if ($('#installation').val() === "true") {
         $("#installation").prop("checked", true);
     }
 
@@ -55,7 +55,7 @@ $(document).ready(function () {
 
 });
 
-function getGlassData(){
+function getGlassData() {
 
     $.ajax({
         type: "GET",
@@ -89,7 +89,7 @@ function getGlassData(){
 
 }
 
-function getProcessingData(){
+function getProcessingData() {
 
     $.ajax({
         type: "GET",
@@ -126,7 +126,7 @@ function getProcessingData(){
 
 }
 
-function getAccessory(){
+function getAccessory() {
 
     $.ajax({
         type: "GET",
@@ -288,7 +288,7 @@ function prepareProcessingType(glassRow, currentRow) {
                 selected = "selected";
             }
         }
-        let option = "<option " + selected + " value=" + item + ">" + messages['processing_'+item.toLowerCase()] + "</option>";
+        let option = "<option " + selected + " value=" + item + ">" + messages['processing_' + item.toLowerCase()] + "</option>";
         select += option;
     });
 
@@ -326,7 +326,7 @@ function prepareProcessingName(selected) {
     nameSelect.append(select);
 }
 
-function prepareAccessory(currentRow){
+function prepareAccessory(currentRow) {
 
     let accessorySelect = $(currentRow).find('#accessory');
     let selectedOption = $(accessorySelect).find('option:selected');
@@ -341,7 +341,7 @@ function prepareAccessory(currentRow){
     accessorySet.forEach(function (item) {
         let selected = "";
         if (selectedOption.val() !== "") {
-            if (item.id === (Number.parseInt(selectedOption.val()||0))) {
+            if (item.id === (Number.parseInt(selectedOption.val() || 0))) {
                 selected = "selected";
             }
         }
@@ -353,6 +353,7 @@ function prepareAccessory(currentRow){
 
     return accessorySelect;
 }
+
 ///////////////////////
 
 ////Add rows////
@@ -472,7 +473,7 @@ function createProcessingRow() {
         '                       <input class="form-control"\n' +
         '                              type="number"\n' +
         '                              id="quantity"\n' +
-        '                              placeholder="'+messages.placeholderAmount+'">\n' +
+        '                              placeholder="' + messages.placeholderAmount + '">\n' +
         '                   </div>\n' +
         '               </div>\n' +
         '           </td>');
@@ -485,14 +486,14 @@ function manageProcessingInputsVisibility(currentRow) {
     let typeValue = $(currentRow).find("#type>option:selected").val();
     let quantity = $(currentRow).find("#quantity");
 
-    if(typeValue === 'HOLE'){
+    if (typeValue === 'HOLE') {
         quantity.show();
-    } else{
+    } else {
         quantity.hide();
     }
 }
 
-function createAccessoryRow(){
+function createAccessoryRow() {
 
     let currentRow = $("<tr id='row_1'></tr>");
 
@@ -511,7 +512,7 @@ function createAccessoryRow(){
         '          </div>\n' +
         '          <div class="form-group col-lg-4 col-md-12">\n' +
         '                  <input class="form-control" id="amountAccessory"\n' +
-        '                       placeholder="'+messages.placeholderAmount+'"\n' +
+        '                       placeholder="' + messages.placeholderAmount + '"\n' +
         '                       type="number"/>\n' +
         '           </div>\n' +
         '      </div>\n' +
@@ -520,29 +521,30 @@ function createAccessoryRow(){
     return currentRow;
 
 }
+
 ///////////
 
 ////// Create model
-function createOrder(){
+function createOrder() {
 
     let object = {};
-    object['id']= $("#id").val();
-    object['productType']=$("#productType>option:selected").val();
+    object['id'] = $("#id").val();
+    object['productType'] = $("#productType>option:selected").val();
     object['cost'] = Number.parseFloat($("#cost").val()) || 0;
-    object['installation'] = new Boolean($("#installation").val());
-    object['glassList']=glassTable();
-    object['accessories']=accessoryTable();
+    object['installation'] = $("#installation").is(":checked");
+    object['glassList'] = glassTable();
+    object['accessories'] = accessoryTable();
 
     return object;
 }
 
-function createTemplate(){
+function createTemplate() {
 
     let object = {};
-    object['id']= $("#id").val();
-    object['productType']=$("#productType>option:selected").val();
-    object['glassList']=glassTable();
-    object['accessories']=accessoryTable();
+    object['id'] = $("#id").val();
+    object['productType'] = $("#productType>option:selected").val();
+    object['glassList'] = glassTable();
+    object['accessories'] = accessoryTable();
 
     return object;
 }
@@ -563,6 +565,7 @@ function glassTable() {
         obj["width"] = Number.parseInt($(this).find("#width").val()) || 0;
         obj["height"] = Number.parseInt($(this).find("#height").val()) || 0;
         obj["amount"] = Number.parseInt($(this).find("#amount").val()) || 1;
+        obj["shape"] = $(this).find("#shape>option:selected").val();
 
         let tableProcessing = $(this).find("#processing>tr");
         let processingList = [];
@@ -642,14 +645,14 @@ function doAjaxSaveOrderPost() {
         data: Json,
         success: function (response) {
             if (response.status === "OK") {
-                if(response.redirect){
+                if (response.redirect) {
                     window.location.replace(response.redirectUrl);
                 }
             } else {
                 response.result.forEach(function (item) {
-                    $('#error_'+item.field).text(messages[item.code]);
-                    $('#'+item.field).addClass('form-control-danger');
-                    $('#group_'+item.field).addClass('has-danger');
+                    $('#error_' + item.field).text(messages[item.code]);
+                    $('#' + item.field).addClass('form-control-danger');
+                    $('#group_' + item.field).addClass('has-danger');
                 });
             }
         },
@@ -669,14 +672,14 @@ function doAjaxSaveTemplatePost() {
         data: Json,
         success: function (response) {
             if (response.status === "OK") {
-                if(response.redirect){
+                if (response.redirect) {
                     window.location.replace(response.redirectUrl);
                 }
             } else {
                 response.result.forEach(function (item) {
-                    $('#error_'+item.field).text(messages[item.code]);
-                    $('#'+item.field).addClass('form-control-danger');
-                    $('#group_'+item.field).addClass('has-danger');
+                    $('#error_' + item.field).text(messages[item.code]);
+                    $('#' + item.field).addClass('form-control-danger');
+                    $('#group_' + item.field).addClass('has-danger');
                 });
             }
         },
@@ -696,12 +699,12 @@ function doAjaxAddToCartPost() {
         data: Json,
         success: function (response) {
             if (response.status === "OK") {
-               showNotification(response.message, "success");
+                showNotification(response.message, "success");
             } else {
                 response.result.forEach(function (item) {
-                    $('#error_'+item.field).text(messages[item.code]);
-                    $('#'+item.field).addClass('form-control-danger');
-                    $('#group_'+item.field).addClass('has-danger');
+                    $('#error_' + item.field).text(messages[item.code]);
+                    $('#' + item.field).addClass('form-control-danger');
+                    $('#group_' + item.field).addClass('has-danger');
                 });
             }
         },
