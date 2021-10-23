@@ -11,7 +11,6 @@ import com.sun.javafx.iio.ImageStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,10 +21,15 @@ import java.util.List;
 @Service
 public class CatalogServiceImp implements CatalogService {
 
+    private final ImageStorageService imageStorageService;
+    private final CatalogDao catalogDao;
+
     @Autowired
-    private ImageStorageService imageStorageService;
-    @Autowired
-    private CatalogDao catalogDao;
+    public CatalogServiceImp(ImageStorageService imageStorageService, CatalogDao catalogDao) {
+
+        this.imageStorageService = imageStorageService;
+        this.catalogDao = catalogDao;
+    }
 
     @Override
     @Transactional

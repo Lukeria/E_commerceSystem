@@ -11,27 +11,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("userDetailsService")
 public class UserDetailsServiceImp implements UserDetailsService {
 
-    @Autowired
-    private UserDao userDetailsDao;
+    private final UserDao userDetailsDao;
 
+    @Autowired
+    public UserDetailsServiceImp(UserDao userDetailsDao) {
+        this.userDetailsDao = userDetailsDao;
+    }
 
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userDetailsDao.findUserByUsername(username);
-//        UserBuilder builder;
+
         if (user == null) {
-//
-//            builder = org.springframework.security.core.userdetails.User.withUsername(username);
-//            builder.password(user.getPassword());
-//            String[] roles = {user.getRole().getRole()};
-//
-//            builder.authorities(roles);
             throw new UsernameNotFoundException("User not found.");
         } else {
             return new CustomUserDetails(user);
         }
-//        return builder.build();
     }
 }

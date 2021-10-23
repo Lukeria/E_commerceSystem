@@ -16,8 +16,12 @@ import java.util.List;
 @Service
 public class PriceListServiceImp implements PriceListService {
 
+    private final ComponentServiceFactory componentServiceFactory;
+
     @Autowired
-    private ComponentServiceFactory componentServiceFactory;
+    public PriceListServiceImp(ComponentServiceFactory componentServiceFactory) {
+        this.componentServiceFactory = componentServiceFactory;
+    }
 
     @Override
     public void updatePriceListGlassType(String tableJson) {

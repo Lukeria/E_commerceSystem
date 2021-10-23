@@ -5,7 +5,6 @@ import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Order;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;

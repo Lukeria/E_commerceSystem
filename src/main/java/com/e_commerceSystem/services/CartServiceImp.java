@@ -12,18 +12,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CartServiceImp implements CartService {
 
+    private final OrderDao orderDao;
+    private final LocalDateTimeHandler dateTimeHandler;
+    private final CalculatorService calculatorService;
+
     @Autowired
-    private OrderDao orderDao;
-    @Autowired
-    private LocalDateTimeHandler dateTimeHandler;
-    @Autowired
-    private CalculatorService calculatorService;
+    public CartServiceImp(OrderDao orderDao, LocalDateTimeHandler dateTimeHandler, CalculatorService calculatorService) {
+
+        this.orderDao = orderDao;
+        this.dateTimeHandler = dateTimeHandler;
+        this.calculatorService = calculatorService;
+    }
 
     @Override
     @Transactional

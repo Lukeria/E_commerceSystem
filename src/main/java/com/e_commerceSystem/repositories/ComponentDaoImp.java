@@ -16,8 +16,12 @@ import java.util.stream.Collectors;
 @Repository
 public class ComponentDaoImp implements ComponentDao {
 
+    private final SessionFactory sessionFactory;
+
     @Autowired
-    private SessionFactory sessionFactory;
+    public ComponentDaoImp(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public List<GlassType> getGlassTypeAll() {

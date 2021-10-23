@@ -2,7 +2,6 @@ package com.e_commerceSystem.validation;
 
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
-import com.e_commerceSystem.entities.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;

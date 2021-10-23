@@ -2,13 +2,10 @@ package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.OrderStatus;
-import com.e_commerceSystem.entities.CustomUserDetails;
-import com.e_commerceSystem.entities.Order;
-import com.e_commerceSystem.entities.OrderItem;
-import com.e_commerceSystem.entities.User;
-import com.e_commerceSystem.entities.components.Component;
+import com.e_commerceSystem.entities.*;
 import com.e_commerceSystem.exceptions.notFoundExceptions.OrderAccessDeniedException;
 import com.e_commerceSystem.services.LocaleMessageHandler;
+import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.e_commerceSystem.services.interfaces.OrderService;
 import com.e_commerceSystem.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +27,18 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderValidator orderValidator;
     private final LocaleMessageHandler localeMessageHandler;
+    private final CatalogService catalogService;
 
     @Autowired
     public OrderController(OrderService orderService,
                            OrderValidator orderValidator,
-                           LocaleMessageHandler localeMessageHandler) {
+                           LocaleMessageHandler localeMessageHandler,
+                           CatalogService catalogService) {
 
         this.orderService = orderService;
         this.orderValidator = orderValidator;
         this.localeMessageHandler = localeMessageHandler;
+        this.catalogService = catalogService;
     }
 
     @InitBinder(value = "order")
@@ -202,6 +202,20 @@ public class OrderController {
         }
 
         return response;
+    }
+
+    @GetMapping("/fillByCatalog/{id}")
+    public ModelAndView createOrderByTemplate(@PathVariable("id") Long id,
+                                              RedirectAttributes redirectAttributes) {
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
+
+        Catalog catalog = catalogService.getItemById(id);
+        Order order = orderService.createOrder(catalog);
+
+        redirectAttributes.addFlashAttribute("order", order);
+
+        return modelAndView;
     }
 
 }

@@ -17,8 +17,12 @@ import java.util.Map;
 @Transactional
 public class AccessoryServiceImp implements ComponentService<Accessory> {
 
+    private final ComponentDao componentDao;
+
     @Autowired
-    ComponentDao componentDao;
+    public AccessoryServiceImp(ComponentDao componentDao) {
+        this.componentDao = componentDao;
+    }
 
     @Override
     public List<Accessory> getComponentList() {
@@ -70,10 +74,10 @@ public class AccessoryServiceImp implements ComponentService<Accessory> {
         Accessory accessory = new Accessory();
         accessory.setName(params.get("name"));
         try {
-            if(!params.get("id").isEmpty()) {
+            if (!params.get("id").isEmpty()) {
                 accessory.setId(Long.parseLong(params.get("id")));
             }
-        } catch (NumberFormatException exception){
+        } catch (NumberFormatException exception) {
             throw new ComponentExtractionException();
         }
 

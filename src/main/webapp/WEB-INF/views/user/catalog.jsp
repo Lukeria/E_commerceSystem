@@ -140,7 +140,7 @@
                                     <div class="card-body">
                                         <div class="card-text text-right">
                                             <spring:url
-                                                    value="${pageContext.request.contextPath}/calculator/fillByCatalog/${catalogItem.id}"
+                                                    value="${pageContext.request.contextPath}/order/fillByCatalog/${catalogItem.id}"
                                                     var="fillOrderUrl">
                                             </spring:url>
 

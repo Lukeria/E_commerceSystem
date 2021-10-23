@@ -2,9 +2,7 @@ package com.e_commerceSystem.additional.converters;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
 
 @Converter(autoApply = true)

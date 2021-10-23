@@ -21,11 +21,6 @@ import java.util.Map;
 @RequestMapping("/priceList")
 public class PriceListController {
 
-    //    @GetMapping("/")
-//    //открываем каждый прайс, использовать PathVariable, либо все на одной странице
-//    public ModelAndView priceList(){
-//        return new ModelAndView();
-//    }5
     private final ComponentServiceFactory componentServiceFactory;
     private final PriceListService priceListService;
     private final LocaleMessageHandler localeMessageHandler;

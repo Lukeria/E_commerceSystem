@@ -2,7 +2,6 @@ package com.e_commerceSystem.services.interfaces;
 
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
-import com.e_commerceSystem.entities.Order;
 import com.sun.javafx.iio.ImageStorageException;
 import org.springframework.web.multipart.MultipartFile;
 

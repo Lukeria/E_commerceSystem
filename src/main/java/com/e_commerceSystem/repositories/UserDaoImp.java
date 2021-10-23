@@ -1,6 +1,5 @@
 package com.e_commerceSystem.repositories;
 
-import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.Role;
 import com.e_commerceSystem.repositories.interfaces.UserDao;
 import com.e_commerceSystem.entities.User;
@@ -19,8 +18,12 @@ import java.util.Optional;
 @Repository
 public class UserDaoImp implements UserDao {
 
+    private final SessionFactory sessionFactory;
+
     @Autowired
-    private SessionFactory sessionFactory;
+    public UserDaoImp(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public User findUserByUsername(String username) {

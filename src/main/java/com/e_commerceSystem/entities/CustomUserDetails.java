@@ -1,10 +1,7 @@
 package com.e_commerceSystem.entities;
 
-import com.e_commerceSystem.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashSet;

@@ -44,6 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public ResourceBundleMessageSource validationMessageSource() {
+
         ResourceBundleMessageSource rb = new ResourceBundleMessageSource();
         rb.setBasenames("classpath:messages/messages");
         rb.setDefaultEncoding("UTF-8");
@@ -59,6 +60,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public MultipartResolver multipartResolver() {
+
         return new StandardServletMultipartResolver();
     }
 

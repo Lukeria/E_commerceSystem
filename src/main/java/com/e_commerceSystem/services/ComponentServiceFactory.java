@@ -10,8 +10,12 @@ import java.util.List;
 @Service
 public class ComponentServiceFactory {
 
+    private final List<ComponentService> componentServiceList;
+
     @Autowired
-    private List<ComponentService> componentServiceList;
+    public ComponentServiceFactory(List<ComponentService> componentServiceList) {
+        this.componentServiceList = componentServiceList;
+    }
 
     public ComponentService getComponentService(ComponentType componentType) {
 

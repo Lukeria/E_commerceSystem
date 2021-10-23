@@ -1,10 +1,6 @@
 package com.e_commerceSystem.services;
 
 import com.e_commerceSystem.entities.Image;
-import com.e_commerceSystem.repositories.interfaces.CatalogDao;
-import com.mortennobel.imagescaling.AdvancedResizeOp;
-import com.mortennobel.imagescaling.ResampleOp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -22,16 +18,14 @@ import java.io.InputStream;
 @Transactional
 public class ImageStorageService {
 
-    @Autowired
-    private CatalogDao catalogDao;
 
     public Image getImageFile(MultipartFile file) throws IOException {
+
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         MultipartFile fileResized = crop(file, 600, 800);
 
         Image image = new Image(fileName, file.getContentType(), fileResized.getBytes());
 
-//        return catalogDao.storeImage(image);
         return image;
     }
 
@@ -54,12 +48,12 @@ public class ImageStorageService {
         do {
             if (width > targetWidth) {
                 width /= 2;
-                width = (width < targetWidth) ? targetWidth : width;
+                width = Math.max(width, targetWidth);
             }
 
             if (height > targetHeight) {
                 height /= 2;
-                height = (height < targetHeight) ? targetHeight : height;
+                height = Math.max(height, targetHeight);
             }
 
             if (scratchImage == null) {
@@ -95,7 +89,7 @@ public class ImageStorageService {
         return new MultipartImage(byteArrayOutputStream.toByteArray());
     }
 
-    private class MultipartImage implements MultipartFile {
+    private static class MultipartImage implements MultipartFile {
 
 
         private byte[] bytes;

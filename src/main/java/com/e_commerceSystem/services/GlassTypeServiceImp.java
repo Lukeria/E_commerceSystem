@@ -17,8 +17,12 @@ import java.util.Map;
 @Transactional
 public class GlassTypeServiceImp implements ComponentService<GlassType> {
 
+    private final ComponentDao componentDao;
+
     @Autowired
-    private ComponentDao componentDao;
+    public GlassTypeServiceImp(ComponentDao componentDao) {
+        this.componentDao = componentDao;
+    }
 
     @Override
     public List<GlassType> getComponentList() {

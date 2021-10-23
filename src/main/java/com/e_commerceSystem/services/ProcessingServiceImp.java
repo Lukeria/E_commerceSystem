@@ -19,8 +19,12 @@ import java.util.Map;
 @Transactional
 public class ProcessingServiceImp implements ComponentService<Processing> {
 
+    private final ComponentDao componentDao;
+
     @Autowired
-    private ComponentDao componentDao;
+    public ProcessingServiceImp(ComponentDao componentDao) {
+        this.componentDao = componentDao;
+    }
 
     @Override
     public List<Processing> getComponentList() {

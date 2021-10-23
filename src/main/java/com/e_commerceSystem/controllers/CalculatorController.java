@@ -5,7 +5,6 @@ import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.additional.enums.Shape;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Order;
-import com.e_commerceSystem.entities.glass.Glass;
 import com.e_commerceSystem.services.interfaces.CalculatorService;
 import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.e_commerceSystem.services.interfaces.OrderService;
@@ -16,10 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/calculator")
@@ -35,6 +30,7 @@ public class CalculatorController {
                                 OrderService orderService,
                                 CatalogService catalogService,
                                 GlassValidator glassValidator) {
+
         this.calculatingService = calculatingService;
         this.orderService = orderService;
         this.catalogService = catalogService;
@@ -76,22 +72,6 @@ public class CalculatorController {
         response.setResult(resultPrice);
 
         return response;
-    }
-
-
-    ///move to order
-    @GetMapping("/fillByCatalog/{id}")
-    public ModelAndView createOrderByTemplate(@PathVariable("id") Long id,
-                                              RedirectAttributes redirectAttributes) {
-
-        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
-
-        Catalog catalog = catalogService.getItemById(id);
-        Order order = orderService.createOrder(catalog);
-
-        redirectAttributes.addFlashAttribute("order", order);
-
-        return modelAndView;
     }
 
     @ModelAttribute("order")

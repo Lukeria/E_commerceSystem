@@ -15,18 +15,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final UserDetailsService userDetailsService;
+    private final LoginSuccessHandler loginSuccessHandler;
+
     @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private LoginSuccessHandler loginSuccessHandler;
+    public WebSecurityConfig(UserDetailsService userDetailsService, LoginSuccessHandler loginSuccessHandler) {
+
+        this.userDetailsService = userDetailsService;
+        this.loginSuccessHandler = loginSuccessHandler;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .authorizeRequests()
                 .antMatchers("/login**", "/registrationPage**", "/register").not().authenticated()
                 .antMatchers("/order/").authenticated()
                 .antMatchers("/order/history").hasRole("USER")
+                .antMatchers("/order/fillByCatalog/**").permitAll()
                 .antMatchers("/component/getData", "/component/list").permitAll()
                 .antMatchers("/priceList/**", "/order/**", "/catalog/settings/**",
                         "/customer/**", "/component/**").hasRole("ADMIN")
@@ -48,11 +55,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 }
