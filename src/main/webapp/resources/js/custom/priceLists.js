@@ -23,6 +23,7 @@ $(document).ready(function () {
         updatePrices('glass');
         updatePrices('processing');
         updatePrices('accessory');
+        showNotification(messages['message.notification.priceList.update.success'], 'success');
     });
 });
 
@@ -80,20 +81,25 @@ function doAjaxPost() {
     let tableJsonProcessing = convertTableToJSON('processing');
     let tableJsonAccessory = convertTableToJSON('accessory');
 
+    let dataForm = {};
+    dataForm["glassList"]= tableJsonGlass;
+    dataForm["processingList"]= tableJsonProcessing;
+    dataForm["accessoryList"] = tableJsonAccessory;
+
     $.ajax({
         type: "POST",
-        url: "/priceList/save",
-        data: "tableJsonGlass=" + tableJsonGlass +
-            "&tableJsonProcessing=" + tableJsonProcessing +
-            "&tableJsonAccessory=" + tableJsonAccessory,
+        url: "/priceList/",
+        data: dataForm,
+
         success: function (response) {
             // we have the response
-            if (response.status == "SUCCESS") {
-                $('#successMessage').text('Prices set successfully');
+            if (response.status === "OK") {
+               showNotification(response.message, 'success')
             }
         },
         error: function (e) {
-            alert('Error: ' + e);
+
+            showNotification(messages['message.notification.loadingData.failure'], "danger");
         }
     });
 }

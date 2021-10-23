@@ -30,11 +30,18 @@
 </head>
 <body clas="">
 <div class="wrapper">
-    <div id="sidebar"></div>
+    <div id="sidebar">
+        <security:authorize access="hasRole('ADMIN')">
+            <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminSidebar.jsp"/>
+        </security:authorize>
+    </div>
     <div class="main-panel bg-image-main">
         <div id="navbar">
             <security:authorize access="!hasRole('ADMIN')">
                 <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/userHeader.jsp"/>
+            </security:authorize>
+            <security:authorize access="hasRole('ADMIN')">
+                <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminHeader.jsp"/>
             </security:authorize>
         </div>
         <security:authorize access="!hasRole('ADMIN')">
@@ -50,8 +57,10 @@
                     <div class="col-lg-8">
                         <nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Calculate order</li>
+                                <li class="breadcrumb-item"><a class="btn-primary btn-link" href="/main"><spring:message
+                                        code="message.navbar.section.home"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><spring:message
+                                        code="message.navbar.section.calculator"/></li>
                             </ol>
                         </nav>
                     </div>
@@ -72,80 +81,93 @@
                         <div class="card-header">
                             <c:choose>
                                 <c:when test="${isForTemplate}">
-                                    <h4 class="card-title">Template</h4>
+                                    <h4 class="card-title"><spring:message code="message.calculator.template"/>
+                                        #${model.id}</h4>
                                 </c:when>
                                 <c:otherwise>
-                                    <h4 class="card-title">Calculator</h4>
+                                    <h4 class="card-title"><spring:message
+                                            code="message.navbar.section.calculator"/></h4>
                                 </c:otherwise>
                             </c:choose>
                         </div>
                         <div class="card-body">
-                            <c:choose>
-                                <c:when test="${isForTemplate}">
-                                    <spring:url value="/catalog/settings/save" var="formUrl"/>
-                                </c:when>
-                                <c:otherwise>
-                                    <spring:url value="/order/save" var="formUrl"/>
-                                </c:otherwise>
-                            </c:choose>
-                            <form:form id="calculatorForm" method="post" action="${formUrl}" modelAttribute="order">
+                            <form id="calculatorForm" method="post" action="${formUrl}" modelAttribute="model">
 
-                                <c:choose>
-                                    <c:when test="${isForTemplate}">
-                                        <form:input path="id" type="hidden"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:if test="${order.id != null}">
+                                <security:authorize access="hasRole('ADMIN')">
+                                    <c:if test="${!isForTemplate || isForTemplate==null}">
+                                        <c:if test="${model.id != null}">
                                             <div class="form-row">
                                                 <div class="form-group col-lg-6">
-                                                    <p class="text-primary">Order #<span id="id">${order.id}</span></p>
-                                                    <form:input path="id" type="hidden"/>
+                                                    <p class="text-primary"><spring:message
+                                                            code="message.orders.heading.single"/> #${model.id}
+                                                    </p>
                                                 </div>
                                             </div>
 
                                             <div class="form-row">
                                                 <div class="form-group col-lg-6">
-                                                    <p class="text-success">Customer: ${order.customer.name}</p>
+                                                    <p class="text-success"><spring:message
+                                                            code="message.calculator.customer"/>: ${model.customer.name}</p>
                                                 </div>
                                             </div>
                                         </c:if>
-                                    </c:otherwise>
-                                </c:choose>
+                                    </c:if>
+                                    <input id="id" type="hidden" value="${model.id}"/>
+                                </security:authorize>
 
-                                <spring:bind path="productType">
-                                    <div class="form-row">
-                                        <div class="form-group col-lg-6 col-md-12">
-                                            <label for="productType">Product type: </label>
-                                            <div class="form-group ${status.error ? 'has-danger' : ''}">
-                                                <form:input path="productType" type="text" id="productType"
-                                                            class="form-control ${status.error ? 'form-control-danger' : ''}"
-                                                            name="productType"/>
-                                            </div>
-                                            <form:errors path="productType" class="form-text text-danger"/>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-6 col-md-12">
+                                        <label for="productType"><spring:message
+                                                code="message.form.productType.label"/></label>
+                                        <div class="form-group ${status.error ? 'has-danger' : ''}">
+                                            <select id="productType"
+                                                    class="form-control ${status.error ? 'form-control-danger' : ''}">
+                                                <c:forEach items="${productTypes}" var="type">
+                                                    <c:set var="selected" value=""/>
+                                                    <c:if test="${type==model.productType}">
+                                                        <c:set var="selected" value="selected"/>
+                                                    </c:if>
+                                                    <spring:message code="message.enum.productType.${type.name}"
+                                                                    var="typeLabel"/>
+                                                    <option value="${type}" ${selected}>${typeLabel}</option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                     </div>
-                                </spring:bind>
+                                    <c:if test="${!isForTemplate || isForTemplate==null}">
+                                        <div class="form-group col-lg-6 col-md-12 align-self-center">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" type="checkbox" id="installation"
+                                                           value="${model.installation}">
+                                                    <spring:message code="message.orders.column.installation"/>
+                                                    <span class="form-check-sign"><span
+                                                            class="check"></span>
+                                                </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </div>
 
                                 <div class="form-row">
                                     <div class="form-group col">
-                                        <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                                        <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
                                             <table class="table">
                                                 <thead>
-                                                <th>Glass</th>
+                                                <th style="width: 20px"><spring:message
+                                                        code="message.orders.glass.heading"/></th>
                                                 <th>
                                                     <button type="button"
                                                             class="btn btn-primary btn-simple btn-sm"
                                                             id="addRaw">
-                                                        Add
+                                                        <spring:message code="message.form.button.add"/>
                                                     </button>
                                                 </th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th>Processing</th>
+                                                <th><spring:message code="message.glass.column.processing"/></th>
                                                 </thead>
                                                 <tbody id="glass">
-                                                <c:forEach var="glass" items="${order.glassList}" varStatus="status">
+                                                <c:forEach var="glass" items="${model.glassList}" varStatus="status">
                                                     <tr id="row_${status.count}">
                                                         <td class="td-action">
                                                             <button type="button" id="delete" type="button"
@@ -154,33 +176,66 @@
                                                                 <i class="tim-icons icon-trash-simple"></i>
                                                             </button>
                                                         </td>
-                                                        <td>
-                                                            <select class="form-control" id="glassType">
-                                                                <option selected
-                                                                        value="${glass.glassType.name}">${glass.glassType.name}</option>
-                                                            </select>
+                                                        <td style="width:50%">
+                                                            <div class="form-row">
+                                                                <div class="form-group col">
+                                                                    <label><spring:message
+                                                                            code="message.calculator.shape.label"/></label>
+                                                                    <select class="form-control" id="shape">
+                                                                        <c:forEach var="shape" items="${shapes}">
+                                                                            <c:set var="selected" value=""/>
+                                                                            <c:if test="${shape==glass.shape}">
+                                                                                <c:set var="selected" value="selected"/>
+                                                                            </c:if>
+                                                                            <option ${selected} value="${shape}">
+                                                                                <spring:message
+                                                                                        code="message.enum.shape.${shape.name}"/></option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-row">
+                                                                <div class="form-group col-lg-8 col-md-12">
+                                                                    <select class="form-control" id="glassType">
+                                                                        <option selected
+                                                                                value="${glass.glassType.name}">${glass.glassType.name}</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-4 col-md-12">
+                                                                    <select class="form-control" id="thickness">
+                                                                        <option selected
+                                                                                value="${glass.glassType.id}">${glass.glassType.thickness}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-lg-4 col-md-12">
+                                                                    <input class="form-control" type="number" id="width"
+                                                                           placeholder="<spring:message code="message.form.width.placeholder"/>"
+                                                                           value="${glass.width}">
+                                                                </div>
+                                                                <div class="form-group col-lg-4 col-md-12">
+                                                                    <input class="form-control" type="number"
+                                                                           id="height"
+                                                                           placeholder="<spring:message code="message.form.height.placeholder"/>"
+                                                                           value="${glass.height}">
+                                                                </div>
+                                                                <div class="form-group col-lg-4 col-md-12">
+                                                                    <input class="form-control" type="number"
+                                                                           id="amount"
+                                                                           placeholder="<spring:message code="message.form.amount.placeholder"/>"
+                                                                           value="${glass.amount}">
+                                                                </div>
+                                                            </div>
                                                         </td>
-                                                        <td>
-                                                            <select class="form-control" id="thickness">
-                                                                <option selected
-                                                                        value="${glass.glassType.id}">${glass.glassType.thickness}</option>
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" type="number" id="width"
-                                                                   placeholder="Width" value="${glass.width}">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" type="number" id="height"
-                                                                   placeholder="Height" value="${glass.height}">
-                                                        </td>
-                                                        <td class="td-action">
+                                                        <td class="td-action" style="width:50%">
                                                             <button type="button" id="addProcessing" type="button"
                                                                     rel="tooltip"
                                                                     class="btn btn-link btn-success btn-sm btn-icon">
                                                                 <i class="tim-icons icon-simple-add"></i>
                                                             </button>
-                                                            <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                                                            <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
                                                                 <table class="table table-borderless">
                                                                     <tbody id="processing">
                                                                     <c:forEach var="processing"
@@ -196,23 +251,33 @@
                                                                                 </button>
                                                                             </td>
                                                                             <td>
-                                                                                <select class="form-control" id="type">
-                                                                                    <option selected
-                                                                                            value="${processing.type}">${processing.type}</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td>
-                                                                                <select class="form-control" id="name">
-                                                                                    <option selected
-                                                                                            value="${processing.id}">${processing.name}</option>
-                                                                                </select>
-                                                                            </td>
-                                                                            <td>
-                                                                                <input class="form-control"
-                                                                                       type="number"
-                                                                                       id="quantity"
-                                                                                       placeholder="Quantity"
-                                                                                       value="${processing.quantity}">
+                                                                                <div class="form-row">
+                                                                                    <div class="form-group col-lg-6 col-md-12">
+                                                                                        <select class="form-control"
+                                                                                                id="type">
+                                                                                            <option selected
+                                                                                                    value="${processing.type}">
+                                                                                                <spring:message
+                                                                                                        code="message.enum.processingType.${processing.type.name}"/></option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-6 col-md-12">
+                                                                                        <select class="form-control"
+                                                                                                id="name">
+                                                                                            <option selected
+                                                                                                    value="${processing.id}">${processing.name}</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-row">
+                                                                                    <div class="form-group col-lg-6 col-md-12">
+                                                                                        <input class="form-control"
+                                                                                               type="number"
+                                                                                               id="quantity"
+                                                                                               placeholder="<spring:message code="message.form.amount.placeholder"/>"
+                                                                                               value="${processing.quantity}">
+                                                                                    </div>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </c:forEach>
@@ -227,45 +292,82 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table>
-                                    <tbody id="accessory">
-                                    </tbody>
-                                </table>
-                                <table>
-                                    <tbody id="extraService">
-                                    </tbody>
-                                </table>
-
-                                <c:if test="${!isForTemplate || isForTemplate==null}">
-                                    <spring:bind path="cost">
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-4 col-md-6">
-                                                <label for="result">Result:</label>
-                                                <security:authorize access="hasRole('ADMIN')">
-                                                    <div class="form-group ${status.error ? 'has-danger' : ''}">
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <div class="input-group-text">
-                                                                    <i class="tim-icons icon-coins text-primary"></i>
+                                <div class="form-row">
+                                    <div class="form-group col">
+                                        <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
+                                            <table class="table">
+                                                <thead>
+                                                <th style="width: 20px"><spring:message
+                                                        code="message.enum.componentType.accessory.plural"/></th>
+                                                <th>
+                                                    <button type="button"
+                                                            class="btn btn-primary btn-simple btn-sm"
+                                                            id="addAccessoryRaw">
+                                                        <spring:message code="message.form.button.add"/>
+                                                    </button>
+                                                </th>
+                                                <tbody id="accessories">
+                                                <c:forEach var="accessory" items="${model.accessories}"
+                                                           varStatus="status">
+                                                    <tr id="row_${status.count}">
+                                                        <td class="td-action">
+                                                            <button type="button" id="delete" type="button"
+                                                                    rel="tooltip"
+                                                                    class="btn btn-link btn-danger btn-sm btn-icon">
+                                                                <i class="tim-icons icon-trash-simple"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-lg-8 col-md-12">
+                                                                    <select class="form-control" id="accessory">
+                                                                        <option selected
+                                                                                value="${accessory.component.id}">${accessory.component.name}</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-4 col-md-12">
+                                                                    <input class="form-control" id="amountAccessory"
+                                                                           placeholder="<spring:message code="message.form.amount.placeholder"/>"
+                                                                           type="number"
+                                                                           value="${accessory.amount}"/>
                                                                 </div>
                                                             </div>
-                                                            <form:input path="cost" type="number"
-                                                                        class="form-control ${status.error ? 'form-control-danger' : ''}"
-                                                                        id="result"
-                                                                        name="result"/>
-                                                        </div>
-                                                        <form:errors path="cost" class="form-text text-danger"/>
-                                                    </div>
-                                                </security:authorize>
-                                                <security:authorize access="!hasRole('ADMIN')">
-                                                    <h3>
-                                                        <i class="tim-icons icon-coins text-primary"></i>
-                                                        <span id="resultText"></span>
-                                                    </h3>
-                                                </security:authorize>
-                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    </spring:bind>
+                                    </div>
+                                </div>
+                                <c:if test="${!isForTemplate || isForTemplate==null}">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-4 col-md-6">
+                                            <label for="cost"><spring:message
+                                                    code="message.orders.column.cost"/></label>
+                                            <security:authorize access="hasRole('ADMIN')">
+                                                <div class="form-group " id="group_cost">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text">
+                                                                <i class="tim-icons icon-coins text-primary"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input id="cost" type="number"
+                                                               class="form-control"
+                                                               name="cost" value="${model.cost}"/>
+                                                    </div>
+                                                    <div class="form-text text-danger" id="error_cost"></div>
+                                                </div>
+                                            </security:authorize>
+                                            <security:authorize access="!hasRole('ADMIN')">
+                                                <h3>
+                                                    <i class="tim-icons icon-coins text-primary"></i>
+                                                    <span id="costCart">${model.cost}</span>
+                                                </h3>
+                                            </security:authorize>
+                                        </div>
+                                    </div>
                                 </c:if>
 
                                 <div class="form-row">
@@ -273,27 +375,41 @@
                                         <c:if test="${!isForTemplate || isForTemplate==null}">
                                             <button type="button" class="btn btn-primary animation-on-hover"
                                                     id="calculate">
-                                                Calculate
+                                                <spring:message code="message.form.button.calculate"/>
                                             </button>
                                         </c:if>
                                         <security:authorize access="!isAuthenticated()">
                                             <button type="button" class="btn btn-success animation-on-hover"
-                                                    id="formOrder">Form order
+                                                    id="formOrder" data-toggle="modal"
+                                                    data-target="#exampleModal"><spring:message
+                                                    code="message.orders.button.formOrder"/>
                                             </button>
                                         </security:authorize>
                                         <security:authorize access="hasRole('USER')">
                                             <button type="button" class="btn btn-success animation-on-hover"
-                                                    id="addToCart">Add to cart
+                                                    id="addToCart"><spring:message
+                                                    code="message.form.button.addToCart"/>
                                             </button>
                                         </security:authorize>
                                         <security:authorize access="hasRole('ADMIN')">
-                                            <button type="submit" class="btn btn-success animation-on-hover"
-                                                    id="addOrder">Save
-                                            </button>
+                                            <c:choose>
+                                                <c:when test="${isForTemplate}">
+                                                    <button type="button" class="btn btn-success animation-on-hover"
+                                                            id="addTemplate"><spring:message
+                                                            code="message.form.button.save"/>
+                                                    </button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button type="button" class="btn btn-success animation-on-hover"
+                                                            id="addOrder"><spring:message
+                                                            code="message.form.button.save"/>
+                                                    </button>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </security:authorize>
                                     </div>
                                 </div>
-                            </form:form>
+                            </form>
                         </div>
                     </div>
                     <div class="form-row align-items-center">
@@ -325,18 +441,40 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<%--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>--%>
+<script type="text/javascript">
+
+    messages = {};
+    messages['placeholderAmount'] = "<spring:message code="message.form.amount.placeholder" javaScriptEscape="true"/>";
+    messages['processing_processing'] = "<spring:message code="message.enum.processingType.processing" javaScriptEscape="true"/>";
+    messages['processing_facet'] = "<spring:message code="message.enum.processingType.facet" javaScriptEscape="true"/>";
+    messages['processing_hole'] = "<spring:message code="message.enum.processingType.hole" javaScriptEscape="true"/>";
+    messages["loadingData"] = "<spring:message code="message.notification.loadingData.failure" javaScriptEscape="true"/>";
+    messages["firstRow"] = "<spring:message code="message.notification.firstRow" javaScriptEscape="true"/>";
+    messages["message.notEmpty.calculator.cost"] = "<spring:message code="message.notEmpty.calculator.cost" javaScriptEscape="true"/>";
+    messages["successCreation"] = "<spring:message code="message.order.successCreation" javaScriptEscape="true"/>";
+
+    messages['successfulRequest'] = "<spring:message code="message.notification.modalSend.success" javaScriptEscape="true"/>";
+    messages['failRequest'] = "<spring:message code="message.notification.modalSend.failure" javaScriptEscape="true"/>";
+    messages["message.notEmpty.customer.name"] = "<spring:message code="message.notEmpty.customer.name" javaScriptEscape="true"/>";
+    messages["message.notEmpty.customer.phone"] = "<spring:message code="message.notEmpty.customer.phone" javaScriptEscape="true"/>";
+    messages["message.notEmpty.modal.message"] = "<spring:message code="message.notEmpty.modal.message" javaScriptEscape="true"/>";
+    messages["message.notMatches.customer.phone"] = "<spring:message code="message.notMatches.customer.phone" javaScriptEscape="true"/>";
+
+</script>
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/calculator.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         <security:authorize access="hasRole('ADMIN')">
-        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
-            $("#orderSection").addClass("active");
-        });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
-            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        });
+        <c:choose>
+        <c:when test="${isForTemplate}">
+        $("#catalogSection").addClass("active");
+        </c:when>
+        <c:otherwise>
+        $("#orderSection").addClass("active");
+        </c:otherwise>
+        </c:choose>
         </security:authorize>
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });

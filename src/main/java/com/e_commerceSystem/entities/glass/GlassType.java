@@ -1,11 +1,7 @@
 package com.e_commerceSystem.entities.glass;
 
-import com.e_commerceSystem.additional.ComponentViews;
-import com.e_commerceSystem.entities.components.Component;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,19 +16,14 @@ public class GlassType implements Serializable, DefaultComponent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @JsonView(ComponentViews.Normal.class)
     protected Long id;
 
-    @JsonView(ComponentViews.Normal.class)
     protected String name;
 
-    @JsonView(ComponentViews.Normal.class)
     private Integer thickness;
 
-    @JsonView(ComponentViews.PriceList.class)
     private Float price;
 
-    @JsonView(ComponentViews.PriceList.class)
     private Float priceUSD;
 
     @OneToMany(mappedBy = "glassType")

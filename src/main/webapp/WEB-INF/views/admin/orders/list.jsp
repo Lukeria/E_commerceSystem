@@ -25,65 +25,75 @@
 </head>
 <body class="">
 <div class="wrapper">
-    <div id="sidebar"></div>
+    <div id="sidebar">
+        <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminSidebar.jsp"/>
+    </div>
     <div class="main-panel bg-image-main">
-        <div id="navbar"></div>
-
+        <div id="navbar">
+            <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminHeader.jsp"/>
+        </div>
         <div class="content">
-            <c:if test="${not empty msg}">
-                <div class="alert alert-${css} alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert"
-                            aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <strong>${msg}</strong>
-                </div>
-            </c:if>
             <div class="row">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Orders</h3>
+                            <h3 class="card-title"><spring:message code="message.orders.heading"/></h3>
                         </div>
                         <div class="card-body">
                             <div class="row align-items-center">
-                                <div class="col-lg-6 col-md-12 text-left">
-                                    <div class="form-row">
-                                        <div class="form-group col">
-                                            <p class="card-text" style="display: inline-block; margin-right: 15px;">
-                                                Status: </p>
-                                            <div class="form-check form-check-radio form-check-inline">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                                           id="exampleRadios1" value="active" checked>
-                                                    Active
-                                                    <span class="form-check-sign"></span>
-                                                </label>
-                                            </div>
-                                            <div class="form-check form-check-radio form-check-inline">
-                                                <label class="form-check-label">
-                                                    <input class="form-check-input" type="radio" name="exampleRadios"
-                                                           id="exampleRadios2" value="closed">
-                                                    Closed
-                                                    <span class="form-check-sign"></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-12 text-lg-right text-md-left">
-                                    <button type="button" class="btn btn-success btn-simple">
-                                    <span>
-                                    <i class="tim-icons icon-chart-pie-36"></i> Active orders <span
-                                            class="badge badge-success">4</span>
-                                    </span>
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn-simple">
-                                    <span>
-                                    <i class="tim-icons icon-button-power"></i> Closed orders <span
-                                            class="badge badge-primary">4</span>
-                                    </span>
-                                    </button>
+                                <div class="col-lg-12">
+                                    <label style="margin-right: 1rem"><spring:message
+                                            code="message.orders.filter.label"/></label>
+                                    <a type="button" class="btn btn-success btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=all">
+                                            <span>
+                                                <i class="tim-icons icon-bullet-list-67"></i> <spring:message
+                                                    code="message.orders.filter.all"/>
+                                                <c:if test="${orderStatusCount.all != 0}">
+                                                    <span class="badge badge-default">${orderStatusCount.all}</span>
+                                                </c:if>
+                                            </span>
+                                    </a>
+                                    <a type="button" class="btn btn-info btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=active">
+                                            <span>
+                                                <i class="tim-icons icon-chart-pie-36"></i> <spring:message
+                                                    code="message.orders.filter.active"/>
+                                                <c:if test="${orderStatusCount.active != 0}">
+                                                    <span class="badge badge-default">${orderStatusCount.active}</span>
+                                                </c:if>
+                                            </span>
+                                    </a>
+                                    <a type="button" class="btn btn-warning btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=paid">
+                                            <span>
+                                                <i class="tim-icons icon-money-coins"></i> <spring:message
+                                                    code="message.orders.filter.paid"/>
+                                                <c:if test="${orderStatusCount.paid != 0}">
+                                                    <span class="badge badge-default">${orderStatusCount.paid}</span>
+                                                </c:if>
+                                             </span>
+                                    </a>
+                                    <a type="button" class="btn btn-danger btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=expired">
+                                            <span>
+                                                <i class="tim-icons icon-alert-circle-exc"></i> <spring:message
+                                                    code="message.orders.filter.expired"/>
+                                                <c:if test="${expiredOrderCount != 0}">
+                                                    <span class="badge badge-default">${expiredOrderCount}</span>
+                                                </c:if>
+                                            </span>
+                                    </a>
+                                    <a type="button" class="btn btn-primary btn-link"
+                                       href="${pageContext.request.contextPath}/order/all?filter=closed">
+                                            <span>
+                                                <i class="tim-icons icon-button-power"></i> <spring:message
+                                                    code="message.orders.filter.closed"/>
+                                                <c:if test="${orderStatusCount.closed != 0}">
+                                                    <span class="badge badge-default">${orderStatusCount.closed}</span>
+                                                </c:if>
+                                            </span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -93,36 +103,55 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title"> Active orders</h4>
-                        </div>
                         <div class="card-body">
                             <div>
-                                <a href="/order/add" class="btn btn-primary animation-on-hover">Add</a>
+                                <a href="${pageContext.request.contextPath}/order/"
+                                   class="btn btn-primary animation-on-hover"><spring:message
+                                        code="message.form.button.add"/></a>
                             </div>
-                            <div class="table-full-width table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                <table class="table tablesorter">
+                            <div class="table-full-width table-responsive ps ps--active-y ps--scrolling-y">
+                                <table class="table">
                                     <thead>
                                     <tr>
                                         <th class="text-center">#</th>
-                                        <th>Name</th>
-                                        <th>Product</th>
-                                        <th>Date</th>
-                                        <th class="text-right">Cost</th>
-                                        <th class="text-right">Actions</th>
+                                        <th><spring:message code="message.orders.column.name"/></th>
+                                        <th><spring:message code="message.orders.column.product"/></th>
+                                        <th><spring:message code="message.orders.column.status"/></th>
+                                        <th><spring:message code="message.orders.column.date"/></th>
+                                        <th><spring:message code="message.orders.column.deadline"/></th>
+                                        <th class="text-right"><spring:message code="message.orders.column.cost"/></th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="order" items="${activeOrders}" varStatus="status">
+                                    <c:forEach var="order" items="${orders.pageList}" varStatus="status">
                                         <tr>
-                                            <td class="text-center">${status.count}</td>
+                                            <td class="text-center">${(orders.firstElementOnPage+status.count)}</td>
                                             <td>${order.customer.name}</td>
-                                            <td>${order.productType}</td>
+                                            <td><spring:message
+                                                    code="message.enum.productType.${order.productType.name}"/></td>
+                                            <c:choose>
+                                                <c:when test="${order.status.name.equals('active')}">
+                                                    <c:set var="color" value="badge-info"/>
+                                                </c:when>
+                                                <c:when test="${order.status.name.equals('paid')}">
+                                                    <c:set var="color" value="badge-warning"/>
+                                                </c:when>
+                                                <c:when test="${order.status.name.equals('closed')}">
+                                                    <c:set var="color" value="badge-primary"/>
+                                                </c:when>
+                                            </c:choose>
+                                            <td><span class="badge ${color}"> <spring:message
+                                                    code="message.enum.orderStatus.${order.status.name}"/></span>
+                                            </td>
                                             <td>${order.creationDateFormat}</td>
+                                            <td class="${order.expired ? 'text-danger' : ''}">${order.deadlineFormat}</td>
                                             <td class="text-right">${order.cost}</td>
                                             <td class="td-actions text-right">
                                                 <spring:url value="/order/${order.id}" var="orderUrl"/>
-                                                <spring:url value="/order/${order.id}/delete" var="deleteUrl"/>
+                                                <spring:url
+                                                        value="/order/${order.id}/delete?filter=${param.filter}&page=${orders.page+1}"
+                                                        var="deleteUrl"/>
                                                 <spring:url value="/order/${order.id}/update" var="updateUrl"/>
 
                                                 <button type="button" rel="tooltip"
@@ -130,11 +159,13 @@
                                                         onclick="location.href='${orderUrl}'">
                                                     <i class="tim-icons icon-tap-02"></i>
                                                 </button>
-                                                <button type="button" rel="tooltip"
-                                                        class="btn btn-link btn-success btn-sm btn-icon"
-                                                        onclick="location.href='${updateUrl}'">
-                                                    <i class="tim-icons icon-pencil"></i>
-                                                </button>
+                                                <c:if test="${!order.status.name.equals('closed')}">
+                                                    <button type="button" rel="tooltip"
+                                                            class="btn btn-link btn-success btn-sm btn-icon"
+                                                            onclick="location.href='${updateUrl}'">
+                                                        <i class="tim-icons icon-pencil"></i>
+                                                    </button>
+                                                </c:if>
                                                 <button type="button" rel="tooltip"
                                                         class="btn btn-link btn-danger btn-sm btn-icon"
                                                         onclick="post('${deleteUrl}')">
@@ -147,48 +178,18 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-12">
-                    <div class="card card-plain">
-                        <div class="card-header">
-                            <h4 class="card-title"> Closed orders</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
-                                <table class="table tablesorter">
-                                    <thead class="text-primary">
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Product</th>
-                                        <th class="text-right">Cost</th>
-                                        <th class="text-right">Actions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach var="order" items="${closedOrders}">
-                                        <tr>
-                                            <td>${order.customer.name}</td>
-                                            <td>${order.productType}</td>
-                                            <td class="text-right">${order.cost}</td>
-                                            <td class="td-actions text-right">
-                                                <spring:url value="/order/${order.id}" var="orderUrlClosed"/>
-                                                <button type="button" rel="tooltip"
-                                                        class="btn btn-link btn-primary btn-sm btn-icon"
-                                                        onclick="location.href='${orderUrlClosed}'">
-                                                    <i class="tim-icons icon-tap-02"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="card-footer">
+                            <ul class="pagination">
+                                <c:forEach begin="1" end="${orders.pageCount}" step="1" varStatus="tagStatus">
+                                    <li class="page-item ${tagStatus.current==(orders.page+1) ? 'active' : ''}">
+                                        <a class="page-link"
+                                           href="${pageContext.request.contextPath}/order/all?filter=${param.filter}&page=${tagStatus.current}">${tagStatus.current}</a>
+                                    </li>
+                                </c:forEach>
+                            </ul>
                         </div>
                     </div>
                 </div>
-
             </div>
             <div id="footerGroup"></div>
         </div>
@@ -202,16 +203,6 @@
         </a>
         <ul class="dropdown-menu">
             <li class="header-title"> Sidebar Background</li>
-            <%--            <li class="adjustments-line">--%>
-            <%--                <a href="javascript:void(0)" class="switch-trigger background-color">--%>
-            <%--                    <div class="badge-colors text-center">--%>
-            <%--                        <span class="badge filter badge-primary active" data-color="primary"></span>--%>
-            <%--                        <span class="badge filter badge-info" data-color="blue"></span>--%>
-            <%--                        <span class="badge filter badge-success" data-color="green"></span>--%>
-            <%--                    </div>--%>
-            <%--                    <div class="clearfix"></div>--%>
-            <%--                </a>--%>
-            <%--            </li>--%>
             <li class="adjustments-line text-center color-change">
                 <span class="color-label">LIGHT MODE</span>
                 <span class="badge light-badge mr-2"></span>
@@ -232,19 +223,23 @@
 <script src="${pageContext.request.contextPath}/resources/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
-<!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/custom/order.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
-            $("#orderSection").addClass("active");
-        });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
-            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        });
+        $("#orderSection").addClass("active");
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
 
+        <c:if test="${not empty message}">
+        let message = "${message}";
+        let status = "${status}";
+        if (status == null) {
+            status = "warning";
+        }
+        showNotification(message, status);
+        </c:if>
 
         $().ready(function () {
             $sidebar = $('.sidebar');
@@ -353,28 +348,6 @@
             });
         });
     });
-
-    function post(path, params, method) {
-        method = method || "post";
-
-        var form = document.createElement("form");
-        form.setAttribute("method", method);
-        form.setAttribute("action", path);
-
-        for (var key in params) {
-            if (params.hasOwnProperty(key)) {
-                var hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", key);
-                hiddenField.setAttribute("value", params[key]);
-
-                form.appendChild(hiddenField);
-            }
-        }
-
-        document.body.appendChild(form);
-        form.submit();
-    }
 </script>
 </body>
 

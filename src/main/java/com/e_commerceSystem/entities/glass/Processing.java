@@ -1,10 +1,8 @@
 package com.e_commerceSystem.entities.glass;
 
-import com.e_commerceSystem.additional.ComponentViews;
 import com.e_commerceSystem.additional.enums.ProcessingType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,25 +16,18 @@ public class Processing implements Serializable, DefaultComponent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(ComponentViews.Normal.class)
     private Long id;
 
-    @JsonView(ComponentViews.Normal.class)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private ProcessingType type;
 
-    @Transient
-    private ProcessingType processingType;
-
-    @JsonView(ComponentViews.Normal.class)
     private String name;
 
     @JsonIgnore
     private String symbol;
 
-    @JsonView(ComponentViews.PriceList.class)
     private Float price;
 
-    @JsonView(ComponentViews.PriceList.class)
     private Float priceUSD;
 
     @Transient
@@ -49,11 +40,11 @@ public class Processing implements Serializable, DefaultComponent {
     public Processing() {
     }
 
-    public String getType() {
+    public ProcessingType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ProcessingType type) {
         this.type = type;
     }
 
@@ -111,14 +102,6 @@ public class Processing implements Serializable, DefaultComponent {
 
     public void setPriceUSD(Float priceUSD) {
         this.priceUSD = priceUSD;
-    }
-
-    public ProcessingType getProcessingType() {
-        return processingType;
-    }
-
-    public void setProcessingType(ProcessingType processingType) {
-        this.processingType = processingType;
     }
 
     @Override

@@ -1,14 +1,17 @@
 package com.e_commerceSystem.controllers;
 
+import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.OrderStatus;
-import com.e_commerceSystem.entities.Catalog;
-import com.e_commerceSystem.entities.glass.Glass;
-import com.e_commerceSystem.services.JsonEditor;
-import com.e_commerceSystem.entities.Order;
+import com.e_commerceSystem.entities.*;
+import com.e_commerceSystem.exceptions.notFoundExceptions.OrderAccessDeniedException;
+import com.e_commerceSystem.services.LocaleMessageHandler;
 import com.e_commerceSystem.services.interfaces.CatalogService;
 import com.e_commerceSystem.services.interfaces.OrderService;
 import com.e_commerceSystem.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -17,148 +20,200 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
-
 @Controller
 @RequestMapping("/order")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private JsonEditor jsonEditor;
-    @Autowired
-    private OrderValidator orderValidator;
+    private final OrderService orderService;
+    private final OrderValidator orderValidator;
+    private final LocaleMessageHandler localeMessageHandler;
+    private final CatalogService catalogService;
 
-    @InitBinder
+    @Autowired
+    public OrderController(OrderService orderService,
+                           OrderValidator orderValidator,
+                           LocaleMessageHandler localeMessageHandler,
+                           CatalogService catalogService) {
+
+        this.orderService = orderService;
+        this.orderValidator = orderValidator;
+        this.localeMessageHandler = localeMessageHandler;
+        this.catalogService = catalogService;
+    }
+
+    @InitBinder(value = "order")
     protected void initBinder(WebDataBinder binder) {
+
         binder.setValidator(orderValidator);
     }
 
-    @GetMapping("/")
-    public ModelAndView order() {
-        return new ModelAndView("redirect:/order/all");
-    }
-
     @GetMapping("/all")
-    public ModelAndView orders() {
+    public ModelAndView orders(@RequestParam(defaultValue = "all") String filter,
+                               @RequestParam(defaultValue = "1") Integer page,
+                               @ModelAttribute("message") String message,
+                               @ModelAttribute("status") String status) {
 
         ModelAndView modelAndView = new ModelAndView("/admin/orders/list");
 
-        modelAndView.addObject("activeOrders", orderService.getOrdersByStatus(OrderStatus.ACTIVE));
-        modelAndView.addObject("closedOrders", orderService.getOrdersByStatus(OrderStatus.CLOSED));
+        PagedListHolder<Order> pagedListHolder = new PagedListHolder<>(orderService.getOrders(filter));
+        pagedListHolder.setPage(page - 1);
+        pagedListHolder.setPageSize(15);
+
+        modelAndView.addObject("orders", pagedListHolder);
+        modelAndView.addObject("orderStatusCount", orderService.getOrderStatusCount());
+        modelAndView.addObject("expiredOrderCount", orderService.getExpiredOrderCount());
+
+        modelAndView.addObject("message", message);
+        modelAndView.addObject("status", status);
 
         return modelAndView;
     }
 
-    @GetMapping("/add")
+    @GetMapping("/history")
+    public ModelAndView ordersHistory(@RequestParam(defaultValue = "1") Integer page,
+                                      Authentication authentication) {
+
+        ModelAndView modelAndView = new ModelAndView("/user/orderHistory");
+
+        User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+
+        PagedListHolder<Order> pagedListHolder = new PagedListHolder<>(
+                orderService.getOrdersByCustomer(currentUser.getCustomer()));
+        pagedListHolder.setPage(page - 1);
+        pagedListHolder.setPageSize(5);
+
+        modelAndView.addObject("orders", pagedListHolder);
+
+        return modelAndView;
+    }
+
+    @GetMapping("/")
     public ModelAndView orderAdd() {
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
-        return modelAndView;
+        return new ModelAndView("redirect:/calculator/");
     }
 
     @GetMapping(value = "/{id}")
-    public ModelAndView showOrder(@PathVariable("id") Long id) {
+    public ModelAndView showOrder(@PathVariable("id") Long id,
+                                  @ModelAttribute("message") String message,
+                                  @ModelAttribute("status") String status) {
+
 
         ModelAndView modelAndView = new ModelAndView("/admin/orders/show");
 
         Order order = orderService.getOrderById(id);
-        if (order == null) {
-//            modelAndView.addObject("css", "danger");
-//            modelAndView.addObject("msg", "Order not found");
-        }
 
         modelAndView.addObject("order", order);
 
-        return modelAndView;
+        modelAndView.addObject("message", message);
+        modelAndView.addObject("status", status);
 
-    }
 
-    @PostMapping(value = "/{id}")
-    public ModelAndView showOrderPost(@PathVariable("id") Long id) {
-        return showOrder(id);
-    }
-
-    @GetMapping(value = "/{id}/close")
-    public ModelAndView closeOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
-
-        ModelAndView modelAndView = new ModelAndView("redirect:/order/" + id);
-
-        Order order = orderService.getOrderById(id);
-        if (order == null) {
-//            redirectAttributes.addAttribute("css", "danger");
-//            redirectAttributes.addAttribute("msg", "Error while closing order");
-        } else {
-            order.setStatus(OrderStatus.CLOSED);
-            orderService.updateOrderStatus(order);
-//
-//            redirectAttributes.addAttribute("css", "success");
-//            redirectAttributes.addAttribute("msg", "Order closed successfully");
-        }
-
-        return modelAndView;
-
-    }
-
-    @PostMapping("/{id}/delete")
-    public ModelAndView deleteOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
-
-        ModelAndView modelAndView = new ModelAndView("redirect:/order/all");
-
-        Order order = orderService.getOrderById(id);
-        if (order == null) {
-//            redirectAttributes.addAttribute("css", "danger");
-//            redirectAttributes.addAttribute("msg", "Error while deleting order");
-        } else {
-            orderService.deleteOrder(order);
-//            redirectAttributes.addAttribute("css", "success");
-//            redirectAttributes.addAttribute("msg", "Order deletes successfully");
-        }
         return modelAndView;
     }
 
     @GetMapping("/{id}/update")
-    public ModelAndView updateOrder(@PathVariable("id") Long id, final RedirectAttributes redirectAttributes) {
+    public ModelAndView updateOrder(@PathVariable("id") Long id,
+                                    final RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView("general/calculator");
+        ModelAndView modelAndView = new ModelAndView();
 
         Order order = orderService.getOrderById(id);
-        modelAndView.addObject("order", order);
+
+        if (order.getStatus() == OrderStatus.CLOSED) {
+
+            modelAndView.setViewName("redirect:/order/" + id);
+            redirectAttributes.addFlashAttribute("message",
+                    localeMessageHandler.getMessage("message.notification.order.update.failure"));
+            redirectAttributes.addFlashAttribute("status", "danger");
+
+        } else {
+
+            modelAndView.setViewName("redirect:/calculator/");
+            redirectAttributes.addFlashAttribute("order", order);
+        }
 
         return modelAndView;
     }
 
-    @PostMapping("/save")
-    public ModelAndView saveOrder(@ModelAttribute("order") @Validated Order order,
-                                  BindingResult result,
-                                  @RequestParam("tableGlass") String tableGlass,
-                                  HttpServletRequest request) {
+    @PostMapping(value = "/{id}/status")
+    public ModelAndView updateStatus(@PathVariable("id") Long id,
+                                     @RequestParam("status") OrderStatus status,
+                                     final RedirectAttributes redirectAttributes) {
 
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("redirect:/order/" + id);
 
-        Set<Glass> glassList = jsonEditor.parseGlassList(tableGlass);
-        order.setGlassList(glassList);
+        try {
 
-        if (result.hasErrors()) {
-            modelAndView.addObject("order", order);
-            modelAndView.setViewName("general/calculator");
-            return modelAndView;
+            orderService.updateOrderStatus(id, status);
+            redirectAttributes.addFlashAttribute("message",
+                    localeMessageHandler.getMessage("message.notification.order.status.success"));
+            redirectAttributes.addFlashAttribute("status", "success");
+
+        } catch (OrderAccessDeniedException exception) {
+
+            redirectAttributes.addFlashAttribute("message",
+                    localeMessageHandler.getMessage("message.notification.order.status.failure"));
+            redirectAttributes.addFlashAttribute("status", "danger");
         }
 
-        order.setStatus(OrderStatus.ACTIVE);
+        return modelAndView;
+    }
+
+    @PostMapping("/{id}/delete")
+    public ModelAndView deleteOrder(@PathVariable("id") Long id,
+                                    @RequestParam(required = false) Integer page,
+                                    @RequestParam(required = false) String filter,
+                                    final RedirectAttributes redirectAttributes) {
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/order/all?filter=" + filter + "&page=" + page);
+
+        orderService.deleteOrder(id);
+
+        redirectAttributes.addFlashAttribute("message",
+                localeMessageHandler.getMessage("message.notification.order.delete.success"));
+        redirectAttributes.addFlashAttribute("status", "success");
+
+        return modelAndView;
+    }
+
+    @PostMapping("/")
+    @ResponseBody
+    public JsonResponse saveOrder(@RequestBody @Validated Order order,
+                                  BindingResult result) {
+
+        JsonResponse response = new JsonResponse();
+
+        if (result.hasErrors()) {
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            response.setResult(result.getAllErrors());
+            return response;
+        }
+
+        response.setStatus(HttpStatus.OK);
+        response.setRedirect(true);
 
         if (order.isNew()) {
             orderService.addOrder(order);
-            modelAndView.setViewName("forward:/customer/add");
-            request.setAttribute("orderId", order.getId());
-//            redirectAttributes.addFlashAttribute("orderId", order.getId());
-//            redirectAttributes.addFlashAttribute("customer", new Customer());
+            response.setRedirectUrl("/customer/add?orderId=" + order.getId());
         } else {
             orderService.updateOrder(order);
-            modelAndView.setViewName("redirect:/order/" + order.getId());
+            response.setRedirectUrl("/order/" + order.getId());
         }
+
+        return response;
+    }
+
+    @GetMapping("/fillByCatalog/{id}")
+    public ModelAndView createOrderByTemplate(@PathVariable("id") Long id,
+                                              RedirectAttributes redirectAttributes) {
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/calculator/");
+
+        Catalog catalog = catalogService.getItemById(id);
+        Order order = orderService.createOrder(catalog);
+
+        redirectAttributes.addFlashAttribute("order", order);
 
         return modelAndView;
     }

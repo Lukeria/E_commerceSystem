@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedQuery(name = "get_customer_by_id",
+        query = "from Customer where id=:id")
+
 @Entity
 public class Customer {
 
@@ -15,6 +18,7 @@ public class Customer {
     private String name;
     private String email;
     private String phone;
+    private String address;
 
     @OneToOne(mappedBy = "customer")
     private User user;
@@ -73,12 +77,20 @@ public class Customer {
         this.orders = orders;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return id == customer.id && name.equals(customer.name) && Objects.equals(email, customer.email) && Objects.equals(phone, customer.phone);
+        return id.equals(customer.id) && name.equals(customer.name) && Objects.equals(email, customer.email) && Objects.equals(phone, customer.phone);
     }
 
     @Override

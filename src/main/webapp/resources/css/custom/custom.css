@@ -17,7 +17,7 @@
 
 .bg-image-main {
     /* The image used */
-    background-image: url('../../img/background2.jpg');
+    background-image: url('../../img/bg_dark.jpg');
 
     /* Full height */
     height: 100vh;
@@ -79,13 +79,24 @@ table {
 
 
 .sidebar {
-    font-size: 0.75rem;
     background: linear-gradient(
             0deg, #00f2c3 0%, #ba54f5 100%);
 }
 
+.sidebar a p {
+    font-size: 0.7rem;
+}
+
 .btn span {
     display: inline-block;
+}
+
+.badge {
+    font-size: 0.8rem;
+}
+
+.badge-success {
+    background-image: linear-gradient(to bottom left, #0098f0, #00f2ea, #00f2c3);
 }
 
 .dark-list-item {
@@ -95,6 +106,14 @@ table {
 
 .list-group-border {
     border-bottom: 0.0625rem;
+}
+
+body .content label {
+    font-size: 0.8rem;
+}
+
+body .card label {
+    font-size: 0.8rem;
 }
 
 .nav-tabs {
@@ -218,4 +237,42 @@ table {
 
 a, .btn {
     cursor: pointer;
+}
+
+.table > tbody > tr > .text-danger {
+    color: #fd5d93 !important;
+}
+
+.page-link {
+    border: 0.0625rem solid #393e4b;
+    color: #ba54f5;
+}
+
+li.page-item.active .page-link {
+    background-color: #ba54f5;
+    border-color: #ba54f5;
+}
+
+.credit-card {
+    background: linear-gradient(
+            0deg, #ff8d72 0%, #fd5d93 100%);
+    margin: 15px;
+    border-radius: 15px;
+}
+
+.credit-card .form-control {
+    border-color: rgba(255, 255, 255, 0.6);
+    color: floralwhite;
+}
+
+.credit-card .form-control:focus {
+    border-color: white;
+}
+
+.credit-card .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.credit-card .form-control-danger {
+    border-color: red;
 }

@@ -1,15 +1,15 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.additional.enums.ComponentTypes;
-import com.e_commerceSystem.additional.ComponentViews;
+import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.services.ComponentServiceFactory;
+import com.e_commerceSystem.services.LocaleMessageHandler;
 import com.e_commerceSystem.services.interfaces.PriceListService;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,24 +21,28 @@ import java.util.Map;
 @RequestMapping("/priceList")
 public class PriceListController {
 
-    //    @GetMapping("/")
-//    //открываем каждый прайс, использовать PathVariable, либо все на одной странице
-//    public ModelAndView priceList(){
-//        return new ModelAndView();
-//    }5
+    private final ComponentServiceFactory componentServiceFactory;
+    private final PriceListService priceListService;
+    private final LocaleMessageHandler localeMessageHandler;
+
     @Autowired
-    private ComponentServiceFactory componentServiceFactory;
-    @Autowired
-    private PriceListService priceListService;
+    public PriceListController(ComponentServiceFactory componentServiceFactory,
+                               PriceListService priceListService,
+                               LocaleMessageHandler localeMessageHandler) {
+
+        this.componentServiceFactory = componentServiceFactory;
+        this.priceListService = priceListService;
+        this.localeMessageHandler = localeMessageHandler;
+    }
 
     @GetMapping("/all")
     public ModelAndView priceListAll() {
 
         ModelAndView modelAndView = new ModelAndView("admin/priceLists");
 
-        List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentTypes.GLASS_TYPE).getComponentList();
-        List<Processing> processingList = componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentList();
-        List<Accessory> accessoryList = componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).getComponentList();;
+        List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentType.GLASS_TYPE).getComponentList();
+        List<Processing> processingList = componentServiceFactory.getComponentService(ComponentType.PROCESSING).getComponentList();
+        List<Accessory> accessoryList = componentServiceFactory.getComponentService(ComponentType.PROCESSING).getComponentList();;
 
         modelAndView.addObject("glassTypeList", glassTypeList);
         modelAndView.addObject("processingList", processingList);
@@ -47,18 +51,17 @@ public class PriceListController {
         return modelAndView;
     }
 
-    @PostMapping("/save")
+    @PostMapping("/")
     @ResponseBody
-    @JsonView(ComponentViews.PriceList.class)
     public JsonResponse priceListSave(@RequestParam Map<String,String> allParams) {
 
-        priceListService.updatePriceListGlassType(allParams.get("tableJsonGlass"));
-        priceListService.updatePriceListProcessing(allParams.get("tableJsonProcessing"));
-        priceListService.updatePriceListAccessory(allParams.get("tableJsonAccessory"));
+        priceListService.updatePriceListGlassType(allParams.get("glassList"));
+        priceListService.updatePriceListProcessing(allParams.get("processingList"));
+        priceListService.updatePriceListAccessory(allParams.get("accessoryList"));
 
         JsonResponse response = new JsonResponse();
-        response.setStatus("SUCCESS");
-        response.setResult("");
+        response.setStatus(HttpStatus.OK);
+        response.setMessage(localeMessageHandler.getMessage("message.notification.priceList.save.success"));
 
         return response;
     }

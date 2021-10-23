@@ -1,111 +1,186 @@
 package com.e_commerceSystem.services;
 
 import com.e_commerceSystem.additional.enums.OrderStatus;
+import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
+import com.e_commerceSystem.entities.OrderItem;
 import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.exceptions.notFoundExceptions.OrderAccessDeniedException;
+import com.e_commerceSystem.exceptions.notFoundExceptions.OrderNotFoundException;
 import com.e_commerceSystem.repositories.interfaces.OrderDao;
 import com.e_commerceSystem.services.interfaces.OrderService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class OrderServiceImp implements OrderService {
 
+    private final OrderDao orderDao;
+    private final LocalDateTimeHandler dateTimeHandler;
+
     @Autowired
-    private OrderDao orderDao;
+    public OrderServiceImp(OrderDao orderDao, LocalDateTimeHandler dateTimeHandler) {
+
+        this.orderDao = orderDao;
+        this.dateTimeHandler = dateTimeHandler;
+    }
 
     @Override
+    @Transactional
     public List<Order> getOrdersByStatus(OrderStatus status) {
+
         return orderDao.getOrdersByStatus(status);
     }
 
     @Override
-    public List<Order> getOrdersByStatusAndCustomer(OrderStatus status, Customer customer) {
-        return orderDao.getOrdersByStatusAndCustomer(status, customer);
+    @Transactional
+    public List<Order> getOrdersByCustomer(Customer customer) {
+
+        return orderDao.getOrdersByCustomer(customer);
     }
 
     @Override
-    public Order addOrder(OrderStatus status, String productType, Float cost, String glassListJson) {
+    @Transactional
+    public List<Order> getOrders(String filter) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        List<Glass> table = null;
-        try {
-            table = objectMapper.readValue(glassListJson, new TypeReference<List<Glass>>() {
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
+        switch (filter) {
+            case "active":
+                return getOrdersByStatus(OrderStatus.ACTIVE);
+            case "paid":
+                return getOrdersByStatus(OrderStatus.PAID);
+            case "expired":
+                return getExpiredOrders();
+            case "closed":
+                return getOrdersByStatus(OrderStatus.CLOSED);
+            default:
+                return orderDao.getOrders();
         }
 
-        Order order = new Order();
-        order.setCost(cost);
-        order.setStatus(status);
-        order.setCreationDate(LocalDateTime.now());
-        order.setProductType(productType);
-
-        for (Glass glass : table) {
-            glass.setOrder(order);
-            glass.setAmount(0);
-            glass.setProcessingList(new HashSet<>(glass.getProcessingArrayList()));
-            order.getGlassList().add(glass);
-        }
-
-        orderDao.addOrder(order);
-        return order;
     }
 
     @Override
+    public List<Order> getExpiredOrders() {
+
+        return orderDao.getExpiredOrders();
+    }
+
+    @Override
+    @Transactional
     public void addOrder(Order order) {
-        order.setCreationDate(LocalDateTime.now());
-        for (Glass glass : order.getGlassList()) {
-            glass.setOrder(order);
-        }
-        orderDao.addOrder(order);
+
+        LocalDateTime creationDate = LocalDateTime.now();
+        LocalDateTime deadLine = dateTimeHandler.addWorkDays(creationDate, 7);
+
+        order.setCreationDate(creationDate);
+        order.setDeadline(deadLine);
+        order.setStatus(OrderStatus.ACTIVE);
+
+        orderDao.saveOrUpdateOrder(order);
     }
 
     @Override
+    @Transactional
     public void updateOrder(Order order) {
-        orderDao.updateOrder(order);
+
+        Order orderToUpdate = getOrderById(order.getId());
+        orderToUpdate.setProductType(order.getProductType());
+        orderToUpdate.setCost(order.getCost());
+        orderToUpdate.setGlassList(order.getGlassList());
+        orderToUpdate.setAccessories(order.getAccessories());
+
+
+        orderDao.saveOrUpdateOrder(orderToUpdate);
     }
 
     @Override
-    public void updateOrderCustomer(Order order) {
-        orderDao.updateOrderCustomer(order);
+    @Transactional
+    public void updateOrderCustomer(Long id, Customer customer) {
+
+        Order orderToUpdate = getOrderById(id);
+        orderToUpdate.setCustomer(customer);
+
+        orderDao.saveOrUpdateOrder(orderToUpdate);
     }
 
     @Override
-    public void updateOrderStatus(Order order) {
-        orderDao.updateOrderStatus(order);
+    @Transactional
+    public void updateOrderStatus(Long id, OrderStatus status) throws OrderAccessDeniedException {
+
+        Order order = getOrderById(id);
+
+        if (order.getStatus() == OrderStatus.CLOSED || order.getStatus() == OrderStatus.CART) {
+            throw new OrderAccessDeniedException();
+        }
+
+        order.setStatus(status);
+        orderDao.saveOrUpdateOrder(order);
+
     }
 
     @Override
-    public void deleteOrder(Order order) {
+    @Transactional
+    public void deleteOrder(Long id) {
+
+        Order order = getOrderById(id);
         orderDao.deleteOrder(order);
+
     }
 
     @Override
-    public Order getOrderById(Long id) {
-        return orderDao.getOrderById(id);
+    @Transactional
+    public Order getOrderById(Long id) throws OrderNotFoundException {
+
+        return orderDao.getOrderById(id)
+                .orElseThrow(() -> new OrderNotFoundException(id));
     }
 
     @Override
-    public Order createOrderByCatalog(Catalog catalog) {
+    @Transactional
+    public Map<String, Long> getOrderStatusCount() {
+        return orderDao.getOrderStatusCount();
+    }
+
+    @Override
+    @Transactional
+    public Long getExpiredOrderCount() {
+        return orderDao.getExpiredOrdersCount();
+    }
+
+    @Override
+    public Order createOrder(Catalog catalog) {
 
         Order order = new Order();
-        order.setProductType(catalog.getProductType().getName());
+
+        order.setProductType(catalog.getProductType());
         order.setGlassList(catalog.getGlassList());
 
+        Set<OrderItem> orderItems = catalog.getAccessories().stream()
+                .map(catalogItem ->
+                        new OrderItem(catalogItem.getAmount(), order, catalogItem.getComponent()))
+                .collect(Collectors.toSet());
+
+        order.setAccessories(orderItems);
+
         return order;
+    }
+
+    @Override
+    public void prepareForView(Order order, ProductType productType) {
+
+        List<Glass> glassList = new ArrayList<>();
+        glassList.add(new Glass());
+
+        order.setGlassList(new HashSet<>(glassList));
+
+        if (productType != null) {
+            order.setProductType(productType);
+        }
     }
 }

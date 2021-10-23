@@ -1,36 +1,43 @@
 package com.e_commerceSystem.entities;
 
-import com.e_commerceSystem.entities.embedded_keys.OrderItemKey;
 import com.e_commerceSystem.entities.components.Component;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity(name = "order_item")
-public class OrderItem {
+@JsonIgnoreProperties("order")
+public class OrderItem implements Serializable {
 
-    @EmbeddedId
-    private OrderItemKey id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private int amount;
-    @ManyToOne
-    @MapsId("orderId")
+    @ManyToOne(optional = false)
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne
-    @MapsId("componentId")
+    @ManyToOne(optional = false)
     @JoinColumn(name = "component_id")
     private Component component;
 
     public OrderItem() {
     }
 
-    public OrderItemKey getId() {
+    public OrderItem(int amount, Order order, Component component) {
+        this.amount = amount;
+        this.order = order;
+        this.component = component;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(OrderItemKey id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -63,11 +70,11 @@ public class OrderItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderItem orderItem = (OrderItem) o;
-        return amount == orderItem.amount && id.equals(orderItem.id);
+        return amount == orderItem.amount && Objects.equals(id, orderItem.id) && Objects.equals(order, orderItem.order) && Objects.equals(component, orderItem.component);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, amount);
+        return Objects.hash(id, amount, order, component);
     }
 }

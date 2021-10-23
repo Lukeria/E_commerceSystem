@@ -21,30 +21,42 @@
 </head>
 <body>
 <div class="wrapper">
-    <div id="sidebar"></div>
+    <div id="sidebar">
+        <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminSidebar.jsp"/>
+    </div>
     <div class="bg-image-main main-panel">
-        <div id="navbar"></div>
+        <div id="navbar">
+            <jsp:include page="${pageContext.request.contextPath}/resources/pagesToLoad/adminHeader.jsp"/>
+        </div>
 
         <div class="content">
             <div class="row">
                 <div class="col-lg-8 col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Card information
+                            <h4 class="card-title"><spring:message code="message.catalog.settings.heading"/>
                             </h4>
                         </div>
                         <div class="card-body">
                             <input type="hidden" id="catalog_id">
                             <div class="form-group">
-                                <label for="productType">Product type</label>
+                                <label for="productType"><spring:message code="message.form.productType.label"/></label>
                                 <select type="text" id="productType" class="form-control" name="productType">
                                     <c:forEach var="type" items="${productTypes}">
-                                        <option value="${type.name}">${type.representation}</option>
+                                        <c:if test="${!type.name.equals('glass')}">
+                                            <c:set var="selected" value=""/>
+                                            <c:if test="${type==activeType}">
+                                                <c:set var="selected" value="selected"/>
+                                            </c:if>
+                                            <option value="${type.name}" ${selected}><spring:message
+                                                    code="message.enum.productType.${type.name}"/></option>
+                                        </c:if>
                                     </c:forEach>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-success animation-on-hover" id="save">Save</button>
+                                <button class="btn btn-success animation-on-hover" id="save"><spring:message
+                                        code="message.form.button.save"/></button>
                             </div>
                         </div>
                     </div>
@@ -62,7 +74,7 @@
                                 <div class="form-group">
                                     <label class="label">
                                             <span><i class="tim-icons icon-attach-87"></i>
-                                        <span class="title">Добавить файл</span>
+                                        <span class="title"><spring:message code="message.form.button.addFile"/></span>
                                         <input type="file" name="file" id="file_upload">
                                         </span>
                                     </label>
@@ -81,9 +93,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/core/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/core/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<!--  Google Maps Plugin    -->
-<!-- Place this tag in your head or just before your close body tag. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 <!-- Chart JS -->
 <script src="${pageContext.request.contextPath}/resources/js/plugins/chartjs.min.js"></script>
 <!--  Notifications Plugin    -->
@@ -91,16 +100,20 @@
 <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="${pageContext.request.contextPath}/resources/js/black-dashboard.min.js?v=1.0.0"></script>
 
+<script src="${pageContext.request.contextPath}/resources/js/custom/notification.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom/catalog.js"></script>
+
+<script type="text/javascript">
+
+    let messages = {};
+    messages['message.notification.catalog.upload.validate'] = "<spring:message code="message.notification.catalog.upload.validate" javaScriptEscape="true"/>";
+    messages['message.notification.catalog.upload.failure'] = "<spring:message code="message.notification.catalog.upload.failure" javaScriptEscape="true"/>";
+
+</script>
+
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#sidebar").load("/resources/pagesToLoad/admin.html #sidebarAdmin", function () {
-            $("#catalogSection").addClass("active");
-        });
-        $("#navbar").load("/resources/pagesToLoad/admin.html #navbarAdmin", function () {
-            $('#englishIcon').attr("src", "${pageContext.request.contextPath}/resources/img/united-kingdom.png");
-            $('#russianIcon').attr("src", "${pageContext.request.contextPath}/resources/img/russia.png");
-        });
+        $("#catalogSection").addClass("active");
         $("#footerGroup").load("/resources/pagesToLoad/footer.html #footer");
     });
 </script>

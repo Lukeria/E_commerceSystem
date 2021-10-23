@@ -27,11 +27,12 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
         File uploadDirectory = new File(System.getProperty("java.io.tmpdir"));
 
-        // register a MultipartConfigElement
         MultipartConfigElement multipartConfigElement =
                 new MultipartConfigElement(uploadDirectory.getAbsolutePath(),
                         1024*1024*2, 1024*1024*2, 1024*1024*2);
 
         registration.setMultipartConfig(multipartConfigElement);
+        registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+
     }
 }

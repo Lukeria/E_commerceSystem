@@ -1,56 +1,152 @@
 let glassTypeList = [];
 let processingList = [];
+let accessoryList = [];
 
 $(document).ready(function () {
 
-    prepareData();
+    if ($('#installation').val() === "true") {
+        $("#installation").prop("checked", true);
+    }
+
+    getGlassData();
+    getProcessingData();
+    getAccessory();
+
 
     $().ready(function () {
-        // $("#glassType").change(function () {
-        //     prepareThickness($(this));
-        // })
 
         $("#addRaw").click(function () {
             addGlassRow();
         });
 
-        $("#addToCart").click(function (event) {
-            doAjaxAddToCartPost();
+        $("#addAccessoryRaw").click(function () {
+            addAccessoryRow();
         });
 
         $("#calculate").click(function (event) {
             doAjaxCalculatePost();
         });
 
-        $('#calculatorForm').submit(function (event) {
-            // event.preventDefault();
-            // let form = $(this);
-            // $("#glassListJson").val(JSON.stringify(glassTable()));
-            // $('#calculatorForm').off("submit");
-            // form.submit();
-            let tableGlass = JSON.stringify(glassTable());
-            $('<input />').attr('type', 'hidden')
-                .attr('name', 'tableGlass')
-                .attr('value', tableGlass)
-                .appendTo('#calculatorForm');
+        // $('#calculatorForm').submit(function (event) {
+        //     // event.preventDefault();
+        //     // let form = $(this);
+        //     // $("#glassListJson").val(JSON.stringify(glassTable()));
+        //     // $('#calculatorForm').off("submit");
+        //     // form.submit();
+        //     let tableGlass = JSON.stringify(glassTable());
+        //     $('<input />').attr('type', 'hidden')
+        //         .attr('name', 'tableGlass')
+        //         .attr('value', tableGlass)
+        //         .appendTo('#calculatorForm');
+        //
+        // })
 
-        })
+        $('#addOrder').click(function () {
+            doAjaxSaveOrderPost();
+        });
 
-        $('#formOrder').click(function () {
-            $('#placeholderFormOrder').append('<div class="alert alert-warning alert-with-icon" data-notify="container">\n' +
-                '                  <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">\n' +
-                '                    <i class="tim-icons icon-simple-remove"></i>\n' +
-                '                  </button>\n' +
-                '                  <span data-notify="icon" class="tim-icons icon-bell-55"></span>\n' +
-                '                  <span data-notify="message">You need to ' +
-                '                  <a href="/login" class="btn btn-default btn-link">log in</a> to form an order or ' +
-                '                  <a href="#" data-toggle="modal" data-target="#exampleModal"class="btn btn-default btn-link">' +
-                '                   request for call</a></span>\n' +
-                '                </div>')
-        })
+        $('#addTemplate').click(function () {
+            doAjaxSaveTemplatePost();
+        });
+        $('#addToCart').click(function () {
+            doAjaxAddToCartPost();
+        });
     });
 
 });
+
+function getGlassData() {
+
+    $.ajax({
+        type: "GET",
+        url: "/component/list?componentType=glassType",
+        success: function (response) {
+            glassTypeList = response;
+            $("#glass>tr").each(function () {
+                let glassTypeSelect = prepareGlassType($(this));
+                prepareThickness(glassTypeSelect);
+                $(this).find('#glassType').change(function () {
+                    prepareThickness($(this));
+                });
+
+                $(this).find('#delete').click(function () {
+                    if ($(this).parents("tr")[0].id != "row_1") {
+                        $(this).parents("tr").remove();
+                    } else {
+                        showNotification(messages.firstRow, "warning")
+                    }
+                });
+
+                $(this).find('#addProcessing').click(function () {
+                    addProcessingRow($(this).parents("tr")[0]);
+                });
+            });
+        },
+        error: function (e) {
+            showNotification(messages['loadingData'], 'danger');
+        }
+    });
+
+}
+
+function getProcessingData() {
+
+    $.ajax({
+        type: "GET",
+        url: "/component/list?componentType=processing",
+        success: function (response) {
+            processingList = response;
+            $("#glass>tr").each(function () {
+                let glassRow = $(this);
+                $(this).find('#processing>tr').each(function () {
+                    let type = prepareProcessingType(glassRow, $(this));
+                    prepareProcessingName(type);
+                    manageProcessingInputsVisibility($(this));
+
+                    $(this).find('#addProcessing').click(function () {
+                        addProcessingRow($(this).parents("tr")[0]);
+                    });
+
+                    $(this).find('#type').change(function () {
+                        prepareProcessingName($(this));
+                        manageProcessingInputsVisibility($(this).parents('#processing>tr')[0]);
+                    });
+
+                    $(this).find('#delete').click(function () {
+                        $(this).parents("#processing>tr").remove();
+                    });
+
+                });
+            });
+        },
+        error: function (e) {
+            showNotification(messages['loadingData'], 'danger');
+        }
+    });
+
+}
+
+function getAccessory() {
+
+    $.ajax({
+        type: "GET",
+        url: "/component/list?componentType=accessory",
+        success: function (response) {
+            accessoryList = response;
+            $("#accessories>tr").each(function () {
+                prepareAccessory($(this));
+
+                $(this).find('#delete').click(function () {
+                    $(this).parents("#accessories>tr").remove();
+                });
+            });
+        },
+        error: function (e) {
+            showNotification(messages['loadingData'], 'danger');
+        }
+    });
+
+}
 
 ////Prepare data////
 function prepareData() {
@@ -59,7 +155,7 @@ function prepareData() {
         url: "/component/getData",
         success: function (response) {
             // we have the response
-            if (response.status == "SUCCESS") {
+            if (response.status === "OK") {
                 let result = JSON.parse(response.result);
                 glassTypeList = result.glassTypeList;
                 processingList = result.processingList;
@@ -75,7 +171,7 @@ function prepareData() {
                         if ($(this).parents("tr")[0].id != "row_1") {
                             $(this).parents("tr").remove();
                         } else {
-                            showNotification("You can't delete first row", "warning")
+                            showNotification(messages.firstRow, "warning")
                         }
                     });
 
@@ -106,7 +202,7 @@ function prepareData() {
             }
         },
         error: function (e) {
-            alert('Error: ' + e);
+            showNotification(messages['loadingData'], 'danger');
         }
     });
 }
@@ -192,7 +288,7 @@ function prepareProcessingType(glassRow, currentRow) {
                 selected = "selected";
             }
         }
-        let option = "<option " + selected + " value=" + item + ">" + item + "</option>";
+        let option = "<option " + selected + " value=" + item + ">" + messages['processing_' + item.toLowerCase()] + "</option>";
         select += option;
     });
 
@@ -217,6 +313,7 @@ function prepareProcessingName(selected) {
 
     let select = "";
     processingSet.forEach(function (item) {
+        let selected = "";
         if (selectedOption.val() !== "") {
             if (item.id === (Number.parseInt(selectedOption.val()) || 0)) {
                 selected = "selected";
@@ -227,6 +324,34 @@ function prepareProcessingName(selected) {
     })
 
     nameSelect.append(select);
+}
+
+function prepareAccessory(currentRow) {
+
+    let accessorySelect = $(currentRow).find('#accessory');
+    let selectedOption = $(accessorySelect).find('option:selected');
+    accessorySelect.empty();
+
+    let accessorySet = new Set();
+    accessoryList.forEach(function (item) {
+        accessorySet.add(item)
+    });
+
+    let select = "";
+    accessorySet.forEach(function (item) {
+        let selected = "";
+        if (selectedOption.val() !== "") {
+            if (item.id === (Number.parseInt(selectedOption.val() || 0))) {
+                selected = "selected";
+            }
+        }
+        let option = "<option " + selected + " value=" + item.id + ">" + item.name + "</option>";
+        select += option;
+    });
+
+    accessorySelect.append(select);
+
+    return accessorySelect;
 }
 
 ///////////////////////
@@ -250,7 +375,7 @@ function addGlassRow() {
         if ($(this).parents("tr")[0].id != "row_1") {
             $(this).parents("tr").remove();
         } else {
-            showNotification("You can't delete first row", "warning")
+            showNotification(messages.firstRow, "warning")
         }
     });
 
@@ -299,6 +424,27 @@ function addProcessingRow(glassRow) {
     });
 }
 
+function addAccessoryRow() {
+
+    let currentRow = $('#accessories>tr:last-child');
+    let newRow;
+    if (currentRow.length === 0) {
+        newRow = createAccessoryRow();
+    } else {
+        let currentId = Number.parseInt(currentRow[0].id.split("_")[1]) || 0;
+        newRow = $(currentRow).clone().prop("id", "row_" + (currentId + 1));
+        newRow.find("input").val("");
+    }
+
+    prepareAccessory(newRow);
+
+    newRow.find('#delete').click(function () {
+        $(this).parents("#accessories>tr").remove();
+    });
+
+    $('#accessories').append(newRow);
+}
+
 function createProcessingRow() {
 
     let currentRow = $("<tr id='row_1'></tr>");
@@ -309,17 +455,28 @@ function createProcessingRow() {
         '<i class="tim-icons icon-trash-simple"></i>\n' +
         '</button>\n' +
         '</td>');
-    currentRow.append('<td>' +
-        '<select class="form-control" id="type">\n' +
-        '</select>' +
-        '</td>');
-    currentRow.append('<td>' +
-        '<select class="form-control" id="name">\n' +
-        '</select>' +
-        '</td>');
-    currentRow.append('<td>' +
-        '<input class="form-control" type="number" id="quantity" placeholder="Quantity">\n' +
-        '</td>')
+    currentRow.append('<td>\n' +
+        '<div class="form-row">\n' +
+        '      <div class="form-group col-lg-6 col-md-12">\n' +
+        '            <select class="form-control"\n' +
+        '                  id="type">\n' +
+        '           </select>\n' +
+        '                   </div>\n' +
+        '                   <div class="form-group col-lg-6 col-md-12">\n' +
+        '                       <select class="form-control"\n' +
+        '                               id="name">\n' +
+        '                       </select>\n' +
+        '                   </div>\n' +
+        '               </div>\n' +
+        '               <div class="form-row">\n' +
+        '                   <div class="form-group col-lg-6 col-md-12">\n' +
+        '                       <input class="form-control"\n' +
+        '                              type="number"\n' +
+        '                              id="quantity"\n' +
+        '                              placeholder="' + messages.placeholderAmount + '">\n' +
+        '                   </div>\n' +
+        '               </div>\n' +
+        '           </td>');
 
     return currentRow;
 }
@@ -327,25 +484,71 @@ function createProcessingRow() {
 function manageProcessingInputsVisibility(currentRow) {
 
     let typeValue = $(currentRow).find("#type>option:selected").val();
-    let name = $(currentRow).find("#name");
     let quantity = $(currentRow).find("#quantity");
 
-    if (typeValue === "Полировка") {
-        name.val($(name).find("option:first").val());
-        name.parents('#processing>tr>td').hide();
-        quantity.parents('#processing>tr>td').hide();
-    } else if (typeValue === "Фацет") {
-        name.parents('#processing>tr>td').show();
-        quantity.parents('#processing>tr>td').hide();
+    if (typeValue === 'HOLE') {
+        quantity.show();
     } else {
-        name.parents('#processing>tr>td').show();
-        quantity.parents('#processing>tr>td').show();
+        quantity.hide();
     }
+}
+
+function createAccessoryRow() {
+
+    let currentRow = $("<tr id='row_1'></tr>");
+
+    currentRow.append('<td class="td-action">\n' +
+        '<button type="button" id="delete" type="button" rel="tooltip"\n' +
+        'class="btn btn-link btn-danger btn-sm btn-icon">\n' +
+        '<i class="tim-icons icon-trash-simple"></i>\n' +
+        '</button>\n' +
+        '</td>');
+
+    currentRow.append('<td>\n' +
+        '     <div class="form-row">\n' +
+        '          <div class="form-group col-lg-8 col-md-12">\n' +
+        '                  <select class="form-control" id="accessory">\n' +
+        '                  </select>\n' +
+        '          </div>\n' +
+        '          <div class="form-group col-lg-4 col-md-12">\n' +
+        '                  <input class="form-control" id="amountAccessory"\n' +
+        '                       placeholder="' + messages.placeholderAmount + '"\n' +
+        '                       type="number"/>\n' +
+        '           </div>\n' +
+        '      </div>\n' +
+        '</td>');
+
+    return currentRow;
+
 }
 
 ///////////
 
-////Save data////
+////// Create model
+function createOrder() {
+
+    let object = {};
+    object['id'] = $("#id").val();
+    object['productType'] = $("#productType>option:selected").val();
+    object['cost'] = Number.parseFloat($("#cost").val()) || 0;
+    object['installation'] = $("#installation").is(":checked");
+    object['glassList'] = glassTable();
+    object['accessories'] = accessoryTable();
+
+    return object;
+}
+
+function createTemplate() {
+
+    let object = {};
+    object['id'] = $("#id").val();
+    object['productType'] = $("#productType>option:selected").val();
+    object['glassList'] = glassTable();
+    object['accessories'] = accessoryTable();
+
+    return object;
+}
+
 function glassTable() {
 
     let myRows = [];
@@ -361,6 +564,8 @@ function glassTable() {
         obj["type"] = type;
         obj["width"] = Number.parseInt($(this).find("#width").val()) || 0;
         obj["height"] = Number.parseInt($(this).find("#height").val()) || 0;
+        obj["amount"] = Number.parseInt($(this).find("#amount").val()) || 1;
+        obj["shape"] = $(this).find("#shape>option:selected").val();
 
         let tableProcessing = $(this).find("#processing>tr");
         let processingList = [];
@@ -375,7 +580,9 @@ function glassTable() {
             }
         )
 
-        obj["processingArrayList"] = processingList;
+        // obj["processingArrayList"] = processingList;
+        obj["processingList"] = processingList;
+
 
         myRows.push(obj)
     });
@@ -384,9 +591,30 @@ function glassTable() {
 
 }
 
+function accessoryTable() {
+
+    let myRows = [];
+
+    $('#accessories>tr').each(function () {
+        let obj = {}
+
+        let accessory = {};
+        accessory["id"] = $(this).find("#accessory>option:selected").val();
+        accessory["name"] = $(this).find("#accessory>option:selected").text();
+
+        obj["component"] = accessory;
+        obj["amount"] = Number.parseInt($(this).find("#amountAccessory").val()) || 1;
+
+        myRows.push(obj)
+    });
+
+    return myRows;
+}
+
+////Save data////
 function doAjaxCalculatePost() {
     // get the form values
-    let Json = JSON.stringify(glassTable());
+    let Json = JSON.stringify(createOrder());
     $.ajax({
         type: "POST",
         url: "/calculator/calculate",
@@ -394,82 +622,95 @@ function doAjaxCalculatePost() {
         data: Json,
         success: function (response) {
             // we have the response
-            if (response.status == "SUCCESS") {
-                $('#result').val(response.result);
-                $('#resultText').text(response.result);
+            if (response.status === "OK") {
+                $('#cost').val(response.result);
+                $('#costCart').text(response.result);
             } else {
-                showNotification("An <b>error</b> occurred while processing the request", "danger");
+                showNotification(messages['loadingData'], 'danger');
             }
         },
         error: function (e) {
-            showNotification(e, "danger");
+            showNotification(messages['loadingData'], 'danger');
         }
     });
 }
 
 function doAjaxSaveOrderPost() {
-    // get the form values
-    let order = {};
-    order["id"] = $('#id').text();
-    order["productType"] = $('#productType').val();
-    order["cost"] = Number.parseFloat($('#result').val()) || 0;
-    order["glassList"] = glassTable();
 
-    let Json = JSON.stringify(order);
-
-    // $.post("/order/save", Json);
-
+    let Json = JSON.stringify(createOrder());
     $.ajax({
         type: "POST",
-        url: "/order/save",
+        url: "/order/",
         contentType: "application/json",
-        async: false,
         data: Json,
         success: function (response) {
-            location.href = "/customer/add";
+            if (response.status === "OK") {
+                if (response.redirect) {
+                    window.location.replace(response.redirectUrl);
+                }
+            } else {
+                response.result.forEach(function (item) {
+                    $('#error_' + item.field).text(messages[item.code]);
+                    $('#' + item.field).addClass('form-control-danger');
+                    $('#group_' + item.field).addClass('has-danger');
+                });
+            }
         },
         error: function (e) {
-            showNotification(e, "danger");
+            showNotification(messages['loadingData'], 'danger');
         }
     });
 }
 
+function doAjaxSaveTemplatePost() {
+
+    let Json = JSON.stringify(createTemplate());
+    $.ajax({
+        type: "POST",
+        url: "/catalog/settings/",
+        contentType: "application/json",
+        data: Json,
+        success: function (response) {
+            if (response.status === "OK") {
+                if (response.redirect) {
+                    window.location.replace(response.redirectUrl);
+                }
+            } else {
+                response.result.forEach(function (item) {
+                    $('#error_' + item.field).text(messages[item.code]);
+                    $('#' + item.field).addClass('form-control-danger');
+                    $('#group_' + item.field).addClass('has-danger');
+                });
+            }
+        },
+        error: function (e) {
+            showNotification(messages['loadingData'], 'danger');
+        }
+    });
+}
 
 function doAjaxAddToCartPost() {
-    // get the form values
-    let Json = JSON.stringify(glassTable());
-    let price = Number.parseFloat($("#resultText").text()) || 0;
 
+    let Json = JSON.stringify(createOrder());
     $.ajax({
         type: "POST",
         url: "/cart/add",
-        data: "tableJSON=" + Json + "&price=" + price,
-        success:
-            function (response) {
-                // we have the response
-                if (response.indexOf("loginForm") != -1) {
-                    window.location = "/login";
-
-                }
-            },
+        contentType: "application/json",
+        data: Json,
+        success: function (response) {
+            if (response.status === "OK") {
+                showNotification(response.message, "success");
+            } else {
+                response.result.forEach(function (item) {
+                    $('#error_' + item.field).text(messages[item.code]);
+                    $('#' + item.field).addClass('form-control-danger');
+                    $('#group_' + item.field).addClass('has-danger');
+                });
+            }
+        },
         error: function (e) {
-            alert('Error: ' + e);
+            showNotification(messages['loadingData'], 'danger');
         }
     });
 }
 
-/////Вынести в отдельный файл!!!
-function showNotification(text, color) {
-    $.notify({
-        icon: "tim-icons icon-bell-55",
-        message: text
-
-    }, {
-        type: color,
-        timer: 8000,
-        placement: {
-            from: 'bottom',
-            align: 'center'
-        }
-    });
-}

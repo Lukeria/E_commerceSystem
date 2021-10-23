@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,24 +33,26 @@
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <i class="tim-icons icon-world"></i>
                         <p class="d-lg-none">
-                            Language
+                            <spring:message code="message.navbar.lang.heading"/>
                         </p>
                     </a>
                     <ul class="dropdown-menu dropdown-navbar">
                         <li class="nav-link">
-                            <a href="javascript:void(0)" class="nav-item dropdown-item">
+                            <a href="?lang=en" class="nav-item dropdown-item">
                                 <div class="photo">
-                                    <img src="" alt="En" id="englishIcon">
+                                    <img src="${pageContext.request.contextPath}/resources/img/united-kingdom.png"
+                                         alt="En" id="englishIcon">
                                 </div>
-                                English
+                                <spring:message code="message.navbar.lang.en"/>
                             </a>
                         </li>
                         <li class="nav-link">
-                            <a href="javascript:void(0)" class="nav-item dropdown-item">
+                            <a href="?lang=ru" class="nav-item dropdown-item">
                                 <div class="photo">
-                                    <img src="" alt="Ru" id="russianIcon">
+                                    <img src="${pageContext.request.contextPath}/resources/img/russia.png"
+                                         alt="Ru" id="russianIcon">
                                 </div>
-                                Russian
+                                <spring:message code="message.navbar.lang.ru"/>
                             </a>
                         </li>
                     </ul>
@@ -57,23 +61,5 @@
         </div>
     </div>
 </nav>
-
-<!--   Core JS Files   -->
-<script src="../js/core/jquery.min.js"></script>
-<script src="../js/core/popper.min.js"></script>
-<script src="../js/core/bootstrap.min.js"></script>
-<script src="../js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<!--  Google Maps Plugin    -->
-<!-- Place this tag in your head or just before your close body tag. -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-<!-- Chart JS -->
-<script src="../js/plugins/chartjs.min.js"></script>
-<!--  Notifications Plugin    -->
-<script src="../js/plugins/bootstrap-notify.js"></script>
-<!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
-<script src="../js/black-dashboard.min.js?v=1.0.0"></script>
-<!-- Black Dashboard DEMO methods, don't include it in your project! -->
-<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-
 </body>
 </html>

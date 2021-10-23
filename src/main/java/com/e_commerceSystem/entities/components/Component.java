@@ -1,10 +1,11 @@
 package com.e_commerceSystem.entities.components;
 
-import com.e_commerceSystem.entities.CartItem;
+import com.e_commerceSystem.entities.CatalogItem;
 import com.e_commerceSystem.entities.OrderItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.awt.geom.FlatteningPathIterator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "component_type")
-public abstract class Component {
+public class Component {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "IdGenerator")
@@ -24,11 +25,18 @@ public abstract class Component {
     protected Float price;
     protected Float priceUSD;
 
-    @OneToMany(mappedBy = "component")
-    private Set<CartItem> cartItems = new HashSet<>();
-
-    @OneToMany(mappedBy = "component")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "component")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @JsonIgnore
     private Set<OrderItem> orderItems = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "component")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @JsonIgnore
+    private Set<CatalogItem> catalogItems = new HashSet<>();
+
+    public Component() {
+    }
 
     public Long getId() {
         return id;
@@ -46,22 +54,6 @@ public abstract class Component {
         this.name = name;
     }
 
-    public Set<CartItem> getCartItems() {
-        return cartItems;
-    }
-
-    public void setCartItems(Set<CartItem> cartItems) {
-        this.cartItems = cartItems;
-    }
-
-    public Set<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(Set<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
     public Float getPrice() {
         return price;
     }
@@ -76,6 +68,22 @@ public abstract class Component {
 
     public void setPriceUSD(Float priceUSD) {
         this.priceUSD = priceUSD;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public Set<CatalogItem> getCatalogItems() {
+        return catalogItems;
+    }
+
+    public void setCatalogItems(Set<CatalogItem> catalogItems) {
+        this.catalogItems = catalogItems;
     }
 
     @Override

@@ -2,43 +2,28 @@ package com.e_commerceSystem.repositories;
 
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
-import com.e_commerceSystem.entities.Image;
-import com.e_commerceSystem.entities.Order;
-import com.e_commerceSystem.entities.glass.Glass;
-import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.repositories.interfaces.CatalogDao;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CatalogDaoImp implements CatalogDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    @Override
-    public Catalog addItem(Catalog catalog) {
-        sessionFactory.getCurrentSession().save(catalog);
-        return catalog;
+    @Autowired
+    public CatalogDaoImp(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public void updateItem(Catalog catalog) {
+    public void saveOrUpdateItem(Catalog catalog) {
 
-        Catalog catalogToUpdate = getItemById(catalog.getId());
-        catalogToUpdate.setProductType(catalog.getProductType());
-        for (Glass glass: catalogToUpdate.getGlassList()) {
-            sessionFactory.getCurrentSession().delete(glass);
-        }
-        catalogToUpdate.setGlassList(catalog.getGlassList());
-        for(Glass glass: catalogToUpdate.getGlassList()){
-            glass.setCatalog(catalogToUpdate);
-        }
-        sessionFactory.getCurrentSession().update(catalogToUpdate);
+        sessionFactory.getCurrentSession().saveOrUpdate(catalog);
     }
 
     @Override
@@ -59,13 +44,8 @@ public class CatalogDaoImp implements CatalogDao {
     }
 
     @Override
-    public Catalog getItemById(Long id) {
-        return sessionFactory.getCurrentSession().get(Catalog.class, id);
-    }
+    public Optional<Catalog> getItemById(Long id) {
 
-    @Override
-    public Image storeImage(Image image) {
-        sessionFactory.getCurrentSession().save(image);
-        return image;
+        return Optional.ofNullable(sessionFactory.getCurrentSession().get(Catalog.class, id));
     }
 }

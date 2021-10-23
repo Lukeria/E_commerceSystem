@@ -10,10 +10,10 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
@@ -23,6 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/accessDenied").setViewName("accessDenied");
         registry.addViewController("/contacts").setViewName("user/contacts");
@@ -31,20 +32,21 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
+
         registry.jsp("/WEB-INF/views/", ".jsp");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
-
-    /////Validation
     @Bean
     public ResourceBundleMessageSource validationMessageSource() {
+
         ResourceBundleMessageSource rb = new ResourceBundleMessageSource();
-        rb.setBasenames(new String[] { "classpath:messages/messages" });
+        rb.setBasenames("classpath:messages/messages");
         rb.setDefaultEncoding("UTF-8");
         return rb;
     }
@@ -58,13 +60,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public MultipartResolver multipartResolver() {
+
         return new StandardServletMultipartResolver();
     }
 
-
-    ///////////i18n
     @Bean("messageSource")
     public MessageSource messageSource(){
+
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:messages/messages");
         messageSource.setDefaultEncoding("UTF-8");
@@ -74,7 +76,16 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public LocaleResolver localeResolver(){
+
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         return localeResolver;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        registry.addInterceptor(localeChangeInterceptor);
     }
 }

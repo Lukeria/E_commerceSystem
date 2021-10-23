@@ -13,10 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserServiceImp implements UserService {
 
+    private final UserDaoImp userDao;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private UserDaoImp userDao;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserServiceImp(UserDaoImp userDao, PasswordEncoder passwordEncoder) {
+        this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public User findUserByEmail(String email) {

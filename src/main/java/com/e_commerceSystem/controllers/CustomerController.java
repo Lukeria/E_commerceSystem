@@ -1,53 +1,67 @@
 package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.entities.Customer;
-import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.services.interfaces.OrderService;
+import com.e_commerceSystem.validation.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
 
+    private final OrderService orderService;
+    private final CustomerValidator customerValidator;
+
     @Autowired
-    private OrderService orderService;
+    public CustomerController(OrderService orderService,
+                              CustomerValidator customerValidator) {
+
+        this.orderService = orderService;
+        this.customerValidator = customerValidator;
+    }
+
+    @InitBinder(value = "customer")
+    protected void initBinder(WebDataBinder binder) {
+
+        binder.setValidator(customerValidator);
+    }
 
     @GetMapping("/add")
     public ModelAndView addCustomer(@ModelAttribute("customer") Customer customer,
-                                    HttpServletRequest request){
+                                    @RequestParam("orderId") Long orderId){
 
         ModelAndView modelAndView = new ModelAndView("/admin/customers/add");
+
         modelAndView.addObject("customer", customer);
-        modelAndView.addObject("orderId", request.getAttribute("orderId"));
+        modelAndView.addObject("orderId", orderId);
+
         return  modelAndView;
-
     }
 
-    @PostMapping("/add")
-    public ModelAndView addCustomerPost(@ModelAttribute("customer") Customer customer,
-                                        HttpServletRequest request){
-
-        return addCustomer(customer, request);
-    }
-
-    @PostMapping("/saveOrderCustomer")
-    public ModelAndView saveOrderCustomer(@ModelAttribute("customer") Customer customer,
-                                          @RequestParam("orderId") Long orderId,
-                                          RedirectAttributes redirectAttributes) {
+    @PostMapping("/")
+    public ModelAndView saveOrderCustomer(@ModelAttribute("customer") @Validated Customer customer,
+                                          BindingResult result,
+                                          @RequestParam("orderId") Long orderId) {
 
         ModelAndView modelAndView = new ModelAndView();
+
+        if(result.hasErrors()){
+
+            modelAndView.setViewName("/admin/customers/add");
+            modelAndView.addObject("orderId", orderId);
+
+            return modelAndView;
+        }
+
         modelAndView.setViewName("redirect:/order/" + orderId);
 
-        Order order = orderService.getOrderById(orderId);
-        order.setCustomer(customer);
-        orderService.updateOrderCustomer(order);
+        orderService.updateOrderCustomer(orderId, customer);
 
         return modelAndView;
     }

@@ -1,54 +1,124 @@
 package com.e_commerceSystem.controllers;
 
-import com.e_commerceSystem.additional.ComponentViews;
-import com.e_commerceSystem.additional.CustomUserDetails;
-import com.e_commerceSystem.additional.enums.OrderStatus;
+import com.e_commerceSystem.entities.CustomUserDetails;
+import com.e_commerceSystem.additional.JsonResponse;
+import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.User;
-import com.e_commerceSystem.services.interfaces.OrderService;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.e_commerceSystem.services.LocaleMessageHandler;
+import com.e_commerceSystem.services.interfaces.CartService;
+import com.e_commerceSystem.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.security.Principal;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/cart")
 public class CartController {
 
+    private final CartService cartService;
+    private final OrderValidator orderValidator;
+    private final LocaleMessageHandler localeMessageHandler;
+
     @Autowired
-    private OrderService orderService;
+    public CartController(CartService cartService,
+                          OrderValidator orderValidator,
+                          LocaleMessageHandler localeMessageHandler) {
+
+        this.cartService = cartService;
+        this.orderValidator = orderValidator;
+        this.localeMessageHandler = localeMessageHandler;
+    }
+
+    @InitBinder("order")
+    protected void initBinder(WebDataBinder binder) {
+
+        binder.setValidator(orderValidator);
+    }
 
     @GetMapping("/")
     public ModelAndView cart(Authentication authentication) {
 
         User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+
         ModelAndView modelAndView = new ModelAndView("/user/cart");
-        modelAndView.addObject("cartOrders",
-                orderService.getOrdersByStatusAndCustomer(OrderStatus.CART, currentUser.getCustomer()));
-        modelAndView.addObject("orderStatus", OrderStatus.CART.toString());
+        modelAndView.addObject("orders",
+                cartService.getOrders(currentUser.getCustomer()));
+        modelAndView.addObject("address", currentUser.getCustomer().getAddress());
 
         return modelAndView;
     }
 
     @PostMapping("/add")
     @ResponseBody
-    @JsonView(ComponentViews.Normal.class)
-    public ModelAndView cartAdd(@RequestParam Map<String, String> allParams) {
-        return new ModelAndView("redirect:/cart/");
+    public JsonResponse cartAddAjax(@RequestBody Order order,
+                                    BindingResult result,
+                                    Authentication authentication) {
+
+        JsonResponse response = new JsonResponse();
+
+//        if (result.hasErrors()) {
+//            response.setStatus(HttpStatus.BAD_REQUEST);
+//            response.setResult(result.getAllErrors());
+//            return response;
+//        }
+
+        User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
+        cartService.addOrder(order, currentUser.getCustomer());
+        response.setStatus(HttpStatus.OK);
+        response.setMessage(localeMessageHandler.getMessage("message.notification.order.addCart.success"));
+
+        return response;
     }
 
-    @PostMapping("/deleteItem")
-    public ModelAndView cartDeleteItem() {
-        return new ModelAndView("/user/cart");
+
+    @PostMapping("/{id}/delete")
+    @ResponseBody
+    public JsonResponse cartDeleteItem(@PathVariable Long id) {
+
+        JsonResponse jsonResponse = new JsonResponse();
+
+        cartService.deleteOrder(id);
+        jsonResponse.setStatus(HttpStatus.OK);
+        jsonResponse.setMessage(localeMessageHandler.getMessage("message.notification.order.delete.success"));
+
+        return jsonResponse;
+
     }
 
     @PostMapping("/submit")
-    public ModelAndView cartSubmit() {
-        return new ModelAndView("/user/cart");
+    @ResponseBody
+    public JsonResponse cartSubmit(@RequestBody List<Order> orders) {
+
+        for (Order order : orders) {
+            cartService.submitCartOrder(order, false);
+        }
+
+        JsonResponse response = new JsonResponse();
+        response.setStatus(HttpStatus.OK);
+        response.setMessage(localeMessageHandler.getMessage("message.notification.order.submit.success"));
+
+        return response;
+    }
+
+    @PostMapping("/submitAndPay")
+    @ResponseBody
+    public JsonResponse cartSubmitAndPay(@RequestBody List<Order> orders) {
+
+        for (Order order : orders) {
+            cartService.submitCartOrder(order, true);
+        }
+
+        JsonResponse response = new JsonResponse();
+        response.setStatus(HttpStatus.OK);
+        response.setMessage(localeMessageHandler.getMessage("message.notification.order.pay.success"));
+
+        return response;
     }
 }

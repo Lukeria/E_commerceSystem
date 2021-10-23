@@ -6,9 +6,7 @@ $(document).ready(function () {
 
     $("#save").click(function () {
         if ($('#file_upload')[0].files.length === 0) {
-            showNotification("You can't save catalog item with empty image", "warning");
-        } else if (!$('#productType').val()) {
-            showNotification("You can't save catalog item with empty product type", "warning");
+            showNotification(messages['message.notification.catalog.upload.validate'], "warning");
         } else {
             saveCatalogItem();
             $('#file_upload_name').text('');
@@ -32,17 +30,17 @@ function saveCatalogItem() {
         data: dataForm,
         success: function (response) {
 
-            if (response.status=='SUCCESS') {
+            if (response.status === 'OK') {
 
-                showNotification("Catalog item has been added successfully", "success");
-                $("#file_upload").val('');
-                $("#my_image").attr("src", "/catalog/displayImage?id=" + response.result);
+                if (response.redirect) {
+                    window.location.replace(response.redirectUrl)
+                }
             }
 
         },
         error: function (e) {
 
-            showNotification("Cannot upload image", "danger");
+            showNotification(messages['message.notification.catalog.upload.failure'], "danger");
         }
     });
 }
@@ -52,51 +50,16 @@ function deleteCatalogItem(url, element) {
     $.ajax({
         type: "POST",
         url: url,
-        success: function () {
+        success: function (response) {
 
-            $(element).parents("[id*='catalogItem']").remove();
-            showNotification("Catalog item has been deleted", "success");
+            if(response.status === "OK") {
+                $(element).parents("[id*='catalogItem']").remove();
+                showNotification(response.message, "success");
+            }
         },
         error: function (e) {
 
-            showNotification("Cannot delete catalog item", "danger");
-        }
-    });
-}
-
-function post(path, params, method) {
-    method = method || "post";
-
-    var form = document.createElement("form");
-    form.setAttribute("method", method);
-    form.setAttribute("action", path);
-
-    for (var key in params) {
-        if (params.hasOwnProperty(key)) {
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value", params[key]);
-
-            form.appendChild(hiddenField);
-        }
-    }
-
-    document.body.appendChild(form);
-    form.submit();
-}
-
-function showNotification(text, color) {
-    $.notify({
-        icon: "tim-icons icon-bell-55",
-        message: text
-
-    }, {
-        type: color,
-        timer: 8000,
-        placement: {
-            from: 'bottom',
-            align: 'center'
+            showNotification(messages['message.notification.loadingData.failure'], "danger");
         }
     });
 }

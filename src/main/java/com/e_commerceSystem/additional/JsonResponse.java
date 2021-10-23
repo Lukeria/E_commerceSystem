@@ -1,27 +1,27 @@
 package com.e_commerceSystem.additional;
 
-import com.e_commerceSystem.additional.ComponentViews;
-import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.http.HttpStatus;
 
 public class JsonResponse {
 
-    @JsonView({ComponentViews.Normal.class, ComponentViews.PriceList.class})
-    private String status = null;
-
-    @JsonView({ComponentViews.Normal.class, ComponentViews.PriceList.class})
+    private HttpStatus status = null;
     private Object result = null;
+    private String message;
     private String redirectUrl;
     private boolean redirect = false;
 
-    public String getStatus() {
+    public HttpStatus getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+
+    public void setStatus(HttpStatus status) {
         this.status = status;
     }
+
     public Object getResult() {
         return result;
     }
+
     public void setResult(Object result) {
         this.result = result;
     }
@@ -40,5 +40,13 @@ public class JsonResponse {
 
     public void setRedirect(boolean redirect) {
         this.redirect = redirect;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

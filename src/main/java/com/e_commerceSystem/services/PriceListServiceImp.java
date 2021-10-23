@@ -1,6 +1,6 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.additional.enums.ComponentTypes;
+import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.entities.components.Accessory;
 import com.e_commerceSystem.entities.glass.GlassType;
 import com.e_commerceSystem.entities.glass.Processing;
@@ -16,8 +16,12 @@ import java.util.List;
 @Service
 public class PriceListServiceImp implements PriceListService {
 
+    private final ComponentServiceFactory componentServiceFactory;
+
     @Autowired
-    private ComponentServiceFactory componentServiceFactory;
+    public PriceListServiceImp(ComponentServiceFactory componentServiceFactory) {
+        this.componentServiceFactory = componentServiceFactory;
+    }
 
     @Override
     public void updatePriceListGlassType(String tableJson) {
@@ -33,7 +37,7 @@ public class PriceListServiceImp implements PriceListService {
         }
 
         for (GlassType item : table) {
-            componentServiceFactory.getComponentService(ComponentTypes.GLASS_TYPE).updateComponentPrices(item);
+            componentServiceFactory.getComponentService(ComponentType.GLASS_TYPE).updateComponentPrices(item);
         }
     }
 
@@ -51,7 +55,7 @@ public class PriceListServiceImp implements PriceListService {
         }
 
         for (Processing item : table) {
-            componentServiceFactory.getComponentService(ComponentTypes.PROCESSING).updateComponentPrices(item);
+            componentServiceFactory.getComponentService(ComponentType.PROCESSING).updateComponentPrices(item);
         }
     }
 
@@ -69,7 +73,7 @@ public class PriceListServiceImp implements PriceListService {
         }
 
         for (Accessory item : table) {
-            componentServiceFactory.getComponentService(ComponentTypes.ACCESSORY).updateComponentPrices(item);
+            componentServiceFactory.getComponentService(ComponentType.ACCESSORY).updateComponentPrices(item);
         }
     }
 }

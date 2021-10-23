@@ -1,6 +1,6 @@
 package com.e_commerceSystem.services;
 
-import com.e_commerceSystem.additional.enums.ComponentTypes;
+import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.services.interfaces.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,10 +10,14 @@ import java.util.List;
 @Service
 public class ComponentServiceFactory {
 
-    @Autowired
-    private List<ComponentService> componentServiceList;
+    private final List<ComponentService> componentServiceList;
 
-    public ComponentService getComponentService(ComponentTypes componentType) {
+    @Autowired
+    public ComponentServiceFactory(List<ComponentService> componentServiceList) {
+        this.componentServiceList = componentServiceList;
+    }
+
+    public ComponentService getComponentService(ComponentType componentType) {
 
         return componentServiceList.stream()
                 .filter(service -> service.canHandle(componentType))
