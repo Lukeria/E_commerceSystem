@@ -1,6 +1,6 @@
 package com.e_commerceSystem.validation;
 
-import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.entities.components.Glass;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

@@ -2,8 +2,8 @@ package com.e_commerceSystem.services;
 
 import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.entities.components.Accessory;
-import com.e_commerceSystem.entities.glass.GlassType;
-import com.e_commerceSystem.entities.glass.Processing;
+import com.e_commerceSystem.entities.components.GlassType;
+import com.e_commerceSystem.entities.components.Processing;
 import com.e_commerceSystem.services.interfaces.PriceListService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

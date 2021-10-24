@@ -1,9 +1,8 @@
 package com.e_commerceSystem.repositories;
 
 import com.e_commerceSystem.entities.components.Accessory;
-import com.e_commerceSystem.entities.components.Component;
-import com.e_commerceSystem.entities.glass.GlassType;
-import com.e_commerceSystem.entities.glass.Processing;
+import com.e_commerceSystem.entities.components.GlassType;
+import com.e_commerceSystem.entities.components.Processing;
 import com.e_commerceSystem.repositories.interfaces.ComponentDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class ComponentDaoImp implements ComponentDao {
@@ -66,12 +64,13 @@ public class ComponentDaoImp implements ComponentDao {
     public List<Accessory> getAccessoryAll() {
 
         Session session = sessionFactory.openSession();
-        List<Accessory> accessoryList = session.createNamedQuery("get_component_by_component_type", Component.class)
-                .setParameter("component_type", "accessory")
-                .getResultList()
-                .stream()
-                .map(value -> (Accessory)value)
-                .collect(Collectors.toList());
+//        List<Accessory> accessoryList = session.createNamedQuery("get_component_by_component_type", Component.class)
+//                .setParameter("component_type", "accessory")
+//                .getResultList()
+//                .stream()
+//                .map(value -> (Accessory)value)
+//                .collect(Collectors.toList());
+        List<Accessory> accessoryList = session.createQuery("from Accessory", Accessory.class).getResultList();
         return accessoryList;
 
     }

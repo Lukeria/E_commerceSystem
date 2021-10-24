@@ -1,16 +1,11 @@
 package com.e_commerceSystem.controllers;
 
 import com.e_commerceSystem.additional.enums.ComponentType;
-import com.e_commerceSystem.additional.JsonResponse;
 import com.e_commerceSystem.additional.enums.ProcessingType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
-import com.e_commerceSystem.entities.glass.GlassType;
-import com.e_commerceSystem.entities.glass.Processing;
 import com.e_commerceSystem.services.ComponentServiceFactory;
 import com.e_commerceSystem.services.interfaces.ComponentService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -98,31 +93,6 @@ public class ComponentController {
         modelAndView.addObject("processingTypes", ProcessingType.values());
 
         return modelAndView;
-    }
-
-    @PostMapping("/getData")
-    @ResponseBody
-    public JsonResponse getListData() {
-
-        List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentType.GLASS_TYPE).getComponentList();
-        List<Processing> processingList = componentServiceFactory.getComponentService(ComponentType.PROCESSING).getComponentList();
-
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonGlassTypeList = "";
-        String jsonProcessing = "";
-        try {
-            jsonGlassTypeList = mapper.writeValueAsString(glassTypeList);
-            jsonProcessing = mapper.writeValueAsString(processingList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        String result = "{\"glassTypeList\":" + jsonGlassTypeList + ", \"processingList\":" + jsonProcessing + "}";
-        JsonResponse response = new JsonResponse();
-        response.setStatus(HttpStatus.OK);
-        response.setResult(result);
-
-        return response;
     }
 
     @GetMapping("/list")

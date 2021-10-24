@@ -27,20 +27,6 @@ $(document).ready(function () {
             doAjaxCalculatePost();
         });
 
-        // $('#calculatorForm').submit(function (event) {
-        //     // event.preventDefault();
-        //     // let form = $(this);
-        //     // $("#glassListJson").val(JSON.stringify(glassTable()));
-        //     // $('#calculatorForm').off("submit");
-        //     // form.submit();
-        //     let tableGlass = JSON.stringify(glassTable());
-        //     $('<input />').attr('type', 'hidden')
-        //         .attr('name', 'tableGlass')
-        //         .attr('value', tableGlass)
-        //         .appendTo('#calculatorForm');
-        //
-        // })
-
         $('#addOrder').click(function () {
             doAjaxSaveOrderPost();
         });
@@ -691,7 +677,10 @@ function doAjaxSaveTemplatePost() {
 
 function doAjaxAddToCartPost() {
 
-    let Json = JSON.stringify(createOrder());
+    let order = createOrder();
+    order.cost = Number.parseInt($('#costCart').text())||0;
+    let Json = JSON.stringify(order);
+
     $.ajax({
         type: "POST",
         url: "/cart/add",

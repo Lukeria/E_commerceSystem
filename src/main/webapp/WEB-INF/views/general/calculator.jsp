@@ -1,3 +1,4 @@
+8
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -361,10 +362,13 @@
                                                 </div>
                                             </security:authorize>
                                             <security:authorize access="!hasRole('ADMIN')">
-                                                <h3>
-                                                    <i class="tim-icons icon-coins text-primary"></i>
-                                                    <span id="costCart">${model.cost}</span>
-                                                </h3>
+                                                <div class="form-group">
+                                                    <h3>
+                                                        <i class="tim-icons icon-coins text-primary"></i>
+                                                        <span id="costCart">${model.cost}</span>
+                                                    </h3>
+                                                    <div class="form-text text-danger" id="error_cost"></div>
+                                                </div>
                                             </security:authorize>
                                         </div>
                                     </div>
