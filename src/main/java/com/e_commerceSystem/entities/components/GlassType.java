@@ -1,7 +1,5 @@
-package com.e_commerceSystem.entities.glass;
+package com.e_commerceSystem.entities.components;
 
-import com.e_commerceSystem.additional.enums.ProcessingType;
-import com.e_commerceSystem.entities.components.DefaultComponent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -11,41 +9,27 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@DiscriminatorValue("processing")
-public class Processing implements Serializable, DefaultComponent {
+@Table(name = "glass_type")
+public class GlassType implements Serializable, DefaultComponent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private ProcessingType type;
+    protected Long id;
 
-    private String name;
+    protected String name;
 
-    @JsonIgnore
-    private String symbol;
+    private Integer thickness;
 
     private Float price;
 
     private Float priceUSD;
 
-    @Transient
-    private Integer quantity;
-
-    @ManyToMany(mappedBy = "processingList")
+    @OneToMany(mappedBy = "glassType")
     @JsonIgnore
     private Set<Glass> glass = new HashSet<>();
 
-    public Processing() {
-    }
-
-    public ProcessingType getType() {
-        return type;
-    }
-
-    public void setType(ProcessingType type) {
-        this.type = type;
+    public GlassType() {
     }
 
     public Long getId() {
@@ -64,12 +48,12 @@ public class Processing implements Serializable, DefaultComponent {
         this.name = name;
     }
 
-    public String getSymbol() {
-        return symbol;
+    public Integer getThickness() {
+        return thickness;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
+    public void setThickness(Integer thickness) {
+        this.thickness = thickness;
     }
 
     public Set<Glass> getGlass() {
@@ -86,14 +70,6 @@ public class Processing implements Serializable, DefaultComponent {
 
     public void setPrice(Float price) {
         this.price = price;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
     }
 
     public Float getPriceUSD() {
@@ -113,12 +89,12 @@ public class Processing implements Serializable, DefaultComponent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Processing that = (Processing) o;
-        return id.equals(that.id) && type.equals(that.type) && name.equals(that.name) && Objects.equals(symbol, that.symbol) && price == that.price;
+        GlassType glassType = (GlassType) o;
+        return id.equals(glassType.id) && name.equals(glassType.name) && thickness.equals(glassType.thickness) && price == glassType.price;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, symbol, price, type);
+        return Objects.hash(id, name, thickness, price);
     }
 }

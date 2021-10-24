@@ -2,7 +2,7 @@ package com.e_commerceSystem.services;
 
 import com.e_commerceSystem.additional.enums.ComponentType;
 import com.e_commerceSystem.entities.components.DefaultComponent;
-import com.e_commerceSystem.entities.glass.GlassType;
+import com.e_commerceSystem.entities.components.GlassType;
 import com.e_commerceSystem.exceptions.ComponentExtractionException;
 import com.e_commerceSystem.repositories.interfaces.ComponentDao;
 import com.e_commerceSystem.services.interfaces.ComponentService;

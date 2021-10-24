@@ -1,6 +1,6 @@
 package com.e_commerceSystem.entities;
 
-import com.e_commerceSystem.entities.components.Component;
+import com.e_commerceSystem.entities.components.Accessory;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -22,12 +22,13 @@ public class OrderItem implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "component_id")
-    private Component component;
+    private Accessory component;
 
     public OrderItem() {
     }
 
-    public OrderItem(int amount, Order order, Component component) {
+    public OrderItem(int amount, Order order, Accessory component) {
+
         this.amount = amount;
         this.order = order;
         this.component = component;
@@ -57,11 +58,11 @@ public class OrderItem implements Serializable {
         this.order = order;
     }
 
-    public Component getComponent() {
+    public Accessory getComponent() {
         return component;
     }
 
-    public void setComponent(Component item) {
+    public void setComponent(Accessory item) {
         this.component = item;
     }
 

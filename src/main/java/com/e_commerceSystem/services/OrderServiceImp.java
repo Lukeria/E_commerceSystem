@@ -6,7 +6,7 @@ import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Customer;
 import com.e_commerceSystem.entities.Order;
 import com.e_commerceSystem.entities.OrderItem;
-import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.entities.components.Glass;
 import com.e_commerceSystem.exceptions.notFoundExceptions.OrderAccessDeniedException;
 import com.e_commerceSystem.exceptions.notFoundExceptions.OrderNotFoundException;
 import com.e_commerceSystem.repositories.interfaces.OrderDao;

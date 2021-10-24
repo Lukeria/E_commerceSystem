@@ -10,7 +10,7 @@ $(document).ready(function () {
         if (checkPaymentInfo()) {
             submitOrder("/cart/submitAndPay");
         } else {
-            showNotification("payment information is not filled", "danger")
+            showNotification(messages['message.cart.paymentInfo.failure'], "danger")
         }
     });
 

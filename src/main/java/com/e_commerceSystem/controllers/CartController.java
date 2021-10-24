@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,17 +58,17 @@ public class CartController {
 
     @PostMapping("/add")
     @ResponseBody
-    public JsonResponse cartAddAjax(@RequestBody Order order,
+    public JsonResponse cartAddAjax(@RequestBody @Validated Order order,
                                     BindingResult result,
                                     Authentication authentication) {
 
         JsonResponse response = new JsonResponse();
 
-//        if (result.hasErrors()) {
-//            response.setStatus(HttpStatus.BAD_REQUEST);
-//            response.setResult(result.getAllErrors());
-//            return response;
-//        }
+        if (result.hasErrors()) {
+            response.setStatus(HttpStatus.BAD_REQUEST);
+            response.setResult(result.getAllErrors());
+            return response;
+        }
 
         User currentUser = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         cartService.addOrder(order, currentUser.getCustomer());

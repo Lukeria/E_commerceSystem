@@ -1,4 +1,4 @@
-package com.e_commerceSystem.entities.glass;
+package com.e_commerceSystem.entities.components;
 
 import com.e_commerceSystem.additional.enums.Shape;
 import com.e_commerceSystem.entities.Catalog;

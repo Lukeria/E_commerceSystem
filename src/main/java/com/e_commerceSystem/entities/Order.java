@@ -3,7 +3,7 @@ package com.e_commerceSystem.entities;
 import com.e_commerceSystem.additional.enums.OrderStatus;
 import com.e_commerceSystem.additional.enums.PaymentMethod;
 import com.e_commerceSystem.additional.enums.ProductType;
-import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.entities.components.Glass;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;

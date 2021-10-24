@@ -3,7 +3,7 @@ package com.e_commerceSystem.services;
 import com.e_commerceSystem.additional.enums.ProductType;
 import com.e_commerceSystem.entities.Catalog;
 import com.e_commerceSystem.entities.Image;
-import com.e_commerceSystem.entities.glass.Glass;
+import com.e_commerceSystem.entities.components.Glass;
 import com.e_commerceSystem.exceptions.notFoundExceptions.CatalogNotFoundException;
 import com.e_commerceSystem.repositories.interfaces.CatalogDao;
 import com.e_commerceSystem.services.interfaces.CatalogService;

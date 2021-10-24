@@ -8,13 +8,19 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.Ordered;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
@@ -87,5 +93,22 @@ public class WebConfig implements WebMvcConfigurer {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         registry.addInterceptor(localeChangeInterceptor);
+    }
+
+    @Bean
+    public SimpleMappingExceptionResolver createSimpleMappingExceptionResolver() {
+
+        SimpleMappingExceptionResolver r =
+                new SimpleMappingExceptionResolver();
+
+        Properties mappings = new Properties();
+        mappings.setProperty("DatabaseException", "databaseError");
+        mappings.setProperty("InvalidCreditCardException", "creditCardError");
+
+        r.setExceptionMappings(mappings);  // None by default
+        r.setDefaultErrorView("error");    // No default
+        r.setExceptionAttribute("ex");     // Default is "exception"
+        r.setWarnLogCategory("example.MvcLogger");     // No default
+        return r;
     }
 }

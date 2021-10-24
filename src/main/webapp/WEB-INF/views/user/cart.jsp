@@ -281,6 +281,7 @@
     let messages = {};
     messages['message.notification.loadingData.failure']="<spring:message code="message.notification.loadingData.failure" javaScriptEscape="true"/>";
     messages['message.notification.cart.orderSelect']="<spring:message code="message.notification.cart.orderSelect" javaScriptEscape="true"/>";
+    messages['message.cart.paymentInfo.failure']="<spring:message code="message.cart.paymentInfo.failure" javaScriptEscape="true"/>";
 
 </script>
 <script type="text/javascript">
