@@ -42,7 +42,7 @@ public class PriceListController {
 
         List<GlassType> glassTypeList = componentServiceFactory.getComponentService(ComponentType.GLASS_TYPE).getComponentList();
         List<Processing> processingList = componentServiceFactory.getComponentService(ComponentType.PROCESSING).getComponentList();
-        List<Accessory> accessoryList = componentServiceFactory.getComponentService(ComponentType.PROCESSING).getComponentList();;
+        List<Accessory> accessoryList = componentServiceFactory.getComponentService(ComponentType.ACCESSORY).getComponentList();;
 
         modelAndView.addObject("glassTypeList", glassTypeList);
         modelAndView.addObject("processingList", processingList);

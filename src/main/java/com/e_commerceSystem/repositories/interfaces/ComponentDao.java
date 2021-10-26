@@ -29,5 +29,4 @@ public interface ComponentDao {
     void updateProcessingPrices(Processing processing);
     void deleteProcessing(Processing processing);
 
-//    List<AdditionalService> getAdditionalServiceAll();
 }

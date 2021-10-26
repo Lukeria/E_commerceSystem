@@ -25,7 +25,8 @@ public class ComponentDaoImp implements ComponentDao {
     public List<GlassType> getGlassTypeAll() {
 
         Session session = sessionFactory.getCurrentSession();
-        List<GlassType> glassTypeList = session.createQuery("from GlassType", GlassType.class).getResultList();
+        List<GlassType> glassTypeList = session.createQuery("from GlassType g order by g.name, g.thickness asc",
+                GlassType.class).getResultList();
         return glassTypeList;
     }
 
@@ -64,13 +65,8 @@ public class ComponentDaoImp implements ComponentDao {
     public List<Accessory> getAccessoryAll() {
 
         Session session = sessionFactory.openSession();
-//        List<Accessory> accessoryList = session.createNamedQuery("get_component_by_component_type", Component.class)
-//                .setParameter("component_type", "accessory")
-//                .getResultList()
-//                .stream()
-//                .map(value -> (Accessory)value)
-//                .collect(Collectors.toList());
-        List<Accessory> accessoryList = session.createQuery("from Accessory", Accessory.class).getResultList();
+        List<Accessory> accessoryList = session.createQuery("from Accessory a order by a.name asc", Accessory.class)
+                .getResultList();
         return accessoryList;
 
     }
@@ -109,7 +105,8 @@ public class ComponentDaoImp implements ComponentDao {
     public List<Processing> getProcessingAll() {
 
         Session session = sessionFactory.openSession();
-        List<Processing> processingList = session.createQuery("from Processing", Processing.class).getResultList();
+        List<Processing> processingList = session.createQuery("from Processing p order by p.type, p.name asc",
+                Processing.class).getResultList();
         return processingList;
     }
 
